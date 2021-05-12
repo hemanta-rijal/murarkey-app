@@ -180,7 +180,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         Expanded(
                           flex: 2,
                           child: Text(
-                            "  OR  ",
+                            "OR",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: AppConstants.appColor.textColor3,

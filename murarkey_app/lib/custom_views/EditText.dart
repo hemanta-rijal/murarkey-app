@@ -72,14 +72,14 @@ class _EditTextState extends State<EditText> {
             borderSide: BorderSide(style: BorderStyle.solid, color: AppConstants.appColor.primaryDarkColor)),
         border: OutlineInputBorder(),
         filled: true,
-        fillColor: Color.fromRGBO(255, 255, 255, 100.0),
+        fillColor: AppConstants.appColor.backgroundColor,//Color.fromRGBO(255, 255, 255, 100.0),
         contentPadding: EdgeInsets.only(left: 20.0),
         suffixIcon: IconButton(
             icon: Icon(
               icon,
               color: (label == AppConstants.constants.PASSWORD && ! widget.obscureText)
-                  ? Colors.black
-                  : new Color(0xFFB8B6B6),
+                  ? AppConstants.appColor.primaryColor
+                  : AppConstants.appColor.accentColor,
             ),
             onPressed: () {
               setState(() {
@@ -90,7 +90,7 @@ class _EditTextState extends State<EditText> {
             }),
         // suffixIcon: Icon(icon, color: new Color(0xFFB8B6B6)),
         labelText: label,
-        labelStyle: TextStyle(color: new Color(0xFFB8B6B6)),
+        labelStyle: TextStyle(color: AppConstants.appColor.primaryDarkColor),
       );
 
   @override

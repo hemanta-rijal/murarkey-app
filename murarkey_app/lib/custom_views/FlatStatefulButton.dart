@@ -1,4 +1,3 @@
-
 /*
 * Created by Suman Neupane
 * */
@@ -15,18 +14,18 @@ class FlatStatefulButton extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final Function onPressedCallback;
 
-  FlatStatefulButton({
-    Key key,
-    this.text,
-    this.fontSize,
-    this.textColor,
-    this.backgroundColor,
-    this.fontWeight,
-    this.textStyle,
-    this.margin,
-    this.padding,
-    this.onPressedCallback
-  }): super(key: key);
+  FlatStatefulButton(
+      {Key key,
+      this.text,
+      this.fontSize,
+      this.textColor,
+      this.backgroundColor,
+      this.fontWeight,
+      this.textStyle,
+      this.margin,
+      this.padding,
+      this.onPressedCallback})
+      : super(key: key);
 
   @override
   _FlatStatefulButtonState createState() => _FlatStatefulButtonState();
@@ -44,7 +43,9 @@ class _FlatStatefulButtonState extends State<FlatStatefulButton> {
   }
 
   setBackground() {
-    return widget.backgroundColor != null ? widget.backgroundColor :  AppConstants.appColor.whiteColor;
+    return widget.backgroundColor != null
+        ? widget.backgroundColor
+        : AppConstants.appColor.whiteColor;
   }
 
   setPadding() {
@@ -65,13 +66,18 @@ class _FlatStatefulButtonState extends State<FlatStatefulButton> {
       children: [
         Expanded(
           child: Container(
-            height: 50,
+              height: 50,
               margin: setMargin(),
               child: TextButton(
-                style: ButtonStyle(
-                  backgroundColor:  MaterialStateProperty.all(setBackground()),
-                  padding: MaterialStateProperty.all(setPadding()),
-                ),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(setBackground()),
+                      padding: MaterialStateProperty.all(setPadding()),
+                      elevation: MaterialStateProperty.all(8),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ))),
                   onPressed: () {
                     widget.onPressedCallback.call();
                   },

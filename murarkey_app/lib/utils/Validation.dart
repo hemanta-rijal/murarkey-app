@@ -6,6 +6,14 @@ class Validation{
 
   bool emailIsValid(String email) => RegExp(regex).hasMatch(email);
 
+  static String validateUserName(String username) {
+    if (username.isEmpty)
+      return 'Please enter your username';
+    else if (username.length < 4)
+      return 'Usernamee should be greater than 4 letters';
+    return SUCCESS;
+  }
+
   static String validateEmail(String email) {
     if (email.isEmpty) return 'Please enter your email address';
     final RegExp nameExp = new RegExp(regex);
@@ -17,7 +25,15 @@ class Validation{
     if (password.isEmpty)
       return 'Please enter your password';
     else if (password.length < 6)
-      return 'Password is less than 6 chars';
+      return 'Password is should be greater than 6 letters';
+    return SUCCESS;
+  }
+
+  static String validateConfirmPassword(String password, String confirmPassword) {
+    if (confirmPassword.isEmpty)
+      return 'Please enter your password';
+    else if (password != confirmPassword)
+      return 'Password did not matched';
     return SUCCESS;
   }
 }

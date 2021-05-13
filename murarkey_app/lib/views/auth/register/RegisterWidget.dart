@@ -6,16 +6,16 @@ import 'package:murarkey_app/custom_views/SocialMediaLoginCardWidget.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/utils/Validation.dart';
-import 'package:murarkey_app/views/auth/login/view_model/LoginViewModel.dart';
+import 'package:murarkey_app/views/auth/register/view_model/RegisterViewModel.dart';
 
-class LoginWidget extends StatefulWidget {
-  final LoginViewModel viewModel = new LoginViewModel();
+class RegisterWidget extends StatefulWidget {
+  final RegisterViewModel viewModel = new RegisterViewModel();
 
   @override
-  _LoginWidgetState createState() => _LoginWidgetState();
+  _RegisterWidgetState createState() => _RegisterWidgetState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
+class _RegisterWidgetState extends State<RegisterWidget> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -52,16 +52,27 @@ class _LoginWidgetState extends State<LoginWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Email
+                    //Full Name
                     new EditText(
-                      text: "Email",
-                      icon: Icons.email,
+                      text: "Username",
+                      icon: Icons.account_circle_rounded,
                       fontSize: SizeConfig.textMultiplier * 2.0,
                       textColor: AppConstants.appColor.textColor,
                       keyboardType: TextInputType.emailAddress,
                       margin: EdgeInsets.only(
                           top: screenSize.width * .08,
-                          bottom: screenSize.width * .06),
+                          bottom: screenSize.width * .03),
+                      controller: widget.viewModel.formUserName,
+                    ),
+
+                    // Email
+                    new EditText(
+                      text: AppConstants.constants.EMAIL,
+                      icon: Icons.email,
+                      fontSize: SizeConfig.textMultiplier * 2.0,
+                      textColor: AppConstants.appColor.textColor,
+                      keyboardType: TextInputType.emailAddress,
+                      margin: EdgeInsets.only(bottom: screenSize.width * .03),
                       controller: widget.viewModel.formEmail,
                     ),
 
@@ -77,61 +88,56 @@ class _LoginWidgetState extends State<LoginWidget> {
                       obscureText: true,
                     ),
 
-                    //Remember me
-                    Row(
-                      //crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: CheckboxWidget(
-                            text: AppConstants.constants.REMEMBER_ME,
-                            value: widget.viewModel.rememberME,
-                            onValueChange: (bool value) {
-                              setState(() {
-                                widget.viewModel.rememberME = value;
-                              });
-                            },
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            textColor: AppConstants.appColor.textColor,
-                            screenSize: screenSize,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: Text(
-                            AppConstants.constants.FORGET_PASSWORD,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              color: AppConstants.appColor.redColor,
-                              fontSize: SizeConfig.textMultiplier * 1.8,
-                            ),
-                          ),
-                        ),
-                      ],
+                    //Password
+                    new EditText(
+                      text: AppConstants.constants.CONFIRM_PASSWORD,
+                      icon: Icons.remove_red_eye,
+                      fontSize: SizeConfig.textMultiplier * 2.0,
+                      textColor: AppConstants.appColor.textColor,
+                      keyboardType: TextInputType.text,
+                      margin: EdgeInsets.only(bottom: screenSize.width * .03),
+                      controller: widget.viewModel.formConfirmPassword,
+                      obscureText: true,
                     ),
+
                     SizedBox(
                       height: 30,
                     ),
 
-                    //Log in
+                    //Register
                     new FlatStatefulButton(
-                      text: AppConstants.constants.LOG_IN,
+                      text: AppConstants.constants.REGISTER,
                       fontSize: SizeConfig.textMultiplier * 2.0,
                       textColor: AppConstants.appColor.accentColor,
                       padding: EdgeInsets.all(screenSize.width * .02),
                       backgroundColor: AppConstants.appColor.buttonColor,
                       onPressedCallback: () {
+                        String usernameValidate = Validation.validateUserName(
+                            widget.viewModel.formUserName.text.trim());
+
                         String emailValidate = Validation.validateEmail(
                             widget.viewModel.formEmail.text.trim());
+
                         String passwordValid = Validation.validatePassword(
                             widget.viewModel.formPassword.text.trim());
 
-                        if (emailValidate != Validation.SUCCESS) {
+                        String confirmPasswordValid =
+                            Validation.validateConfirmPassword(
+                                widget.viewModel.formPassword.text.trim(),
+                                widget.viewModel.formConfirmPassword.text
+                                    .trim());
+
+                        if (usernameValidate != Validation.SUCCESS) {
+                          Commons.toastMessage(context, usernameValidate);
+                        } else if (emailValidate != Validation.SUCCESS) {
                           Commons.toastMessage(context, emailValidate);
                         } else if (passwordValid != Validation.SUCCESS) {
                           Commons.toastMessage(context, passwordValid);
+                        } else if (confirmPasswordValid != Validation.SUCCESS) {
+                          Commons.toastMessage(context, confirmPasswordValid);
                         } else {
-                          Commons.toastMessage(context, "Successfully login");
+                          Commons.toastMessage(
+                              context, "Registered Successfully");
                         }
                       },
                     ),
@@ -144,7 +150,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have Account?",
+                          " Already have Account?  ",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppConstants.appColor.textColor,
@@ -152,7 +158,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ),
                         ),
                         Text(
-                          "  Sign up ",
+                          "  Sign in ",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: AppConstants.appColor.accentColor,
@@ -205,7 +211,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Sign in with",
+                          "Sign up with",
                           style: TextStyle(
                               color: AppConstants.appColor.textColor3,
                               fontSize: SizeConfig.textMultiplier * 1.6,
@@ -243,7 +249,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     RichText(
                       text: TextSpan(
                         text:
-                           AppConstants.constants.PRIVACY_POLICY_MSG,
+                        AppConstants.constants.PRIVACY_POLICY_MSG,
                         style: TextStyle(
                           color: AppConstants.appColor.textColor3,
                           fontSize: SizeConfig.textMultiplier * 1.4,

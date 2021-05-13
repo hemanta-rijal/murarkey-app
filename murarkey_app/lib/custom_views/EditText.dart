@@ -18,23 +18,23 @@ class EditText extends StatefulWidget {
   FocusNode focusNode;
   bool obscureText;
 
-  EditText({
-    Key key,
-    this.text,
-    this.fontSize,
-    this.textColor,
-    this.fontWeight,
-    this.textStyle,
-    this.margin,
-    this.controller,
-    this.keyboardType,
-    this.icon,
-    this.decoration,
-    FocusNode focusNode,
-    bool obscureText
-  }) : super(key: key) {
+  EditText(
+      {Key key,
+      this.text,
+      this.fontSize,
+      this.textColor,
+      this.fontWeight,
+      this.textStyle,
+      this.margin,
+      this.controller,
+      this.keyboardType,
+      this.icon,
+      this.decoration,
+      FocusNode focusNode,
+      bool obscureText})
+      : super(key: key) {
     this.focusNode = focusNode;
-    this.obscureText = obscureText == null? false: obscureText;
+    this.obscureText = obscureText == null ? false : obscureText;
   }
 
   @override
@@ -42,14 +42,15 @@ class EditText extends StatefulWidget {
 }
 
 class _EditTextState extends State<EditText> {
-
   setStyle() {
     return widget.textStyle != null
         ? widget.textStyle
         : TextStyle(
-        color: widget.textColor,
-        fontSize: widget.fontSize != null? widget.fontSize: SizeConfig.textMultiplier * 2.5,
-        fontWeight: setFontWeight());
+            color: widget.textColor,
+            fontSize: widget.fontSize != null
+                ? widget.fontSize
+                : SizeConfig.textMultiplier * 2.5,
+            fontWeight: setFontWeight());
   }
 
   setMargin() {
@@ -61,30 +62,37 @@ class _EditTextState extends State<EditText> {
   }
 
   setDecoration() {
-    return widget.decoration != null ? widget.decoration : _fieldDecoration(icon: widget.icon, label: widget.text);
+    return widget.decoration != null
+        ? widget.decoration
+        : _fieldDecoration(icon: widget.icon, label: widget.text);
   }
 
   // Decoration theme
   InputDecoration _fieldDecoration(
-      {@required String label, @required IconData icon}) =>
+          {@required String label, @required IconData icon}) =>
       InputDecoration(
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(style: BorderStyle.solid, color: AppConstants.appColor.primaryDarkColor)),
+            borderSide: BorderSide(
+                style: BorderStyle.solid,
+                color: AppConstants.appColor.primaryDarkColor)),
         border: OutlineInputBorder(),
         filled: true,
-        fillColor: AppConstants.appColor.backgroundColor,//Color.fromRGBO(255, 255, 255, 100.0),
+        fillColor: AppConstants.appColor.backgroundColor,
+        //Color.fromRGBO(255, 255, 255, 100.0),
         contentPadding: EdgeInsets.only(left: 20.0),
         suffixIcon: IconButton(
             icon: Icon(
               icon,
-              color: (label == AppConstants.constants.PASSWORD && ! widget.obscureText)
+              color: ((label == AppConstants.constants.PASSWORD ||
+                          label == AppConstants.constants.CONFIRM_PASSWORD) &&
+                      !widget.obscureText)
                   ? AppConstants.appColor.primaryColor
                   : AppConstants.appColor.accentColor,
             ),
             onPressed: () {
               setState(() {
-                if (label == AppConstants.constants.PASSWORD) {
-                  widget.obscureText = ! widget.obscureText;
+                if (label == AppConstants.constants.PASSWORD || label == AppConstants.constants.CONFIRM_PASSWORD) {
+                  widget.obscureText = !widget.obscureText;
                 }
               });
             }),
@@ -107,7 +115,6 @@ class _EditTextState extends State<EditText> {
           enabled: true,
           obscureText: widget.obscureText,
           decoration: setDecoration(),
-        )
-    );
+        ));
   }
 }

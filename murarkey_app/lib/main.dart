@@ -1,4 +1,5 @@
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: AppConstants.constants.APP_NAME,
       theme: AppConstants.appTheme.buildTheme(),
-      home: LoginWidget(),
+      home: LoginWidget()//RegisterWidget(),//LoginWidget(),
     );
   }
 }

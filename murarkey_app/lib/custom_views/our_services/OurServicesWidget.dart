@@ -29,9 +29,10 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
       return Stack(
         children: [
           Expanded(
+              flex: 1,
               child: Container(
-            color: AppConstants.appColor.primaryColor,
-          )),
+                color: AppConstants.appColor.primaryColor,
+              )),
           Padding(
             padding: EdgeInsets.all(14),
             child: SvgPicture.network(
@@ -50,7 +51,7 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
       margin: EdgeInsets.only(top: 20, left: 8, right: 8),
       child: Column(
         children: [
-          UnderlinedTextViewWidget(title: "Our Services"),
+          UnderlinedTextViewWidget(title: AppConstants.constants.OUR_SERVICES),
           SizedBox(height: 12),
           GridView.builder(
             shrinkWrap: true,

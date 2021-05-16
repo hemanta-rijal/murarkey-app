@@ -30,6 +30,14 @@ class Datas{
     },
   ];
 
+  static const schedulePremiumList = <String>[
+    "Make up at home",
+    "Bridal makeup",
+    "Haircut at home",
+    "Palour at makeup",
+    "Salon at makeup",
+  ];
+
   static List shopByCategoryList = [
     {
       "title": "Hair",

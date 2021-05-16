@@ -20,6 +20,9 @@ class _Constants {
   String get REMEMBER_ME => "Remember me";
   String get PRIVACY_POLICY_MSG => '© Your personal data will be used to support your experience throughout this app, to manage access to your account as described in our';
   String get PRIVACY_POLICY => " privacy policy.";
+  String get OUR_SERVICES => "Our Services";
+  String get SHOP_BY_CATEGORY => "Shop by category";
+  String get SCHEDULE_PREMIUM_SERVICE => "Schedule Premium Service at Home";
 
 }
 

@@ -74,7 +74,7 @@ class _ShopByCategoryWidgetState extends State<ShopByCategoryWidget> {
       margin: EdgeInsets.only(top: 24, left: 8, right: 8),
       child: Column(
         children: [
-          UnderlinedTextViewWidget(title: "Shop by category"),
+          UnderlinedTextViewWidget(title: AppConstants.constants.SHOP_BY_CATEGORY),
           SizedBox(height: 12),
           horizontalList1,
         ],

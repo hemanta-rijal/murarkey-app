@@ -65,6 +65,7 @@ class _FlatStatefulButtonState extends State<FlatStatefulButton> {
     return Row(
       children: [
         Expanded(
+           flex: 1,
           child: Container(
               height: 50,
               margin: setMargin(),

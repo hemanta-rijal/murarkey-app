@@ -3,11 +3,14 @@ import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/SearchBarWidget.dart';
 import 'package:murarkey_app/custom_views/our_services/OurServicesWidget.dart';
+import 'package:murarkey_app/custom_views/schedule_premium_service/SchedulePremiumServiceWidget.dart';
 import 'package:murarkey_app/custom_views/shop_by_category/ShopByCategoryWidget.dart';
 import 'package:murarkey_app/repository/local/Datas.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class HomeFragmentWidget extends StatefulWidget {
+  //https://stackoverflow.com/questions/50250789/expanded-widgets-must-be-placed-inside-flex-widgets
+
   @override
   _HomeFragmentWidgetState createState() => _HomeFragmentWidgetState();
 }
@@ -43,7 +46,9 @@ class _HomeFragmentWidgetState
               ShopByCategoryWidget(
                 modelList: Datas.shopByCategoryList,
               ),
-              // remaining stuffs
+
+              //Schedule Premium Service
+              SchedulePremiumServiceWidget(modelList: Datas.schedulePremiumList),
             ]),
           ),
         );

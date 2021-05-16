@@ -1,8 +1,10 @@
+import 'package:flutter/rendering.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/SearchBarWidget.dart';
-import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
 import 'package:murarkey_app/custom_views/our_services/OurServicesWidget.dart';
+import 'package:murarkey_app/custom_views/shop_by_category/ShopByCategoryWidget.dart';
+import 'package:murarkey_app/repository/local/Datas.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class HomeFragmentWidget extends StatefulWidget {
@@ -16,45 +18,38 @@ class _HomeFragmentWidgetState
   Widget build(BuildContext context) {
     super.build(context);
 
-    List imgList = [
-      "https://murarkey.com/wp-content/uploads/elementor/thumbs/final-2.00-opxymjpjbwqu4ozp0a4lunbl8tuq1jfarw2ayehy1s.jpg",
-      "https://murarkey.com/wp-content/uploads/elementor/thumbs/final-1-opxymjpjbwqu4ozp0a4lunbl8tuq1jfarw2ayehy1s.jpg",
-      "https://murarkey.com/wp-content/uploads/elementor/thumbs/final-3-2-opxymjpjbwqu4ozp0a4lunbl8tuq1jfarw2ayehy1s.jpg",
-      "https://murarkey.com/wp-content/uploads/elementor/thumbs/rsz_3_banner_3080x806_1-oxpjksbnpig4ug5yo10wf182ffc7fn2tanv4dyamg0.png",
-      "https://murarkey.com/wp-content/uploads/elementor/thumbs/2-a-dove-offer-Copy-os1uhd6ra23fj6fl5a8u5cku4bg549frug3o1t07c0.jpg"
-    ];
+    builder() {
+      return new LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(minHeight: viewportConstraints.maxHeight),
+            child: Column(children: [
+              SearchBarWidget(
+                  textHint: 'Search by Service or Product',
+                  onTextChange: (value) {
+                    print(value);
+                  }),
 
-    List iconList = [
-      {"title": "Make up at home", "imgUrl": "http://murarkey.surge.sh/img/icons/make-up.svg"},
-      {"title": "Bridal makeup", "imgUrl": "http://murarkey.surge.sh/img/icons/bride.svg"},
-      {"title": "Haircut at home", "imgUrl": "http://murarkey.surge.sh/img/icons/hair-cut-tool.svg"},
-      {"title": "Palour at makeup", "imgUrl": "http://murarkey.surge.sh/img/icons/hairdresser.svg"},
-      {"title": "Salon at makeup", "imgUrl": "http://murarkey.surge.sh/img/icons/woman-hair.svg"},
-    ];
-
-    return render(
-        childWidget: Column(
-      children: [
-        SearchBarWidget(
-            textHint: 'Search by Service or Product',
-            onTextChange: (value) {
-              print(value);
-            }),
-        SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              ImageSliderWidget(imgList: imgList),
+              ImageSliderWidget(imgList: Datas.imgSliderList),
 
               //Our Services
-              OurServicesWidget(iconLists: iconList,),
+              OurServicesWidget(
+                iconLists: Datas.ourServicesList,
+              ),
 
-              //Our Services
-              OurServicesWidget(iconLists: iconList,)
-            ],
+              //Shop by category
+              ShopByCategoryWidget(
+                modelList: Datas.shopByCategoryList,
+              ),
+              // remaining stuffs
+            ]),
           ),
-        ),
-      ],
-    ));
+        );
+      });
+    }
+
+    return render(childWidget: builder());
   }
 }

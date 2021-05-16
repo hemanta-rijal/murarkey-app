@@ -1,3 +1,4 @@
+import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 
@@ -13,7 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: AppConstants.constants.APP_NAME,
       theme: AppConstants.appTheme.buildTheme(),
-      home: LoginWidget()//RegisterWidget(),//LoginWidget(),
+      onGenerateRoute: NavigateRoute.generateRoute,
+      initialRoute: NavigateRoute.HOME,
     );
   }
 }

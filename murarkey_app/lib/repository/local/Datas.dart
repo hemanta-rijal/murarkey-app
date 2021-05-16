@@ -10,23 +10,28 @@ class Datas{
   static List ourServicesList = [
     {
       "title": "Make up at home",
-      "imgUrl": "http://murarkey.surge.sh/img/icons/make-up.svg"
+      "imgUrl": "http://murarkey.surge.sh/img/icons/make-up.svg",
+      "imgIcon": "images/our_services/ic_make_up.png"
     },
     {
       "title": "Bridal makeup",
-      "imgUrl": "http://murarkey.surge.sh/img/icons/bride.svg"
+      "imgUrl": "http://murarkey.surge.sh/img/icons/bride.svg",
+      "imgIcon": "images/our_services/ic_bride.png"
     },
     {
       "title": "Haircut at home",
-      "imgUrl": "http://murarkey.surge.sh/img/icons/hair-cut-tool.svg"
+      "imgUrl": "http://murarkey.surge.sh/img/icons/hair-cut-tool.svg",
+      "imgIcon": "images/our_services/ic_hair_cut.png"
     },
     {
       "title": "Palour at makeup",
-      "imgUrl": "http://murarkey.surge.sh/img/icons/hairdresser.svg"
+      "imgUrl": "http://murarkey.surge.sh/img/icons/hairdresser.svg",
+      "imgIcon": "images/our_services/ic_hair_dresser.png"
     },
     {
       "title": "Salon at makeup",
-      "imgUrl": "http://murarkey.surge.sh/img/icons/woman-hair.svg"
+      "imgUrl": "http://murarkey.surge.sh/img/icons/woman-hair.svg",
+      "imgIcon": "images/our_services/ic_woman_hair.png"
     },
   ];
 

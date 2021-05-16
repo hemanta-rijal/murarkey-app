@@ -13,6 +13,7 @@ class FlatStatefulButton extends StatefulWidget {
   final TextStyle textStyle;
   final EdgeInsetsGeometry padding;
   final Function onPressedCallback;
+  double buttonHeight;
 
   FlatStatefulButton(
       {Key key,
@@ -24,8 +25,11 @@ class FlatStatefulButton extends StatefulWidget {
       this.textStyle,
       this.margin,
       this.padding,
-      this.onPressedCallback})
-      : super(key: key);
+      this.onPressedCallback,
+      double buttonHeight})
+      : super(key: key){
+      this.buttonHeight = buttonHeight == null? 50: buttonHeight;
+  }
 
   @override
   _FlatStatefulButtonState createState() => _FlatStatefulButtonState();
@@ -67,7 +71,7 @@ class _FlatStatefulButtonState extends State<FlatStatefulButton> {
         Expanded(
            flex: 1,
           child: Container(
-              height: 50,
+              height: widget.buttonHeight,
               margin: setMargin(),
               child: TextButton(
                   style: ButtonStyle(

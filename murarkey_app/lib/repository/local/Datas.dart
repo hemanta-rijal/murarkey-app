@@ -38,6 +38,29 @@ class Datas{
     "Salon at makeup",
   ];
 
+  static List shopByBrandsList = [
+    {
+      "title": "Garnier",
+      "imgUrl": "http://murarkey.surge.sh/img/brands/garnier.jpg"
+    },
+    {
+      "title": "Nivea",
+      "imgUrl": "http://murarkey.surge.sh/img/brands/nivea.jpg"
+    },
+    {
+      "title": "Olay",
+      "imgUrl": "http://murarkey.surge.sh/img/brands/olay1.png"
+    },
+    {
+      "title": "_blank",
+      "imgUrl": "http://murarkey.surge.sh/img/brands/ponds.jpg"
+    },
+    {
+      "title": "Rimmel",
+      "imgUrl": "http://murarkey.surge.sh/img/brands/rimmel.jpg"
+    },
+  ];
+
   static List shopByCategoryList = [
     {
       "title": "Hair",

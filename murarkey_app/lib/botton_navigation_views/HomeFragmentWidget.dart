@@ -4,6 +4,7 @@ import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/SearchBarWidget.dart';
 import 'package:murarkey_app/custom_views/our_services/OurServicesWidget.dart';
 import 'package:murarkey_app/custom_views/schedule_premium_service/SchedulePremiumServiceWidget.dart';
+import 'package:murarkey_app/custom_views/shop_by_brands/ShopByBrandsWidget.dart';
 import 'package:murarkey_app/custom_views/shop_by_category/ShopByCategoryWidget.dart';
 import 'package:murarkey_app/repository/local/Datas.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -49,6 +50,12 @@ class _HomeFragmentWidgetState
 
               //Schedule Premium Service
               SchedulePremiumServiceWidget(modelList: Datas.schedulePremiumList),
+
+              //Shop by Brands
+              ShopByBrandsWidget(
+                modelList: Datas.shopByBrandsList,
+              ),
+
             ]),
           ),
         );

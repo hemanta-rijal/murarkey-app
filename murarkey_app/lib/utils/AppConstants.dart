@@ -21,9 +21,10 @@ class _Constants {
   String get PRIVACY_POLICY_MSG => '© Your personal data will be used to support your experience throughout this app, to manage access to your account as described in our';
   String get PRIVACY_POLICY => " privacy policy.";
   String get OUR_SERVICES => "Our Services";
-  String get SHOP_BY_CATEGORY => "Shop by category";
+  String get SHOP_BY_CATEGORY => "Shop by Category";
   String get SCHEDULE_PREMIUM_SERVICE => "Schedule Premium Service at Home";
-
+  String get SHOP_BY_BRANDS => "Shop by Brands";
+  String get BUTTON_SCHEDULE => "Schedule";
 }
 
 class _PaddingConstants{

@@ -1,4 +1,6 @@
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
+import 'package:murarkey_app/custom_views/account_profile/AccountProfileWidget.dart';
+import 'package:murarkey_app/repository/local/AccountDatas.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class AccountFragmentWidget extends StatefulWidget {
@@ -12,13 +14,29 @@ class _AccountFragmentWidgetState
   Widget build(BuildContext context) {
     super.build(context);
 
-    return render(
-        childWidget: Container(
-      child: Center(
-        child: Text(
-          'Index 3: Account',
-        ),
-      ),
-    ));
+    builder() {
+      return new LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(minHeight: viewportConstraints.maxHeight),
+            child: Stack(
+              children: [
+                Container(
+                  height: 88,
+                  color: AppConstants.appColor.primaryColor,
+                ),
+                Column(children: [
+                  AccountProfileWidget(model: AccountDatas.profileData)
+                ])
+              ],
+            ),
+          ),
+        );
+      });
+    }
+
+    return render(childWidget: builder());
   }
 }

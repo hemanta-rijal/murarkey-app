@@ -2,6 +2,7 @@ import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/account_list/AcountListWidget.dart';
 import 'package:murarkey_app/custom_views/account_profile/AccountProfileWidget.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
+import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class AccountFragmentWidget extends StatefulWidget {
@@ -14,6 +15,14 @@ class _AccountFragmentWidgetState
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    onTapGridItem(model, index) {
+      if(index == 0){
+        print(model);
+      }else if(index == 4){
+        NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+      }
+    }
 
     builder() {
       return new LayoutBuilder(
@@ -31,9 +40,13 @@ class _AccountFragmentWidgetState
                 //
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16),
-                  child:  Column(children: [
+                  child: Column(children: [
                     AccountProfileWidget(model: AccountDatas.profileData),
-                    AcountListWidget(modelList: AccountDatas.accountItemList),
+                    AcountListWidget(
+                        modelList: AccountDatas.accountItemList,
+                        onTapGridItem: (model, index) {
+                          onTapGridItem(model, index);
+                        }),
                   ]),
                 ),
               ],

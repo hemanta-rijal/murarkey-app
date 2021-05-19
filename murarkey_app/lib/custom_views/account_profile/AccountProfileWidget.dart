@@ -32,8 +32,26 @@ class _AccountProfileWidgetState extends State<AccountProfileWidget> {
       ]));
     }
 
+    loadUserName(String text, double textSize) {
+      return Text(text,
+          textAlign: TextAlign.start,
+          style: TextStyle(
+              fontSize: SizeConfig.textMultiplier * textSize,
+              fontWeight: FontWeight.bold,
+              color: AppConstants.appColor.textColor));
+    }
+
+    loadBalance(String text, double textSize) {
+      return Text(text,
+          textAlign: TextAlign.start,
+          style: TextStyle(
+              fontSize: SizeConfig.textMultiplier * textSize,
+              fontWeight: FontWeight.bold,
+              color: AppConstants.appColor.textColor));
+    }
+
     return Container(
-      margin: EdgeInsets.only(top: 20, left: 8, right: 8),
+      margin: EdgeInsets.only(top: 20),
       child: Column(
         children: [
           Card(
@@ -42,22 +60,29 @@ class _AccountProfileWidgetState extends State<AccountProfileWidget> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             child: Stack(
               children: [
-                Column(
-                  children: [
-                    SizedBox(height: 16),
-                    loadImage(widget.model["imgUrl"]),
-                    SizedBox(height: 8),
-                    Text(
-                        widget.model["firstName"] +
-                            " " +
-                            widget.model["lastName"],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2.0,
-                            fontWeight: FontWeight.bold,
-                            color: AppConstants.appColor.textColor)),
-                    SizedBox(height: 16),
-                  ],
+                Container(
+                  margin: EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      loadImage(widget.model["imgUrl"]),
+                      SizedBox(width: 8),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          loadUserName(
+                              widget.model["firstName"] +
+                                  " " +
+                                  widget.model["lastName"],
+                              2.0),
+                          SizedBox(height: 4),
+                          loadBalance(
+                              "Balance: Rs. " + widget.model["balance"], 1.6),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

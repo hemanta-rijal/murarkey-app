@@ -16,44 +16,64 @@ class AcountListWidget extends StatefulWidget {
 }
 
 class _AcountListWidgetState extends State<AcountListWidget> {
+
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    SizeConfig().init(context);
+
+    var _crossAxisCount = 3;
+    double _crossAxisSpacing = 8, _mainAxisSpacing = 12, _aspectRatio = 1;
+    var width = (screenSize.width - ((_crossAxisCount - 1) * _crossAxisSpacing)) / _crossAxisCount;
+    var height = width / _aspectRatio;
+    var _cardSize = 24.0;
+
     Widget loadItemList() {
-      return ListView.builder(
+      return GridView.builder(
           shrinkWrap: true,
           itemCount: widget.modelList.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _crossAxisCount,
+            crossAxisSpacing: _crossAxisSpacing,
+            mainAxisSpacing: _mainAxisSpacing,
+            childAspectRatio: _aspectRatio),
           itemBuilder: (BuildContext context, int index) {
-            return Column(
-              children: [
-                Container(
-                  //height: 50,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+            return Card(
+              margin: EdgeInsets.all(12),
+                elevation: 6.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                child: Container(
+                  margin: EdgeInsets.all(4),
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.all(12),
-                        child: Icon(
-                          widget.modelList[index]["imgIcon"] as IconData,
-                          size: 18,
-                          color: AppConstants.appColor.accentColor,
+                        //height: 50,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(12),
+                              child: Icon(
+                                widget.modelList[index]["imgIcon"] as IconData,
+                                size: _cardSize,
+                                color: AppConstants.appColor.accentColor,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Text(widget.modelList[index]["name"],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 1.6,
+                                    fontWeight: FontWeight.normal,
+                                    color: AppConstants.appColor.textColor)),
+                          ],
                         ),
                       ),
-                      SizedBox(width: 8),
-                      Text(widget.modelList[index]["name"],
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: SizeConfig.textMultiplier * 1.8,
-                              fontWeight: FontWeight.normal,
-                              color: AppConstants.appColor.textColor)),
                     ],
                   ),
-                ),
-                Container(
-                  color: AppConstants.appColor.greyColor,
-                  height: 0.5,
-                )
-              ],
-            );
+                ));
           });
     }
 
@@ -61,16 +81,55 @@ class _AcountListWidgetState extends State<AcountListWidget> {
       margin: EdgeInsets.only(top: 60),
       child: Column(
         children: [
-          Card(
-              elevation: 6.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              child: Container(
-                margin: EdgeInsets.only(left: 4, right: 4),
-                child: loadItemList(),
-              ))
+          loadItemList(),
         ],
       ),
     );
   }
 }
+
+//Widget loadItemList() {
+//       return GridView.builder(
+//           shrinkWrap: true,
+//           itemCount: widget.modelList.length,
+//           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//               crossAxisCount: _crossAxisCount,
+//               childAspectRatio: _aspectRatio),
+//           itemBuilder: (BuildContext context, int index) {
+//             return Card(
+//               margin: EdgeInsets.all(12),
+//                 elevation: 6.0,
+//                 shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(8)),
+//                 child: Container(
+//                   margin: EdgeInsets.only(left: 4, right: 4),
+//                   child:  Column(
+//                     children: [
+//                       Container(
+//                         //height: 50,
+//                         child: Column(
+//                           mainAxisAlignment: MainAxisAlignment.center,
+//                           children: [
+//                             Container(
+//                               margin: EdgeInsets.all(12),
+//                               child: Icon(
+//                                 widget.modelList[index]["imgIcon"] as IconData,
+//                                 size: _cardSize,
+//                                 color: AppConstants.appColor.accentColor,
+//                               ),
+//                             ),
+//                             SizedBox(width: 8),
+//                             Text(widget.modelList[index]["name"],
+//                                 textAlign: TextAlign.center,
+//                                 style: TextStyle(
+//                                     fontSize: SizeConfig.textMultiplier * 1.6,
+//                                     fontWeight: FontWeight.normal,
+//                                     color: AppConstants.appColor.textColor)),
+//                           ],
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ));
+//           });
+//     }

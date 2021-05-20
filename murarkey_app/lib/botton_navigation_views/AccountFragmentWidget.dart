@@ -17,11 +17,15 @@ class _AccountFragmentWidgetState
     super.build(context);
 
     onTapGridItem(model, index) {
-      if(index == 0){
+      if (index == 0) {
         print(model);
-      }else if(index == 4){
+      } else if (index == 4) {
         NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
       }
+    }
+
+    onTapEditProfile() {
+      NavigateRoute.pushNamed(context, NavigateRoute.PROFILE_Edit);
     }
 
     builder() {
@@ -41,7 +45,11 @@ class _AccountFragmentWidgetState
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16),
                   child: Column(children: [
-                    AccountProfileWidget(model: AccountDatas.profileData),
+                    AccountProfileWidget(
+                        model: AccountDatas.profileData,
+                        onTapCallback: () {
+                          onTapEditProfile();
+                        }),
                     AcountListWidget(
                         modelList: AccountDatas.accountItemList,
                         onTapGridItem: (model, index) {

@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:murarkey_app/custom_views/app_bar/AppBarWidget.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class CustomStatefulWidgetState<T> extends State {
@@ -12,10 +13,37 @@ class CustomStatefulWidgetState<T> extends State {
     SizeConfig().init(context);
   }
 
-  Widget render({ @required Widget childWidget}) {
+  Widget renderWithAppBar(
+      {@required String appBarText, @required Widget childWidget}) {
+    return render(childWidget: Scaffold(
+      body: SafeArea(
+        child: new LayoutBuilder(builder:
+            (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: viewportConstraints.maxHeight),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppBarWidget(
+                    title: appBarText,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    child: childWidget,
+                  )
+                ],
+              ),
+            ),
+          );
+        }),
+      ),
+    ));
+  }
+
+  Widget render({@required Widget childWidget}) {
     return Material(
-      color: AppConstants.appColor.backgroundColor,
-      child: childWidget
-    );
+        color: AppConstants.appColor.backgroundColor, child: childWidget);
   }
 }

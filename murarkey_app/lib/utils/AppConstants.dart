@@ -25,6 +25,7 @@ class _Constants {
   String get SCHEDULE_PREMIUM_SERVICE => "Schedule Premium Service at Home";
   String get SHOP_BY_BRANDS => "Shop by Brands";
   String get BUTTON_SCHEDULE => "Schedule";
+  String get BUTTON_SAVE_CHANCES => "Save Changes";
 }
 
 class _PaddingConstants{

@@ -5,8 +5,9 @@ import 'package:murarkey_app/utils/Imports.dart';
  */
 class AccountProfileWidget extends StatefulWidget {
   var model;
+  Function onTapCallback;
 
-  AccountProfileWidget({Key key, @required this.model}) : super(key: key);
+  AccountProfileWidget({Key key, @required this.model, this.onTapCallback}) : super(key: key);
 
   @override
   _AccountProfileWidgetState createState() => _AccountProfileWidgetState();
@@ -89,10 +90,15 @@ class _AccountProfileWidgetState extends State<AccountProfileWidget> {
                   children: [
                     Container(
                       margin: EdgeInsets.all(12),
-                      child: Icon(
-                        Icons.edit,
-                        size: 18,
-                        color: AppConstants.appColor.accentColor,
+                      child: InkResponse(
+                        child: Icon(
+                          Icons.edit,
+                          size: 18,
+                          color: AppConstants.appColor.accentColor,
+                        ),
+                        onTap: (){
+                          widget.onTapCallback.call();
+                        },
                       ),
                     )
                   ],

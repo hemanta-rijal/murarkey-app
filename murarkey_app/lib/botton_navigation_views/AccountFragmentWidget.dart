@@ -19,6 +19,8 @@ class _AccountFragmentWidgetState
     onTapGridItem(model, index) {
       if (index == 0) {
         print(model);
+      } else if (index == 1) {
+        NavigateRoute.pushNamed(context, NavigateRoute.ADDRESS_Edit);
       } else if (index == 4) {
         NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
       }

@@ -1,5 +1,6 @@
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/MainScreenWidget.dart';
+import 'package:murarkey_app/views/address/EditAddressWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
 
@@ -12,7 +13,8 @@ class NavigateRoute{
   static const String LOGIN = "LoginWidget";
   static const String REGISTER = "RegisterWidget";
   static const String HOME = "MainScreenWidget";
-  static const String PROFILE_Edit= "EditProfileWidget";
+  static const String PROFILE_Edit = "EditProfileWidget";
+  static const String ADDRESS_Edit = "EditAddressWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings){
     final args = settings.arguments;
@@ -26,6 +28,8 @@ class NavigateRoute{
         return _MaterialPageRoute(MainScreenWidget());
       case PROFILE_Edit:
         return _MaterialPageRoute(EditProfileWidget());
+      case ADDRESS_Edit:
+        return _MaterialPageRoute(EditAddressWidget());
       default:
         LoginWidget();
       //   return _errorRoute();

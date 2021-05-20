@@ -112,7 +112,7 @@ class _EditProfileWidgetState
             backgroundColor: AppConstants.appColor.buttonColor,
             buttonHeight: 40,
             onPressedCallback: () {
-              Commons.toastMessage(context, "Successfully Schedule order.");
+              Commons.toastMessage(context, "Saved Successfully.");
               // String emailValidate = Validation.validateEmail(
               //     widget.viewModel.formEmail.text.trim());
               // String passwordValid = Validation.validatePassword(

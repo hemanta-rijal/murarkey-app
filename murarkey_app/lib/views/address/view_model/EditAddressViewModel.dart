@@ -13,6 +13,9 @@ class EditAddressViewModel{
   final TextEditingController formPhone = new TextEditingController();
   final TextEditingController formEmail = new TextEditingController();
 
+  String formCountry;
+  String formStateOrZone;
+
 //Country / Region drp down
 
 //Town / City

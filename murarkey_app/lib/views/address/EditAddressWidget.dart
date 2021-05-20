@@ -1,7 +1,9 @@
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
+import 'package:murarkey_app/custom_views/drop_down/DropDownWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
+import 'package:murarkey_app/repository/local/AccountDatas.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/address/view_model/EditAddressViewModel.dart';
@@ -50,7 +52,18 @@ class _EditAddressWidgetState
                   margin: EdgeInsets.only(top: 8.0)),
 
               //Country / Region drp down
-
+              textView1(
+                  title: "Street Address", margin: EdgeInsets.only(top: 16)),
+              dropDown1(
+                  margin: EdgeInsets.only(top: 8.0),
+                  modelList: AccountDatas.countryList,
+                  value: viewModel.formCountry,
+                  onChange: (value) {
+                    setState(() {
+                      viewModel.formCountry =
+                      AccountDatas.countryList[AccountDatas.countryList.indexOf(value)];
+                    });
+                  }),
               //Street address
               textView1(
                   title: "Street Address", margin: EdgeInsets.only(top: 16)),
@@ -65,6 +78,18 @@ class _EditAddressWidgetState
                   margin: EdgeInsets.only(top: 8.0)),
 
               //State / Zone drp down
+              textView1(
+                  title: "State / Zone", margin: EdgeInsets.only(top: 16)),
+              dropDown1(
+                  margin: EdgeInsets.only(top: 8.0),
+                  modelList: AccountDatas.zoneList,
+                  value: viewModel.formStateOrZone,
+                  onChange: (value) {
+                    setState(() {
+                      viewModel.formStateOrZone =
+                      AccountDatas.zoneList[AccountDatas.zoneList.indexOf(value)];
+                    });
+                  }),
 
               //Postcode / ZIP (optional)
               textView1(

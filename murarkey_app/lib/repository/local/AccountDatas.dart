@@ -33,6 +33,9 @@ class AccountDatas{
       "name": "Logout",
       "imgIcon": Icons.logout
     }
-
   ];
+
+  static var countryList =  ["Nepal", "India", "China"];
+
+  static var zoneList =  ["Lumbini", "Gandakhi", "Koshi"];
 }

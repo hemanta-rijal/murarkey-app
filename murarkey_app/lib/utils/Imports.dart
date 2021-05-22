@@ -4,6 +4,7 @@ export 'package:murarkey_app/utils/SizeConfig.dart';
 export 'package:murarkey_app/themes/AppTheme.dart';
 export 'package:murarkey_app/themes/colors/AppColor.dart';
 
+export 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 
 export 'package:murarkey_app/utils/AppConstants.dart';
 

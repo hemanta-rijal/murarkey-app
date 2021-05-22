@@ -6,22 +6,19 @@ import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
-import 'package:murarkey_app/views/address/view_model/EditAddressViewModel.dart';
-import 'package:murarkey_app/views/profile/view_model/EditProfileViewModel.dart';
+import 'package:murarkey_app/views/address/view_model/EditBillingAddressViewModel.dart';
 
 /**
- * Created by Suman Prasad Neupane on 5/20/2021.
+ * Created by Suman Prasad Neupane on 5/22/2021.
  */
 
-class EditAddressWidget extends StatefulWidget {
+class EditShippingAddressWidget extends StatefulWidget {
   @override
-  _EditAddressWidgetState createState() => _EditAddressWidgetState();
+  _EditShippingAddressWidgetState createState() => _EditShippingAddressWidgetState();
 }
 
-class _EditAddressWidgetState
-    extends CustomStatefulWidgetState<EditAddressWidget> {
-  EditAddressViewModel viewModel = new EditAddressViewModel();
-
+class _EditShippingAddressWidgetState extends CustomStatefulWidgetState<EditShippingAddressWidget> {
+EditBillingAddressViewModel viewModel = new EditBillingAddressViewModel();
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -36,7 +33,7 @@ class _EditAddressWidgetState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               textView1(
-                  title: "Billing Address",
+                  title: "Shipping Address",
                   textSize: 2.2,
                   fontWeight: FontWeight.bold),
               //First Name
@@ -157,6 +154,6 @@ class _EditAddressWidgetState
     }
 
     return renderWithAppBar(
-        appBarText: "Edit Billing Address", childWidget: buildView());
+        appBarText: "Edit Shipping Address", childWidget: buildView());
   }
 }

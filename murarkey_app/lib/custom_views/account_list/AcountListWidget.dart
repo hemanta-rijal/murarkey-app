@@ -28,7 +28,7 @@ class _AcountListWidgetState extends State<AcountListWidget> {
         (screenSize.width - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
             _crossAxisCount;
     var height = width / _aspectRatio;
-    var _cardSize = 24.0;
+    var _cardSize = 32.0;
 
     Widget loadImage(int index) {
       return Container(

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: AppConstants.constants.APP_NAME,
       theme: AppConstants.appTheme.buildTheme(),
       onGenerateRoute: NavigateRoute.generateRoute,
-      initialRoute: NavigateRoute.HOME,
+      initialRoute: NavigateRoute.initialRoute(),
     );
   }
 }

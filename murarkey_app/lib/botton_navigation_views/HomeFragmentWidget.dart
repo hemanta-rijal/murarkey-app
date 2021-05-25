@@ -2,6 +2,7 @@ import 'package:flutter/rendering.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/SearchBarWidget.dart';
+import 'package:murarkey_app/custom_views/book_an_appointment/BookAnAppointmentWidget.dart';
 import 'package:murarkey_app/custom_views/our_services/OurServicesWidget.dart';
 import 'package:murarkey_app/custom_views/schedule_premium_service/SchedulePremiumServiceWidget.dart';
 import 'package:murarkey_app/custom_views/shop_by_brands/ShopByBrandsWidget.dart';
@@ -55,6 +56,12 @@ class _HomeFragmentWidgetState
               ShopByBrandsWidget(
                 modelList: Datas.shopByBrandsList,
               ),
+
+              BookAnAppointmentWidget(callback: (value){
+
+              }),
+
+              SizedBox(height: 20,)
 
             ]),
           ),

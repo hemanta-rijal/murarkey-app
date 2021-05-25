@@ -45,10 +45,6 @@ class NavigateRoute{
     }
   }
 
-  static String initialRoute(){
-    return NavigateRoute.HOME;
-  }
-
   static _MaterialPageRoute(Widget widget){
     return MaterialPageRoute(builder: (_) => widget);
   }
@@ -63,5 +59,9 @@ class NavigateRoute{
 
   static pop(context){
     Navigator.of(context).pop();
+  }
+
+  static String initialRoute(){
+    return NavigateRoute.HOME;
   }
 }

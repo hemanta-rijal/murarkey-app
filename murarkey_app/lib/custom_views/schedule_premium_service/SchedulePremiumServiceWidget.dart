@@ -164,7 +164,7 @@ class _SchedulePremiumServiceWidgetState
                   height: 30,
                 ),
 
-                //Log in
+                //Schedule
                 new FlatStatefulButton(
                   text: AppConstants.constants.BUTTON_SCHEDULE,
                   fontSize: SizeConfig.textMultiplier * 2.0,

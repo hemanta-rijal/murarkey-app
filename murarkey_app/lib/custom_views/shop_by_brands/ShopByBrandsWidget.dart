@@ -47,7 +47,7 @@ class _ShopByBrandsWidgetState extends State<ShopByBrandsWidget> {
             scrollDirection: Axis.horizontal, children: buildItems()));
 
     return Container(
-      margin: EdgeInsets.only(top: 28, left: 8, right: 8, bottom: 28),
+      margin: EdgeInsets.only(top: 28, left: 8, right: 8),
       child: Column(
         children: [
           UnderlinedTextViewWidget(title: AppConstants.constants.SHOP_BY_BRANDS),

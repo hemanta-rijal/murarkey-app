@@ -4,6 +4,7 @@ import 'package:murarkey_app/views/address/widgets/EditBillingAddressWidget.dart
 import 'package:murarkey_app/views/address/widgets/EditShippingAddressWidget.dart';
 import 'file:///D:/Personal/Projects/murarkey-app/murarkey_app/lib/views/address/widgets/EditAddressWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
+import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
 
 class NavigateRoute{
@@ -19,6 +20,7 @@ class NavigateRoute{
   static const String ADDRESS_Edit = "EditAddressWidget";
   static const String ADDRESS_BILLING_Edit = "EditBillingAddressWidget";
   static const String ADDRESS_SHIPPING_Edit = "EditShippingAddressWidget";
+  static const String BOOK_APPOINTMENT = "BookAppontmentWidget";
 
 
   static Route<dynamic> generateRoute(RouteSettings settings){
@@ -39,6 +41,8 @@ class NavigateRoute{
         return _MaterialPageRoute(EditBillingAddressWidget());
       case ADDRESS_SHIPPING_Edit:
         return _MaterialPageRoute(EditShippingAddressWidget());
+      case BOOK_APPOINTMENT:
+        return _MaterialPageRoute(BookAppontmentWidget());
       default:
         LoginWidget();
       //   return _errorRoute();
@@ -62,6 +66,6 @@ class NavigateRoute{
   }
 
   static String initialRoute(){
-    return NavigateRoute.HOME;
+    return NavigateRoute.LOGIN;
   }
 }

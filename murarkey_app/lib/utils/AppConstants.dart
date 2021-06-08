@@ -25,11 +25,12 @@ class _Constants {
   String get SCHEDULE_PREMIUM_SERVICE => "Schedule Premium Service at Home";
   String get SHOP_BY_BRANDS => "Shop by Brands";
   String get BUTTON_SCHEDULE => "Schedule";
+  String get BUTTON_SUBMIT => "Submit";
   String get BUTTON_SAVE_CHANCES => "Save Changes";
   String get BUTTON_SAVE_ADDRESS => "Save Address";
-  String get NO_TIME_GO_SALON => "No time to go to the Salon?";
+  String get NO_TIME_GO_SALON => "ARE YOU A PROFESSIONAL?";
   String get MURARKEY_PROVIDES => "Murarkey provides Beauty Parlour Services at Home.";
-  String get BOOK_AN_APPOINTMENT=> "Book an Appointment";
+  String get BOOK_AN_APPOINTMENT=> " Join us";
 }
 
 class _PaddingConstants{

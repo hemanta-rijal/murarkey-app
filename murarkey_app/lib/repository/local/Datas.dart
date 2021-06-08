@@ -43,6 +43,8 @@ class Datas{
     "Salon at makeup",
   ];
 
+  static var bookAnAppointmentLocationList =  ["Bhaktapur", "Kathmandu", "Patan/Lalitpur"];
+
   static List shopByBrandsList = [
     {
       "title": "Garnier",

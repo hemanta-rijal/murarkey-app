@@ -19,6 +19,7 @@ class AppColor {
   final Color textHintColor = new Color(0xdbc4a3).withOpacity(1.0);
 
   final Color buttonColor = new Color(0x37173d).withOpacity(0.8);
+  final Color buttonColor2 = new Color(0x6e1d8a).withOpacity(1.0);
 
   final Color backgroundColor = new Color(0xF9F9F9).withOpacity(1.0);
   final Color greyColor = new Color(0x959595).withOpacity(1.0);
@@ -26,4 +27,7 @@ class AppColor {
   final Color blackColor = new Color(0x252525).withOpacity(1.0);
   final Color whiteColor = new Color(0xFFFFFF).withOpacity(1.0);
   final Color redColor = new Color(0xDE3C4C).withOpacity(1.0);
+
+  final Color gradientColor1 = new Color(0x4d118b).withOpacity(1.0);
+  final Color gradientColor2 = new Color(0x342879).withOpacity(1.0);
 }

@@ -50,7 +50,7 @@ class _BookAnAppointmentWidgetState extends State<BookAnAppointmentWidget> {
     }
 
     return Container(
-      margin: EdgeInsets.only(top: 20, left: 8, right: 8),
+      margin: EdgeInsets.only(top: 28, left: 8, right: 8),
       child: Container(
           height: 170,
           width: double.infinity,

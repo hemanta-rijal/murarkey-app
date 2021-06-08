@@ -4,6 +4,7 @@ import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/SearchBarWidget.dart';
 import 'package:murarkey_app/custom_views/book_an_appointment/BookAnAppointmentWidget.dart';
 import 'package:murarkey_app/custom_views/our_services/OurServicesWidget.dart';
+import 'package:murarkey_app/custom_views/popular_parlours/PopularParloursWidget.dart';
 import 'package:murarkey_app/custom_views/schedule_premium_service/SchedulePremiumServiceWidget.dart';
 import 'package:murarkey_app/custom_views/shop_by_brands/ShopByBrandsWidget.dart';
 import 'package:murarkey_app/custom_views/shop_by_category/ShopByCategoryWidget.dart';
@@ -26,47 +27,55 @@ class _HomeFragmentWidgetState
     builder() {
       return new LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints:
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints:
                 BoxConstraints(minHeight: viewportConstraints.maxHeight),
-            child: Column(children: [
-              SearchBarWidget(
-                  textHint: 'Search by Service or Product',
-                  onTextChange: (value) {
-                    print(value);
+                child: Column(children: [
+                  SearchBarWidget(
+                      textHint: 'Search by Service or Product',
+                      onTextChange: (value) {
+                        print(value);
+                      }),
+
+                  SizedBox(height: 4),
+
+                  ImageSliderWidget(imgList: Datas.imgSliderList),
+
+                  //Our Services
+                  OurServicesWidget(
+                    iconLists: Datas.ourServicesList,
+                  ),
+
+                  //Shop by category
+                  ShopByCategoryWidget(
+                    modelList: Datas.shopByCategoryList,
+                  ),
+
+                  //Popular Parlours
+                  PopularParloursWidget(
+                    modelList: Datas.popularParlorList,
+                  ),
+
+                  //Schedule Premium Service
+                  SchedulePremiumServiceWidget(
+                      modelList: Datas.schedulePremiumList),
+
+                  //Shop by Brands
+                  ShopByBrandsWidget(
+                    modelList: Datas.shopByBrandsList,
+                  ),
+
+                  BookAnAppointmentWidget(callback: (value) {
+
                   }),
 
-              ImageSliderWidget(imgList: Datas.imgSliderList),
+                  SizedBox(height: 20,)
 
-              //Our Services
-              OurServicesWidget(
-                iconLists: Datas.ourServicesList,
+                ]),
               ),
-
-              //Shop by category
-              ShopByCategoryWidget(
-                modelList: Datas.shopByCategoryList,
-              ),
-
-              //Schedule Premium Service
-              SchedulePremiumServiceWidget(modelList: Datas.schedulePremiumList),
-
-              //Shop by Brands
-              ShopByBrandsWidget(
-                modelList: Datas.shopByBrandsList,
-              ),
-
-              BookAnAppointmentWidget(callback: (value){
-
-              }),
-
-              SizedBox(height: 20,)
-
-            ]),
-          ),
-        );
-      });
+            );
+          });
     }
 
     return render(childWidget: builder());

@@ -66,6 +66,6 @@ class NavigateRoute{
   }
 
   static String initialRoute(){
-    return NavigateRoute.LOGIN;
+    return NavigateRoute.HOME;
   }
 }

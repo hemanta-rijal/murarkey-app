@@ -56,6 +56,7 @@ flutter:
   assets:
     - images/
     - images/our_services/
+    - images/arrows/
   #     - images/app_logo.jpg
   #     - images/a_dot_ham.jpeg
 

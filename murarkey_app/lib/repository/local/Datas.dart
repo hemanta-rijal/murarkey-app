@@ -94,26 +94,34 @@ class Datas{
       "imgUrl": "http://murarkey.surge.sh/img/products/lips.jpg",
       "price": "449"
     },
-    // {
-    //   "title": "Body",
-    //   "imgUrl": "http://murarkey.surge.sh/img/icons/hair-cut-tool.svg"
-    // },
-    // {
-    //   "title": "Nails",
-    //   "imgUrl": "http://murarkey.surge.sh/img/icons/hairdresser.svg"
-    // },
-    // {
-    //   "title": "Brush and Kits",
-    //   "imgUrl": "http://murarkey.surge.sh/img/icons/woman-hair.svg"
-    // },
-    // {
-    //   "title": "Women's Hygiene",
-    //   "imgUrl": "http://murarkey.surge.sh/img/icons/hairdresser.svg"
-    // },
-    // {
-    //   "title": "Mens Grooming",
-    //   "imgUrl": "http://murarkey.surge.sh/img/icons/woman-hair.svg"
-    // },
+  ];
+
+  static List popularParlorList = [
+    {
+      "title": "Asylum Hair Salon",
+      "imgUrl": "http://murarkey.surge.sh/img/shops/asylum.jpg",
+      "location": "Kathmandu"
+    },
+    {
+      "title": "Beaut Bar Pokhara",
+      "imgUrl": "http://murarkey.surge.sh/img/shops/beautybar.jpg",
+      "location": "Pokhara"
+    },
+    {
+      "title": "Habbis Hair Salon",
+      "imgUrl": "http://murarkey.surge.sh/img/shops/habibs%20hair.jpg",
+      "location": "Kathmandu"
+    },
+    {
+      "title": "Kavyas Beauty Parlour",
+      "imgUrl": "http://murarkey.surge.sh/img/shops/kavyas.jpg",
+      "location": "Chitwan"
+    },
+    {
+      "title": "Neel David Hair Salon",
+      "imgUrl": "http://murarkey.surge.sh/img/shops/neeldavid.jpg",
+      "location": "Kathmandu"
+    },
   ];
 
 }

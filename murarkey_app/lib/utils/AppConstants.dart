@@ -22,6 +22,7 @@ class _Constants {
   String get PRIVACY_POLICY => " privacy policy.";
   String get OUR_SERVICES => "Our Services";
   String get SHOP_BY_CATEGORY => "Shop by Category";
+  String get Popular_Parlours => "Popular Parlours";
   String get SCHEDULE_PREMIUM_SERVICE => "Schedule Premium Service at Home";
   String get SHOP_BY_BRANDS => "Shop by Brands";
   String get BUTTON_SCHEDULE => "Schedule";

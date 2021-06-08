@@ -46,7 +46,7 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
     }
 
     return Container(
-      margin: EdgeInsets.only(top: 20, left: 8, right: 8),
+      margin: EdgeInsets.only(top: 24, left: 8, right: 8),
       child: Column(
         children: [
           UnderlinedTextViewWidget(title: AppConstants.constants.OUR_SERVICES),

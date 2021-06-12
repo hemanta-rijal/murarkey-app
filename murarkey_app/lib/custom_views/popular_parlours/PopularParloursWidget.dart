@@ -1,14 +1,13 @@
-import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
-import 'package:murarkey_app/repository/local/Datas.dart';
+import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class PopularParloursWidget extends StatefulWidget {
   //1. list-of-horizontal-list-in-flutter
   //https://stackoverflow.com/questions/51089041/list-of-horizontal-list-in-flutter
-  List modelList;
+  List<ParlorModel> modelList;
 
   PopularParloursWidget({Key key, @required this.modelList}) : super(key: key);
 
@@ -35,16 +34,20 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
     }
 
     buildItems() {
-      return widget.modelList.map((model) {
+      List<ParlorModel> list = widget.modelList.length <= 5
+          ? widget.modelList
+          : widget.modelList.sublist(0, 5);
+
+      return list.map((model) {
         return Container(
           width: _containerWidth + 16,
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
           child: Column(
             children: [
-              loadImage(model['imgUrl']),
+              loadImage(model.feature_image),
               SizedBox(height: 4),
               Text(
-                model["title"],
+                model.name,
                 style: TextStyle(
                   color: AppConstants.appColor.greyColor,
                   fontWeight: FontWeight.bold,
@@ -53,7 +56,7 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
               ),
               SizedBox(height: 2),
               Text(
-                model["location"],
+                model.address,
                 style: TextStyle(
                   color: AppConstants.appColor.textColor,
                   fontWeight: FontWeight.bold,

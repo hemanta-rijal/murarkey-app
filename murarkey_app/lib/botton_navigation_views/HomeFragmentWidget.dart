@@ -11,6 +11,7 @@ import 'package:murarkey_app/custom_views/shop_by_brands/ShopByBrandsWidget.dart
 import 'package:murarkey_app/custom_views/shop_by_category/ShopByCategoryWidget.dart';
 import 'package:murarkey_app/repository/local/Datas.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
+import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/repository/server/home_page/HomeApiRequest.dart';
 import '../repository/api_call/ApiRequest.dart';
 import '../repository/api_call/ApiUrls.dart';
@@ -28,6 +29,7 @@ class _HomeFragmentWidgetState
     extends CustomStatefulWidgetState<HomeFragmentWidget> {
   HomeApiRequest _apiRequest = new HomeApiRequest();
   List<HomepageBannerModel> bannerModelList;
+  List<ParlorModel> parlorModelList;
 
   @override
   void initState() {
@@ -37,12 +39,19 @@ class _HomeFragmentWidgetState
 
   loadData() async {
     //Get all api request here
-    await _apiRequest.banner(path: ApiUrls.HOME_PAGE_BANNER).then((value) => {
-          bannerModelList = value,
-          print(bannerModelList[0].name),
-        });
+    await _apiRequest
+        .getBanner(path: ApiUrls.HOME_PAGE_BANNER)
+        .then((value) => {
+              bannerModelList = value,
+              this.setState(() {}),
+            });
 
-    setState(() {});
+    await _apiRequest
+        .getPopularParlor(path: ApiUrls.POPULAR_PARLOR)
+        .then((value) => {
+              parlorModelList = value,
+              this.setState(() {}),
+            });
   }
 
   @override
@@ -65,6 +74,7 @@ class _HomeFragmentWidgetState
 
               SizedBox(height: 4),
 
+              //Image Slider
               bannerModelList != null
                   ? ImageSliderWidget(bannerModelList: bannerModelList)
                   : Container(),
@@ -80,9 +90,11 @@ class _HomeFragmentWidgetState
               ),
 
               //Popular Parlours
-              PopularParloursWidget(
-                modelList: Datas.popularParlorList,
-              ),
+              parlorModelList != null
+                  ? PopularParloursWidget(
+                      modelList: parlorModelList,
+                    )
+                  : Container(),
 
               //Schedule Premium Service
               SchedulePremiumServiceWidget(

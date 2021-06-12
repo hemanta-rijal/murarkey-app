@@ -12,10 +12,10 @@ import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 class HomeApiRequest extends ApiRequest {
   // Get home page banners list
   Future<List<HomepageBannerModel>> getBanner(
-      {String path, List<String> arguments}) async {
+      {String url, List<String> arguments}) async {
     List<HomepageBannerModel> result = new List<HomepageBannerModel>();
 
-    await this.getData(path: path).then((Map<String, dynamic> value) => {
+    await this.getData(url: url).then((Map<String, dynamic> value) => {
           print("HomepageBannerModel"),
           result = value["data"]
               .map((i) => HomepageBannerModel.fromJson(i))
@@ -27,10 +27,10 @@ class HomeApiRequest extends ApiRequest {
 
   // Get parlor list
   Future<List<ParlorModel>> getParlor(
-      {String path, List<String> arguments}) async {
+      {String url, List<String> arguments}) async {
     List<ParlorModel> result = new List<ParlorModel>();
 
-    await this.getData(path: path).then((Map<String, dynamic> value) => {
+    await this.getData(url: url).then((Map<String, dynamic> value) => {
       print("ParlorModel"),
       result = value["data"]
           .map((i) => ParlorModel.fromJson(i))
@@ -42,10 +42,10 @@ class HomeApiRequest extends ApiRequest {
 
   // Get parlor list
   Future<List<BrandModel>> getBrand(
-      {String path, List<String> arguments}) async {
+      {String url, List<String> arguments}) async {
     List<BrandModel> result = new List<BrandModel>();
 
-    await this.getData(path: path).then((Map<String, dynamic> value) => {
+    await this.getData(url: url).then((Map<String, dynamic> value) => {
       print("BrandModel"),
       result = value["data"]
           .map((i) => BrandModel.fromJson(i))

@@ -9,6 +9,7 @@ import 'package:murarkey_app/custom_views/popular_parlours/PopularParloursWidget
 import 'package:murarkey_app/custom_views/schedule_premium_service/SchedulePremiumServiceWidget.dart';
 import 'package:murarkey_app/custom_views/shop_by_brands/ShopByBrandsWidget.dart';
 import 'package:murarkey_app/custom_views/shop_by_category/ShopByCategoryWidget.dart';
+import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/local/Datas.dart';
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
@@ -28,7 +29,7 @@ class HomeFragmentWidget extends StatefulWidget {
 
 class _HomeFragmentWidgetState
     extends CustomStatefulWidgetState<HomeFragmentWidget> {
-  HomeApiRequest _apiRequest = new HomeApiRequest();
+  Repository _repository = new Repository();
   List<HomepageBannerModel> bannerModelList;
   List<ParlorModel> parlorModelList;
   List<BrandModel> brandModelList;
@@ -43,24 +44,28 @@ class _HomeFragmentWidgetState
     //Get all api request here
 
     // Get home page banners list
-    await _apiRequest
-        .getBanner(path: ApiUrls.HOME_PAGE_BANNER_URL)
+    await _repository.homeApiRequest
+        .getBanner(url: ApiUrls.HOME_PAGE_BANNER_URL)
         .then((value) => {
               bannerModelList = value,
               this.setState(() {}),
             });
 
     // Get parlor list
-    await _apiRequest.getParlor(path: ApiUrls.PARLOR_URL).then((value) => {
-          parlorModelList = value,
-          this.setState(() {}),
-        });
+    await _repository.homeApiRequest
+        .getParlor(url: ApiUrls.PARLOR_URL)
+        .then((value) => {
+              parlorModelList = value,
+              this.setState(() {}),
+            });
 
     // Get Brand list
-    await _apiRequest.getBrand(path: ApiUrls.BRAND_URL).then((value) => {
-          brandModelList = value,
-          this.setState(() {}),
-        });
+    await _repository.homeApiRequest
+        .getBrand(url: ApiUrls.BRAND_URL)
+        .then((value) => {
+              brandModelList = value,
+              this.setState(() {}),
+            });
   }
 
   @override

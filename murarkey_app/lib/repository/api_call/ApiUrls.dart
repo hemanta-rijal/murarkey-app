@@ -12,6 +12,10 @@ class ApiUrls {
   static final String BASE_URL = "http://newweb.murarkey.com";
   static final String ROOT_API_URL = "/api";
 
+  //For Auth
+  static final String LOGIN_URL = ROOT_API_URL + "/auth/login";
+  static final String REGISTER_URL = ROOT_API_URL + "auth/register";
+
   static final String HOME_PAGE_BANNER_URL = ROOT_API_URL + "/banners/homepage-1";
   static final String PARLOR_URL = ROOT_API_URL + "/featured-parlours";
   static final String BRAND_URL = ROOT_API_URL + "/featured-brands";

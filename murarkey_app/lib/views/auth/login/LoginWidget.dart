@@ -3,6 +3,9 @@ import 'package:murarkey_app/custom_views/CheckBoxWidget.dart';
 import 'package:murarkey_app/custom_views/EditText.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/SocialMediaLoginCardWidget.dart';
+import 'package:murarkey_app/repository/Repository.dart';
+import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
+import 'package:murarkey_app/repository/models/auth/LoginModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -18,6 +21,8 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  Repository _repository = new Repository();
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -26,6 +31,32 @@ class _LoginWidgetState extends State<LoginWidget> {
         [SystemUiOverlay.bottom, SystemUiOverlay.top]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: AppConstants.appColor.primaryDarkColor));
+
+    login() async {
+      String emailValidate =
+          Validation.validateEmail(widget.viewModel.formEmail.text.trim());
+      String passwordValid = Validation.validatePassword(
+          widget.viewModel.formPassword.text.trim());
+
+      if (emailValidate != Validation.SUCCESS) {
+        Commons.toastMessage(context, emailValidate);
+      } else if (passwordValid != Validation.SUCCESS) {
+        Commons.toastMessage(context, passwordValid);
+      } else {
+        Map<String, dynamic> params = new Map();
+        params["email"] = widget.viewModel.formEmail.text.trim();
+        params["password"] = widget.viewModel.formPassword.text.trim();
+
+        await _repository.authApiRequest
+            .login(url: ApiUrls.LOGIN_URL, params: params)
+            .then((LoginModel value) => {
+                  this.setState(() {
+                    Commons.toastMessage(context, "Successfully login");
+                    NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);
+                  }),
+                });
+      }
+    }
 
     return Material(
       child: Scaffold(
@@ -124,19 +155,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         padding: EdgeInsets.all(screenSize.width * .02),
                         backgroundColor: AppConstants.appColor.buttonColor,
                         onPressedCallback: () {
-                          String emailValidate = Validation.validateEmail(
-                              widget.viewModel.formEmail.text.trim());
-                          String passwordValid = Validation.validatePassword(
-                              widget.viewModel.formPassword.text.trim());
-
-                          if (emailValidate != Validation.SUCCESS) {
-                            Commons.toastMessage(context, emailValidate);
-                          } else if (passwordValid != Validation.SUCCESS) {
-                            Commons.toastMessage(context, passwordValid);
-                          } else {
-                            Commons.toastMessage(context, "Successfully login");
-                            NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);
-                          }
+                          login();
                         },
                       ),
 
@@ -164,8 +183,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 fontSize: SizeConfig.textMultiplier * 1.8,
                               ),
                             ),
-                            onTap: (){
-                             NavigateRoute.popAndPushNamed(context, NavigateRoute.REGISTER);
+                            onTap: () {
+                              NavigateRoute.popAndPushNamed(
+                                  context, NavigateRoute.REGISTER);
                             },
                           ),
                         ],
@@ -251,8 +271,7 @@ class _LoginWidgetState extends State<LoginWidget> {
 
                       RichText(
                         text: TextSpan(
-                          text:
-                             AppConstants.constants.PRIVACY_POLICY_MSG,
+                          text: AppConstants.constants.PRIVACY_POLICY_MSG,
                           style: TextStyle(
                             color: AppConstants.appColor.textColor3,
                             fontSize: SizeConfig.textMultiplier * 1.4,

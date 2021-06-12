@@ -1,4 +1,5 @@
 import 'package:murarkey_app/repository/api_call/ApiRequest.dart';
+import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
 import 'dart:convert';
 
@@ -25,16 +26,31 @@ class HomeApiRequest extends ApiRequest {
   }
 
   // Get parlor list
-  Future<List<ParlorModel>> getPopularParlor(
+  Future<List<ParlorModel>> getParlor(
       {String path, List<String> arguments}) async {
     List<ParlorModel> result = new List<ParlorModel>();
 
     await this.getData(path: path).then((Map<String, dynamic> value) => {
-      print("PopularParlorModel"),
+      print("ParlorModel"),
       result = value["data"]
           .map((i) => ParlorModel.fromJson(i))
           .toList()
           .cast<ParlorModel>(),
+    });
+    return result;
+  }
+
+  // Get parlor list
+  Future<List<BrandModel>> getBrand(
+      {String path, List<String> arguments}) async {
+    List<BrandModel> result = new List<BrandModel>();
+
+    await this.getData(path: path).then((Map<String, dynamic> value) => {
+      print("BrandModel"),
+      result = value["data"]
+          .map((i) => BrandModel.fromJson(i))
+          .toList()
+          .cast<BrandModel>(),
     });
     return result;
   }

@@ -34,7 +34,7 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
     }
 
     buildItems() {
-      List<ParlorModel> list = widget.modelList.length <= 5
+      List<ParlorModel> list = widget.modelList.length <= 8
           ? widget.modelList
           : widget.modelList.sublist(0, 5);
 

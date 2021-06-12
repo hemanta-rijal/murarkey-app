@@ -1,10 +1,11 @@
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
 import 'package:murarkey_app/repository/local/Datas.dart';
+import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class ShopByBrandsWidget extends StatefulWidget {
-  List modelList;
+  List<BrandModel> modelList;
 
   ShopByBrandsWidget({Key key, @required this.modelList}) : super(key: key);
 
@@ -31,11 +32,11 @@ class _ShopByBrandsWidgetState extends State<ShopByBrandsWidget> {
     }
 
     buildItems() {
-      return widget.modelList.map((model) {
+      return widget.modelList.map((BrandModel model) {
         return Container(
-          width: _containerWidth,// + 16,
+          width: _containerWidth, // + 16,
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
-          child:  loadImage(model['imgUrl']),
+          child: loadImage(model.image),
         );
       }).toList();
     }
@@ -50,7 +51,8 @@ class _ShopByBrandsWidgetState extends State<ShopByBrandsWidget> {
       margin: EdgeInsets.only(top: 40, left: 8, right: 8),
       child: Column(
         children: [
-          UnderlinedTextViewWidget(title: AppConstants.constants.SHOP_BY_BRANDS),
+          UnderlinedTextViewWidget(
+              title: AppConstants.constants.SHOP_BY_BRANDS),
           SizedBox(height: 12),
           horizontalList1,
         ],

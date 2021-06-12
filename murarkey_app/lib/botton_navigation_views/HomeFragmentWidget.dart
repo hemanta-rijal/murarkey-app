@@ -10,6 +10,7 @@ import 'package:murarkey_app/custom_views/schedule_premium_service/SchedulePremi
 import 'package:murarkey_app/custom_views/shop_by_brands/ShopByBrandsWidget.dart';
 import 'package:murarkey_app/custom_views/shop_by_category/ShopByCategoryWidget.dart';
 import 'package:murarkey_app/repository/local/Datas.dart';
+import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/repository/server/home_page/HomeApiRequest.dart';
@@ -30,6 +31,7 @@ class _HomeFragmentWidgetState
   HomeApiRequest _apiRequest = new HomeApiRequest();
   List<HomepageBannerModel> bannerModelList;
   List<ParlorModel> parlorModelList;
+  List<BrandModel> brandModelList;
 
   @override
   void initState() {
@@ -39,19 +41,26 @@ class _HomeFragmentWidgetState
 
   loadData() async {
     //Get all api request here
+
+    // Get home page banners list
     await _apiRequest
-        .getBanner(path: ApiUrls.HOME_PAGE_BANNER)
+        .getBanner(path: ApiUrls.HOME_PAGE_BANNER_URL)
         .then((value) => {
               bannerModelList = value,
               this.setState(() {}),
             });
 
-    await _apiRequest
-        .getPopularParlor(path: ApiUrls.POPULAR_PARLOR)
-        .then((value) => {
-              parlorModelList = value,
-              this.setState(() {}),
-            });
+    // Get parlor list
+    await _apiRequest.getParlor(path: ApiUrls.PARLOR_URL).then((value) => {
+          parlorModelList = value,
+          this.setState(() {}),
+        });
+
+    // Get Brand list
+    await _apiRequest.getBrand(path: ApiUrls.BRAND_URL).then((value) => {
+          brandModelList = value,
+          this.setState(() {}),
+        });
   }
 
   @override
@@ -101,9 +110,11 @@ class _HomeFragmentWidgetState
                   modelList: Datas.schedulePremiumList),
 
               //Shop by Brands
-              ShopByBrandsWidget(
-                modelList: Datas.shopByBrandsList,
-              ),
+              brandModelList != null
+                  ? ShopByBrandsWidget(
+                      modelList: brandModelList,
+                    )
+                  : Container(),
 
               BookAnAppointmentWidget(callback: (value) {}),
 

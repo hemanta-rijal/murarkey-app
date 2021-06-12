@@ -32,6 +32,11 @@ class _Constants {
   String get NO_TIME_GO_SALON => "ARE YOU A PROFESSIONAL?";
   String get MURARKEY_PROVIDES => "Murarkey provides Beauty Parlour Services at Home.";
   String get BOOK_AN_APPOINTMENT=> " Join us";
+
+
+  //Social Media
+  String get FACEBOOK_PAGE_ID => "395985173802030";
+  String get FACEBOOK_PAGE_NAME => "EagleyeTechnology";
 }
 
 class _PaddingConstants{

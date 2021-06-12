@@ -21,10 +21,10 @@ class _MainScreenWidgetState extends CustomStatefulWidgetState<MainScreenWidget>
     List<BottomNavigationModel> navigationModels = [];
     navigationModels.add(new BottomNavigationModel(
         title: "Home", icon: Icons.home, widgetView: HomeFragmentWidget()));
-    navigationModels.add(new BottomNavigationModel(
-        title: "Messages",
-        icon: Icons.chat,
-        widgetView: MessagesFragmentWidget()));
+    // navigationModels.add(new BottomNavigationModel(
+    //     title: "Messages",
+    //     icon: Icons.chat,
+    //     widgetView: MessagesFragmentWidget()));
     navigationModels.add(new BottomNavigationModel(
         title: "Cart", icon: Icons.shopping_cart_rounded, widgetView: CartFragmentWidget()));
     navigationModels.add(new BottomNavigationModel(

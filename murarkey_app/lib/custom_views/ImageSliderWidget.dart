@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class ImageSliderWidget extends StatefulWidget {
@@ -6,9 +7,10 @@ class ImageSliderWidget extends StatefulWidget {
   //https://stackoverflow.com/questions/60458924/use-offline-image-for-slider-in-flutter
   //https://stackoverflow.com/questions/64197752/bad-state-insecure-http-is-not-allowed-by-platform/65578828
 
-  final List imgList;
+  final List<HomepageBannerModel> bannerModelList;
 
-  ImageSliderWidget({Key key, @required this.imgList}) : super(key: key);
+  ImageSliderWidget({Key key, @required this.bannerModelList})
+      : super(key: key);
 
   @override
   ImageSliderWidgetState createState() => ImageSliderWidgetState();
@@ -47,8 +49,8 @@ class ImageSliderWidgetState extends State<ImageSliderWidget> {
     Widget renderDot() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: widget.imgList.map((url) {
-          int index = widget.imgList.indexOf(url);
+        children: widget.bannerModelList.map((model) {
+          int index = widget.bannerModelList.indexOf(model);
 
           return Container(
             width: 5.0,
@@ -71,10 +73,10 @@ class ImageSliderWidgetState extends State<ImageSliderWidget> {
           children: [
             Container(
                 child: CarouselSlider(
-                    items: widget.imgList.map((imgUrl) {
+                    items: widget.bannerModelList.map((model) {
                       return Builder(
                         builder: (BuildContext context) {
-                          return renderImage(imgUrl);
+                          return renderImage(model.imageUrl);
                         },
                       );
                     }).toList(),

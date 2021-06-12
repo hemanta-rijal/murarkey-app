@@ -42,8 +42,12 @@ class CustomStatefulWidgetState<T> extends State {
     ));
   }
 
-  Widget render({@required Widget childWidget}) {
+  Widget render({@required Widget childWidget, Widget floatingActionButton}) {
     return Material(
-        color: AppConstants.appColor.backgroundColor, child: childWidget);
+        color: AppConstants.appColor.backgroundColor,
+        child: Scaffold(
+          body: childWidget,
+          floatingActionButton: floatingActionButton,
+        ));
   }
 }

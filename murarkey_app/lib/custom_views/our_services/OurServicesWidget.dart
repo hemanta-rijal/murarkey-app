@@ -1,7 +1,6 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
 import 'package:murarkey_app/utils/Imports.dart';
-import 'package:websafe_svg/websafe_svg.dart';
 
 //https://pub.dev/packages/flutter_svg
 //https://pub.dev/packages/websafe_svg

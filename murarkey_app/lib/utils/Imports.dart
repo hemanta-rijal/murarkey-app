@@ -10,3 +10,7 @@ export 'package:murarkey_app/utils/AppConstants.dart';
 
 //Login
 export 'package:murarkey_app/views/auth/login/LoginWidget.dart';
+
+//Facebook
+// export 'package:facebook_app_events/facebook_app_events.dart';
+// https://pub.dev/packages/facebook_share/example

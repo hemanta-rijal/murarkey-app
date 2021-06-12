@@ -1,6 +1,7 @@
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/account_list/AcountListWidget.dart';
 import 'package:murarkey_app/custom_views/account_profile/AccountProfileWidget.dart';
+import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -66,6 +67,8 @@ class _AccountFragmentWidgetState
       });
     }
 
+    return render(
+        childWidget: builder(), floatingActionButton: FBFloatingButton().fab());
     return render(childWidget: builder());
   }
 }

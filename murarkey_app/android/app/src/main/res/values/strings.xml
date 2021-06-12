@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    https://developers.facebook.com/apps/3087276048160902/dashboard/?business_id=1915965628494568-->
+    <string name="facebook_app_id">3087276048160902</string>
+</resources>

@@ -76,11 +76,14 @@ abstract class ApiRequest extends Api {
 
       // Get Http call
       // Await the http get response, then decode the json-formatted response.
-      http.Response response =
-          await http.get(full_url, headers: _headers(useToken));
+      http.Response response = await http
+          .get(full_url, headers: _headers(useToken))
+          .timeout(const Duration(seconds: 60));
+      ;
       return _parseData(response, url);
     } catch (e) {
       print(e);
+      return null;
     }
   }
 
@@ -104,14 +107,17 @@ abstract class ApiRequest extends Api {
 
       // Post Http call
       // Await the http get response, then decode the json-formatted response.
-      http.Response response = await http.post(
-        full_url,
-        body: body,
-        headers: _headers(useToken),
-      );
+      http.Response response = await http
+          .post(
+            full_url,
+            body: body,
+            headers: _headers(useToken),
+          )
+          .timeout(const Duration(seconds: 60));
       return _parseData(response, url);
     } catch (e) {
       print(e);
+      return null;
     }
   }
 }

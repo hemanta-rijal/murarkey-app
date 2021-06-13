@@ -4,13 +4,13 @@ import 'package:murarkey_app/utils/Imports.dart';
 /**
  * Created by Suman Prasad Neupane on 5/20/2021.
  */
-textField1({String hint, @required controller, margin}){
+textField1({String hint, @required controller, margin}) {
   return Container(
+    //width: double.infinity,
     margin: margin,
     decoration: BoxDecoration(
       shape: BoxShape.rectangle,
-      border: Border.all(
-          width: 1, color: AppConstants.appColor.greyColor),
+      border: Border.all(width: 1, color: AppConstants.appColor.greyColor),
       borderRadius: BorderRadius.all(Radius.circular(2)),
     ),
     child: Padding(
@@ -20,7 +20,8 @@ textField1({String hint, @required controller, margin}){
           keyboardType: TextInputType.number,
           textAlign: TextAlign.left,
           style: TextStyle(
-              fontSize: SizeConfig.textMultiplier * 2.0, color: AppConstants.appColor.textColor),
+              fontSize: SizeConfig.textMultiplier * 2.0,
+              color: AppConstants.appColor.textColor),
           decoration: new InputDecoration(
             isDense: true,
             contentPadding: EdgeInsets.all(8.0),
@@ -29,18 +30,21 @@ textField1({String hint, @required controller, margin}){
             enabledBorder: InputBorder.none,
             errorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
+            hintText: hint,
+            hintStyle: TextStyle(
+                fontSize: SizeConfig.textMultiplier * 2.0,
+                color: AppConstants.appColor.textColor3),
           )),
     ),
   );
 }
 
-textField2({String hint, @required controller, margin}){
+textField2({String hint, @required controller, margin}) {
   return Container(
     margin: margin,
     decoration: BoxDecoration(
       shape: BoxShape.rectangle,
-      border: Border.all(
-          width: 1, color: AppConstants.appColor.greyColor),
+      border: Border.all(width: 1, color: AppConstants.appColor.greyColor),
       borderRadius: BorderRadius.all(Radius.circular(2)),
     ),
     child: Padding(
@@ -52,7 +56,8 @@ textField2({String hint, @required controller, margin}){
           minLines: 6,
           textAlign: TextAlign.left,
           style: TextStyle(
-              fontSize: SizeConfig.textMultiplier * 2.0, color: AppConstants.appColor.textColor),
+              fontSize: SizeConfig.textMultiplier * 2.0,
+              color: AppConstants.appColor.textColor),
           decoration: new InputDecoration(
             isDense: true,
             contentPadding: EdgeInsets.all(8.0),

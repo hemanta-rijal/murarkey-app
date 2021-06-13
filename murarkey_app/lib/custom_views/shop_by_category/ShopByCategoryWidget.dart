@@ -1,12 +1,13 @@
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
 import 'package:murarkey_app/repository/local/Datas.dart';
+import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class ShopByCategoryWidget extends StatefulWidget {
   //1. list-of-horizontal-list-in-flutter
   //https://stackoverflow.com/questions/51089041/list-of-horizontal-list-in-flutter
-  List modelList;
+  List<CategoryModel> modelList;
 
   ShopByCategoryWidget({Key key, @required this.modelList}) : super(key: key);
 
@@ -39,19 +40,10 @@ class _ShopByCategoryWidgetState extends State<ShopByCategoryWidget> {
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
           child: Column(
             children: [
-              loadImage(model['imgUrl']),
+              loadImage(model.image_url),
               SizedBox(height: 4),
               Text(
-                "Starting from Rs. " + model["price"],
-                style: TextStyle(
-                  color: AppConstants.appColor.greyColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: SizeConfig.textMultiplier * 1.2,
-                ),
-              ),
-              SizedBox(height: 2),
-              Text(
-                model["title"],
+                model.name,
                 style: TextStyle(
                   color: AppConstants.appColor.textColor,
                   fontWeight: FontWeight.bold,

@@ -12,9 +12,11 @@ import 'package:murarkey_app/custom_views/shop_by_category/ShopByCategoryWidget.
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/local/Datas.dart';
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
+import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/repository/server/home_page/HomeApiRequest.dart';
+import 'package:murarkey_app/routes/NavigateRoute.dart';
 import '../repository/api_call/ApiRequest.dart';
 import '../repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -31,6 +33,7 @@ class _HomeFragmentWidgetState
     extends CustomStatefulWidgetState<HomeFragmentWidget> {
   Repository _repository = new Repository();
   List<HomepageBannerModel> bannerModelList;
+  List<CategoryModel> categoryModelList;
   List<ParlorModel> parlorModelList;
   List<BrandModel> brandModelList;
 
@@ -48,6 +51,14 @@ class _HomeFragmentWidgetState
         .getBanner(url: ApiUrls.HOME_PAGE_BANNER_URL)
         .then((value) => {
               bannerModelList = value,
+              this.setState(() {}),
+            });
+
+    // Get category list
+    await _repository.homeApiRequest
+        .getCategory(url: ApiUrls.CATEGORY_URL)
+        .then((value) => {
+              categoryModelList = value,
               this.setState(() {}),
             });
 
@@ -82,6 +93,13 @@ class _HomeFragmentWidgetState
             child: Column(children: [
               SearchBarWidget(
                   textHint: 'Search by Service or Product',
+                  onTap: () {
+                    Map<String, dynamic> arguments = new Map();
+                    arguments["categoryModelList"] = categoryModelList;
+                    arguments["brandModelList"] = brandModelList;
+                    NavigateRoute.pushNamedWithArguments(
+                        context, NavigateRoute.SEARCH, arguments);
+                  },
                   onTextChange: (value) {
                     print(value);
                   }),
@@ -99,9 +117,11 @@ class _HomeFragmentWidgetState
               ),
 
               //Shop by category
-              ShopByCategoryWidget(
-                modelList: Datas.shopByCategoryList,
-              ),
+              categoryModelList != null
+                  ? ShopByCategoryWidget(
+                      modelList: categoryModelList,
+                    )
+                  : Container(),
 
               //Popular Parlours
               parlorModelList != null

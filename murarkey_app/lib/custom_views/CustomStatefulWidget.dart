@@ -30,7 +30,7 @@ class CustomStatefulWidgetState<T> extends State {
                     title: appBarText,
                   ),
                   Container(
-                    margin: EdgeInsets.all(8),
+                    // margin: EdgeInsets.all(8),
                     child: childWidget,
                   )
                 ],

@@ -6,8 +6,9 @@ import 'file:///D:/Personal/Projects/murarkey-app/murarkey_app/lib/views/address
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
+import 'package:murarkey_app/views/search/SearchWidget.dart';
 
-class NavigateRoute{
+class NavigateRoute {
   //1.
   //Flutter Routes & Navigation – Parameters, Named Routes, onGenerateRoute
   //https://www.youtube.com/watch?v=nyvwx7o277U
@@ -21,12 +22,12 @@ class NavigateRoute{
   static const String ADDRESS_BILLING_Edit = "EditBillingAddressWidget";
   static const String ADDRESS_SHIPPING_Edit = "EditShippingAddressWidget";
   static const String BOOK_APPOINTMENT = "BookAppontmentWidget";
+  static const String SEARCH = "SearchWidget";
 
-
-  static Route<dynamic> generateRoute(RouteSettings settings){
+  static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
-    switch(settings.name){
+    switch (settings.name) {
       case LOGIN:
         return _MaterialPageRoute(LoginWidget());
       case REGISTER:
@@ -43,29 +44,39 @@ class NavigateRoute{
         return _MaterialPageRoute(EditShippingAddressWidget());
       case BOOK_APPOINTMENT:
         return _MaterialPageRoute(BookAppontmentWidget());
+      case SEARCH:
+        Map<String, dynamic> arguments = args as Map;
+        return _MaterialPageRoute(SearchWidget(
+            categoryModelList: arguments["categoryModelList"],
+            brandModelList: arguments["brandModelList"]));
       default:
         LoginWidget();
       //   return _errorRoute();
     }
   }
 
-  static _MaterialPageRoute(Widget widget){
+  static _MaterialPageRoute(Widget widget) {
     return MaterialPageRoute(builder: (_) => widget);
   }
 
-  static pushNamed(context, routeName){
+  static pushNamed(context, routeName) {
     Navigator.of(context).pushNamed(routeName);
   }
 
-  static popAndPushNamed(context, routeName){
+  static pushNamedWithArguments(
+      context, routName, Map<String, dynamic> arguments) {
+    Navigator.of(context).pushNamed(routName, arguments: arguments);
+  }
+
+  static popAndPushNamed(context, routeName) {
     Navigator.of(context).popAndPushNamed(routeName);
   }
 
-  static pop(context){
+  static pop(context) {
     Navigator.of(context).pop();
   }
 
-  static String initialRoute(){
-    return NavigateRoute.LOGIN;
+  static String initialRoute() {
+    return NavigateRoute.HOME;
   }
 }

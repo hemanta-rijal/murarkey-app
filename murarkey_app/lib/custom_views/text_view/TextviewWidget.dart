@@ -25,3 +25,26 @@ textView1(
     ),
   );
 }
+
+textView2(
+    {String title, margin, double textSize, FontWeight fontWeight, color, textAlign}) {
+  textSize = textSize == null ? 2.0 : textSize;
+  fontWeight = fontWeight ?? FontWeight.normal;
+  color = color ?? AppConstants.appColor.textColor;
+  textAlign = textAlign ?? TextAlign.left;
+
+  return Container(
+    margin: margin ?? null,//EdgeInses.zerot,
+    child: Text(
+      title,
+      textAlign: textAlign,
+      style: TextStyle(
+        decoration: TextDecoration.lineThrough,
+        decorationColor: AppConstants.appColor.accentColor,
+        color: color,
+        fontWeight: fontWeight,
+        fontSize: SizeConfig.textMultiplier * textSize,
+      ),
+    ),
+  );
+}

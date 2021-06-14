@@ -3,6 +3,9 @@ import 'package:murarkey_app/custom_views/CheckBoxWidget.dart';
 import 'package:murarkey_app/custom_views/EditText.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/SocialMediaLoginCardWidget.dart';
+import 'package:murarkey_app/repository/Repository.dart';
+import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
+import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -17,6 +20,8 @@ class RegisterWidget extends StatefulWidget {
 }
 
 class _RegisterWidgetState extends State<RegisterWidget> {
+  Repository _repository = new Repository();
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -25,6 +30,52 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         [SystemUiOverlay.bottom, SystemUiOverlay.top]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: AppConstants.appColor.primaryDarkColor));
+
+    void register() async {
+      String firstNameValidate = Validation.validateUserName(
+          widget.viewModel.formFirstName.text.trim(), "First name");
+
+      String lastNameValidate = Validation.validateUserName(
+          widget.viewModel.formLastName.text.trim(), "Last name");
+
+      String emailValidate =
+          Validation.validateEmail(widget.viewModel.formEmail.text.trim());
+
+      String passwordValid = Validation.validatePassword(
+          widget.viewModel.formPassword.text.trim());
+
+      String confirmPasswordValid = Validation.validateConfirmPassword(
+          widget.viewModel.formPassword.text.trim(),
+          widget.viewModel.formConfirmPassword.text.trim());
+
+      if (firstNameValidate != Validation.SUCCESS) {
+        Commons.toastMessage(context, firstNameValidate);
+      } else if (firstNameValidate != Validation.SUCCESS) {
+        Commons.toastMessage(context, lastNameValidate);
+      } else if (emailValidate != Validation.SUCCESS) {
+        Commons.toastMessage(context, emailValidate);
+      } else if (passwordValid != Validation.SUCCESS) {
+        Commons.toastMessage(context, passwordValid);
+      } else if (confirmPasswordValid != Validation.SUCCESS) {
+        Commons.toastMessage(context, confirmPasswordValid);
+      } else {
+        Map<String, dynamic> params = new Map();
+        params["first_name"] = widget.viewModel.formFirstName.text.trim();
+        params["last_name"] = widget.viewModel.formLastName.text.trim();
+        params["email"] = widget.viewModel.formEmail.text.trim();
+        params["password"] = widget.viewModel.formPassword.text.trim();
+        params["role"] = widget.viewModel.formRole;
+
+        await _repository.authApiRequest
+            .register(url: ApiUrls.REGISTER_URL, params: params)
+            .then((UserModel value) => {
+                  this.setState(() {
+                    Commons.toastMessage(context, "Registered Successfully! Please Login.");
+                    NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+                  }),
+                });
+      }
+    }
 
     return Material(
       child: Scaffold(
@@ -54,9 +105,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      //Full Name
+                      //First Name
                       new EditText(
-                        text: "Username",
+                        text: "First name",
                         icon: Icons.account_circle_rounded,
                         fontSize: SizeConfig.textMultiplier * 2.0,
                         textColor: AppConstants.appColor.textColor,
@@ -64,7 +115,19 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         margin: EdgeInsets.only(
                             top: screenSize.width * .08,
                             bottom: screenSize.width * .03),
-                        controller: widget.viewModel.formUserName,
+                        controller: widget.viewModel.formFirstName,
+                      ),
+
+                      //Last Name
+                      new EditText(
+                        text: "Last Name",
+                        icon: Icons.account_circle_rounded,
+                        fontSize: SizeConfig.textMultiplier * 2.0,
+                        textColor: AppConstants.appColor.textColor,
+                        keyboardType: TextInputType.emailAddress,
+                        margin: EdgeInsets.only(
+                            bottom: screenSize.width * .03),
+                        controller: widget.viewModel.formLastName,
                       ),
 
                       // Email
@@ -114,34 +177,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         padding: EdgeInsets.all(screenSize.width * .02),
                         backgroundColor: AppConstants.appColor.buttonColor,
                         onPressedCallback: () {
-                          String usernameValidate = Validation.validateUserName(
-                              widget.viewModel.formUserName.text.trim());
-
-                          String emailValidate = Validation.validateEmail(
-                              widget.viewModel.formEmail.text.trim());
-
-                          String passwordValid = Validation.validatePassword(
-                              widget.viewModel.formPassword.text.trim());
-
-                          String confirmPasswordValid =
-                              Validation.validateConfirmPassword(
-                                  widget.viewModel.formPassword.text.trim(),
-                                  widget.viewModel.formConfirmPassword.text
-                                      .trim());
-
-                          if (usernameValidate != Validation.SUCCESS) {
-                            Commons.toastMessage(context, usernameValidate);
-                          } else if (emailValidate != Validation.SUCCESS) {
-                            Commons.toastMessage(context, emailValidate);
-                          } else if (passwordValid != Validation.SUCCESS) {
-                            Commons.toastMessage(context, passwordValid);
-                          } else if (confirmPasswordValid != Validation.SUCCESS) {
-                            Commons.toastMessage(context, confirmPasswordValid);
-                          } else {
-                            Commons.toastMessage(
-                                context, "Registered Successfully");
-                            NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-                          }
+                          register();
                         },
                       ),
 
@@ -169,8 +205,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 fontSize: SizeConfig.textMultiplier * 1.8,
                               ),
                             ),
-                            onTap: (){
-                              NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+                            onTap: () {
+                              NavigateRoute.popAndPushNamed(
+                                  context, NavigateRoute.LOGIN);
                             },
                           ),
                         ],
@@ -256,8 +293,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
                       RichText(
                         text: TextSpan(
-                          text:
-                          AppConstants.constants.PRIVACY_POLICY_MSG,
+                          text: AppConstants.constants.PRIVACY_POLICY_MSG,
                           style: TextStyle(
                             color: AppConstants.appColor.textColor3,
                             fontSize: SizeConfig.textMultiplier * 1.4,

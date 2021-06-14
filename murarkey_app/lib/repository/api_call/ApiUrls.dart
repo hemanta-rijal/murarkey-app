@@ -14,7 +14,7 @@ class ApiUrls {
 
   //For Auth
   static final String LOGIN_URL = ROOT_API_URL + "/auth/login";
-  static final String REGISTER_URL = ROOT_API_URL + "auth/register";
+  static final String REGISTER_URL = ROOT_API_URL + "/auth/register";
 
   static final String HOME_PAGE_BANNER_URL = ROOT_API_URL + "/banners/homepage-1";
   static final String CATEGORY_URL = ROOT_API_URL + "/categories";

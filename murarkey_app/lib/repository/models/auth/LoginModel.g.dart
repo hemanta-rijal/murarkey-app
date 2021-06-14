@@ -8,7 +8,8 @@ part of 'LoginModel.dart';
 
 LoginModel _$LoginModelFromJson(Map<String, dynamic> json) {
   return LoginModel(
-    status: json['status'] as String,
+    success: json['success'] as bool,
+    status: json['status'] as int,
     token_type: json['token_type'] as String,
     access_token: json['access_token'] as String,
     user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
@@ -17,6 +18,7 @@ LoginModel _$LoginModelFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$LoginModelToJson(LoginModel instance) =>
     <String, dynamic>{
+      'success': instance.success,
       'status': instance.status,
       'token_type': instance.token_type,
       'access_token': instance.access_token,

@@ -6,11 +6,11 @@ class Validation{
 
   bool emailIsValid(String email) => RegExp(regex).hasMatch(email);
 
-  static String validateUserName(String username) {
+  static String validateUserName(String username, String type) {
     if (username.isEmpty)
       return 'Please enter your username';
     else if (username.length < 4)
-      return 'Usernamee should be greater than 4 letters';
+      return '${type} should be greater than 4 letters';
     return SUCCESS;
   }
 

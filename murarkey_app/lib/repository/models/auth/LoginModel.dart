@@ -10,12 +10,14 @@ part 'LoginModel.g.dart';
 
 @JsonSerializable(nullable: false)
 class LoginModel{
-  final String status;
+  final bool success;
+  final int status;
   final String token_type;
   final String access_token;
   final UserModel user;
 
   LoginModel({
+    this.success,
     this.status,
     this.token_type,
     this.access_token,

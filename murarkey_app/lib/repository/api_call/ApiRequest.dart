@@ -40,6 +40,7 @@ abstract class ApiRequest extends Api {
 
     if (useToken) {
       headers["x-app-token"] = "tokens";
+      print("useToken");
     }
 
     return headers;
@@ -72,7 +73,7 @@ abstract class ApiRequest extends Api {
     try {
       //for http url
       var full_url = ApiUrls.BASE_URL + url;
-      //print(full_url);
+      print(full_url);
 
       // Get Http call
       // Await the http get response, then decode the json-formatted response.
@@ -103,7 +104,7 @@ abstract class ApiRequest extends Api {
 
       // Body
       var body = json.encode(params);
-      //print(params);
+      print(params);
 
       // Post Http call
       // Await the http get response, then decode the json-formatted response.

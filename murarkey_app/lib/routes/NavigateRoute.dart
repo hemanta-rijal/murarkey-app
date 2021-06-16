@@ -5,6 +5,7 @@ import 'package:murarkey_app/views/address/widgets/EditShippingAddressWidget.dar
 import 'file:///D:/Personal/Projects/murarkey-app/murarkey_app/lib/views/address/widgets/EditAddressWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
+import 'package:murarkey_app/views/product/ProductDetailWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
 import 'package:murarkey_app/views/search/SearchWidget.dart';
 
@@ -23,6 +24,7 @@ class NavigateRoute {
   static const String ADDRESS_SHIPPING_Edit = "EditShippingAddressWidget";
   static const String BOOK_APPOINTMENT = "BookAppontmentWidget";
   static const String SEARCH = "SearchWidget";
+  static const String PRODUCT_DETAIL ="ProductDetailWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -49,6 +51,8 @@ class NavigateRoute {
         return _MaterialPageRoute(SearchWidget(
             categoryModelList: arguments["categoryModelList"],
             brandModelList: arguments["brandModelList"]));
+      case PRODUCT_DETAIL:
+        return _MaterialPageRoute(ProductDetailWidget());
       default:
         LoginWidget();
       //   return _errorRoute();
@@ -77,6 +81,6 @@ class NavigateRoute {
   }
 
   static String initialRoute() {
-    return NavigateRoute.LOGIN;
+    return NavigateRoute.PRODUCT_DETAIL;
   }
 }

@@ -3,7 +3,7 @@
 * */
 import 'package:murarkey_app/utils/Imports.dart';
 
-class FlatStatefulButton extends StatefulWidget {
+class FlatStatefulButton2 extends StatefulWidget {
   final String text;
   final double fontSize;
   final Color textColor;
@@ -16,8 +16,9 @@ class FlatStatefulButton extends StatefulWidget {
   double buttonHeight;
   double buttonWidth;
   double buttonCurve;
+  Color boderColor;
 
-  FlatStatefulButton(
+  FlatStatefulButton2(
       {Key key,
       this.text,
       this.fontSize,
@@ -30,18 +31,20 @@ class FlatStatefulButton extends StatefulWidget {
       this.onPressedCallback,
       double buttonHeight,
       double buttonWidth,
-      double buttonCurve})
+      double buttonCurve,
+      Color boderColor})
       : super(key: key) {
     this.buttonHeight = buttonHeight == null ? 50 : buttonHeight;
     this.buttonWidth = buttonWidth == null ? double.infinity : buttonWidth;
     this.buttonCurve = buttonCurve == null ? 18.0 : buttonCurve;
+    this.boderColor = boderColor == AppConstants.appColor.whiteColor ? 18.0 : boderColor;
   }
 
   @override
-  _FlatStatefulButtonState createState() => _FlatStatefulButtonState();
+  _FlatStatefulButton2State createState() => _FlatStatefulButton2State();
 }
 
-class _FlatStatefulButtonState extends State<FlatStatefulButton> {
+class _FlatStatefulButton2State extends State<FlatStatefulButton2> {
   setStyle() {
     return widget.textStyle != null
         ? widget.textStyle
@@ -80,6 +83,12 @@ class _FlatStatefulButtonState extends State<FlatStatefulButton> {
               height: widget.buttonHeight,
               width: widget.buttonWidth,
               margin: setMargin(),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                border: Border.all(
+                    width: 2, color: widget.boderColor),
+                borderRadius: BorderRadius.all(Radius.circular(widget.buttonCurve)),
+              ),
               child: TextButton(
                   style: ButtonStyle(
                       backgroundColor:

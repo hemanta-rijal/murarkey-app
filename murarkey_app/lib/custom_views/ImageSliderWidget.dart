@@ -8,9 +8,14 @@ class ImageSliderWidget extends StatefulWidget {
   //https://stackoverflow.com/questions/64197752/bad-state-insecure-http-is-not-allowed-by-platform/65578828
 
   final List<HomepageBannerModel> bannerModelList;
+  double bannerHeight;
 
-  ImageSliderWidget({Key key, @required this.bannerModelList})
-      : super(key: key);
+  ImageSliderWidget(
+      {Key key, @required this.bannerModelList, double bannerHeight})
+      : super(key: key) {
+    this.bannerHeight =
+        bannerHeight == null ? 120.0 : bannerHeight;
+  }
 
   @override
   ImageSliderWidgetState createState() => ImageSliderWidgetState();
@@ -81,7 +86,7 @@ class ImageSliderWidgetState extends State<ImageSliderWidget> {
                       );
                     }).toList(),
                     options: CarouselOptions(
-                      height: 120,
+                      height: widget.bannerHeight,
                       aspectRatio: 16 / 9,
                       viewportFraction: 1,
                       initialPage: 0,

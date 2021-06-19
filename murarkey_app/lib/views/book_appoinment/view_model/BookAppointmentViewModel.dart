@@ -1,10 +1,12 @@
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/utils/Validation.dart';
 
 /**
  * Created by Suman Prasad Neupane on 5/20/2021.
  */
 
-class BookAppointmentViewModel{
+class BookAppointmentViewModel {
   final TextEditingController formFirstName = new TextEditingController();
   final TextEditingController formLastName = new TextEditingController();
   final TextEditingController formStreetAddress = new TextEditingController();
@@ -29,11 +31,9 @@ class BookAppointmentViewModel{
 
   var tmpArray = [];
 
-  getCheckboxItems(){
-
+  getCheckboxItems() {
     values.forEach((key, value) {
-      if(value == true)
-      {
+      if (value == true) {
         tmpArray.add(key);
       }
     });
@@ -44,5 +44,37 @@ class BookAppointmentViewModel{
 
     // Clear array after use.
     tmpArray.clear();
+  }
+
+  bool validate(BuildContext context) {
+    String firstNameValidate =
+        Validation.validateUserName(formFirstName.text.trim(), "First name");
+
+    String lastNameValidate =
+        Validation.validateUserName(formLastName.text.trim(), "Last name");
+
+    String emailValidate = Validation.validateEmail(formEmail.text.trim());
+
+    if (firstNameValidate != Validation.SUCCESS) {
+      Commons.toastMessage(context, firstNameValidate);
+      return false;
+    } else if (firstNameValidate != Validation.SUCCESS) {
+      Commons.toastMessage(context, lastNameValidate);
+      return false;
+    } else if (formCountry == null || formCountry == "") {
+      Commons.toastMessage(context, "Please choose location");
+      return false;
+    } else if (formPhone.text == null || formPhone.text == "") {
+      Commons.toastMessage(context, "Please enter your phone no.");
+      return false;
+    } else if (emailValidate != Validation.SUCCESS) {
+      Commons.toastMessage(context, emailValidate);
+      return false;
+    } else if (formNote.text == null || formNote.text == "") {
+      Commons.toastMessage(context, "Please write something about you");
+      return false;
+    } else {
+      return true;
+    }
   }
 }

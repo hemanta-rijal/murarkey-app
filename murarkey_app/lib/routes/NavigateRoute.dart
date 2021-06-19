@@ -52,7 +52,8 @@ class NavigateRoute {
             categoryModelList: arguments["categoryModelList"],
             brandModelList: arguments["brandModelList"]));
       case PRODUCT_DETAIL:
-        return _MaterialPageRoute(ProductDetailWidget());
+        Map<String, dynamic> arguments = args as Map;
+        return _MaterialPageRoute(ProductDetailWidget(parlorModel: arguments["parlorModel"]));
       default:
         LoginWidget();
       //   return _errorRoute();
@@ -81,6 +82,6 @@ class NavigateRoute {
   }
 
   static String initialRoute() {
-    return NavigateRoute.PRODUCT_DETAIL;
+    return NavigateRoute.HOME;
   }
 }

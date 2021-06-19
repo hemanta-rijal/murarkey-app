@@ -42,95 +42,96 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
 
     Widget buildWidget() {
       return Container(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SearchBarWidget(
-              textHint: 'Search by Service or Product',
-              onTextChange: (value) {
-                print(value);
-              }),
-          SizedBox(
-            height: 12,
-          ),
-          Container(
-            margin: EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //Filter by Brands
-                textView1(
-                    title: "Filter by Brands",
-                    textSize: 2.0,
-                    textAlign: TextAlign.start,
-                    color: AppConstants.appColor.blackColor,
-                    fontWeight: FontWeight.bold),
-                dropDown1(
-                    margin: EdgeInsets.only(top: 4.0),
-                    modelList: AccountDatas.countryList,
-                    value: viewModel.formCountry,
-                    onChange: (value) {
-                      setState(() {
-                        viewModel.formCountry = AccountDatas.countryList[
-                            AccountDatas.countryList.indexOf(value)];
-                      });
-                    }),
-                SizedBox(
-                  height: 16,
-                ),
-                //Filter by Category
-                textView1(
-                    title: "Filter by Category",
-                    textSize: 2.0,
-                    textAlign: TextAlign.start,
-                    color: AppConstants.appColor.blackColor,
-                    fontWeight: FontWeight.bold),
-                dropDown1(
-                    margin: EdgeInsets.only(top: 4.0),
-                    modelList: AccountDatas.countryList,
-                    value: viewModel.formCountry,
-                    onChange: (value) {
-                      setState(() {
-                        viewModel.formCountry = AccountDatas.countryList[
-                            AccountDatas.countryList.indexOf(value)];
-                      });
-                    }),
-                SizedBox(
-                  height: 16,
-                ),
-                //Price
-                textView1(
-                    title: "Price",
-                    textSize: 2.0,
-                    textAlign: TextAlign.start,
-                    color: AppConstants.appColor.blackColor,
-                    fontWeight: FontWeight.bold),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: textField1(
-                          hint: "Max",
-                          controller: viewModel.formFirstName,
-                          margin: EdgeInsets.only(top: 4.0)),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      flex: 1,
-                      child: textField1(
-                          hint: "Min",
-                          controller: viewModel.formFirstName,
-                          margin: EdgeInsets.only(top: 4.0)),
-                    )
-                  ],
-                )
-              ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SearchBarWidget(
+                textHint: 'Search by Service or Product',
+                onTextChange: (value) {
+                  print(value);
+                }),
+            SizedBox(
+              height: 12,
             ),
-          ),
-          SearchItemWidget(modelList: categoryModelList),
-        ],
-      ));
+            Container(
+              margin: EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Filter by Brands
+                  textView1(
+                      title: "Filter by Brands",
+                      textSize: 2.0,
+                      textAlign: TextAlign.start,
+                      color: AppConstants.appColor.blackColor,
+                      fontWeight: FontWeight.bold),
+                  dropDown1(
+                      margin: EdgeInsets.only(top: 4.0),
+                      modelList: AccountDatas.countryList,
+                      value: viewModel.formCountry,
+                      onChange: (value) {
+                        setState(() {
+                          viewModel.formCountry = AccountDatas.countryList[
+                              AccountDatas.countryList.indexOf(value)];
+                        });
+                      }),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  //Filter by Category
+                  textView1(
+                      title: "Filter by Category",
+                      textSize: 2.0,
+                      textAlign: TextAlign.start,
+                      color: AppConstants.appColor.blackColor,
+                      fontWeight: FontWeight.bold),
+                  dropDown1(
+                      margin: EdgeInsets.only(top: 4.0),
+                      modelList: AccountDatas.countryList,
+                      value: viewModel.formCountry,
+                      onChange: (value) {
+                        setState(() {
+                          viewModel.formCountry = AccountDatas.countryList[
+                              AccountDatas.countryList.indexOf(value)];
+                        });
+                      }),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  //Price
+                  textView1(
+                      title: "Price",
+                      textSize: 2.0,
+                      textAlign: TextAlign.start,
+                      color: AppConstants.appColor.blackColor,
+                      fontWeight: FontWeight.bold),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: textField1(
+                            hint: "Max",
+                            controller: viewModel.formFirstName,
+                            margin: EdgeInsets.only(top: 4.0)),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        flex: 1,
+                        child: textField1(
+                            hint: "Min",
+                            controller: viewModel.formFirstName,
+                            margin: EdgeInsets.only(top: 4.0)),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SearchItemWidget(modelList: categoryModelList),
+          ],
+        ),
+      );
     }
 
     return renderWithAppBar(

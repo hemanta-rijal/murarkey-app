@@ -127,6 +127,12 @@ class _HomeFragmentWidgetState
               parlorModelList != null
                   ? PopularParloursWidget(
                       modelList: parlorModelList,
+                      onCallBack: (ParlorModel parlorModel) {
+                        Map<String, dynamic> arguments = new Map();
+                        arguments["parlorModel"] = parlorModel;
+                        NavigateRoute.pushNamedWithArguments(
+                            context, NavigateRoute.PRODUCT_DETAIL, arguments);
+                      },
                     )
                   : Container(),
 

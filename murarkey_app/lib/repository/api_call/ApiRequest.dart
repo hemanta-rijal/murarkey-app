@@ -28,7 +28,7 @@ abstract class ApiRequest extends Api {
     }
   }
 
-  Map<String, String> _headers(bool useToken) {
+  Future<Map<String, String>> _headers(bool useToken) async {
     // Headers
     //var response = await http.get(url, headers: {'Authorization': 'Bearer $_token'});
 
@@ -39,8 +39,11 @@ abstract class ApiRequest extends Api {
     headers["Accept"] = "application/json";
 
     if (useToken) {
-      headers["x-app-token"] = "tokens";
-      print("useToken");
+      //'Authorization': 'Bearer $token',
+      await _sharePref.getUserToken().then((value) => {
+            headers["Authorization"] = "Bearer ${value}",
+            print("useToken " + value)
+          });
     }
 
     return headers;
@@ -48,6 +51,7 @@ abstract class ApiRequest extends Api {
 
   Map<String, dynamic> _parseData(http.Response response, String url) {
     if (response.statusCode == 200) {
+      print(response.body);
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
       print(url);
@@ -63,6 +67,8 @@ abstract class ApiRequest extends Api {
     if (url == ApiUrls.LOGIN_URL) {
       _sharePref.setTokenType(jsonResponse["token_type"]);
       _sharePref.setUserToken(jsonResponse["access_token"]);
+
+      _sharePref.getUserToken().then((value) => {print("useToken " + value)});
     }
   }
 
@@ -75,10 +81,15 @@ abstract class ApiRequest extends Api {
       var full_url = ApiUrls.BASE_URL + url;
       print(full_url);
 
+      //
+      print("headers");
+      var header = await _headers(useToken);
+      print(header);
+
       // Get Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
-          .get(full_url, headers: _headers(useToken))
+          .get(full_url, headers: header)
           .timeout(const Duration(seconds: 60));
       ;
       return _parseData(response, url);
@@ -106,13 +117,18 @@ abstract class ApiRequest extends Api {
       var body = json.encode(params);
       print(params);
 
+      //
+      print("headers");
+      var header = await _headers(useToken);
+      print(header);
+
       // Post Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
           .post(
             full_url,
             body: body,
-            headers: _headers(useToken),
+            headers: header,
           )
           .timeout(const Duration(seconds: 60));
       return _parseData(response, url);

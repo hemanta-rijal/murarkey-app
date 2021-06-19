@@ -1,4 +1,5 @@
 import 'package:murarkey_app/repository/share_preferences/LocalSharePref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /**
  * Created by Suman Prasad Neupane on 6/12/2021.
@@ -22,7 +23,8 @@ class UserTokenPref extends LocalSharePref {
     getPref().setString(KEY_USER_TOKEN, token);
   }
 
-  String getUserToken() {
-    return getPref().getString(KEY_USER_TOKEN);
+  Future<String> getUserToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(KEY_USER_TOKEN);
   }
 }

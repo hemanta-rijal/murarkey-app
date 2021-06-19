@@ -3,6 +3,7 @@ import 'package:murarkey_app/custom_views/buttons/FlatStatefulButton2.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/product/view_model/ProductDetailViewModel.dart';
 
@@ -13,11 +14,13 @@ import 'package:murarkey_app/views/product/view_model/ProductDetailViewModel.dar
 class ProductToCardWidget extends StatefulWidget {
   final String title;
   final ProductDetailViewModel viewModel;
+  final Function() addToCard;
 
   ProductToCardWidget({
     Key key,
     @required this.title,
     @required this.viewModel,
+    this.addToCard,
   }) : super(key: key);
 
   @override
@@ -53,10 +56,17 @@ class _ProductToCardWidgetState extends State<ProductToCardWidget> {
               Row(
                 children: [
                   Expanded(
-                    flex: 1,
-                    child: svgImageAssert2(
-                        imgUrl: "images/maths/ic_sub.svg", size: 35),
-                  ),
+                      flex: 1,
+                      child: InkResponse(
+                        child: svgImageAssert2(
+                            imgUrl: "images/maths/ic_sub.svg", size: 35),
+                        onTap: () {
+                          setState(() {
+                            widget.viewModel.formAddToCardItem.text =
+                                widget.viewModel.subtract().toString();
+                          });
+                        },
+                      )),
                   Expanded(
                     flex: 2,
                     child: Container(
@@ -68,8 +78,16 @@ class _ProductToCardWidgetState extends State<ProductToCardWidget> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: svgImageAssert2(
-                        imgUrl: "images/maths/ic_add.svg", size: 35),
+                    child: InkResponse(
+                      child: svgImageAssert2(
+                          imgUrl: "images/maths/ic_add.svg", size: 35),
+                      onTap: () {
+                        setState(() {
+                          widget.viewModel.formAddToCardItem.text =
+                              widget.viewModel.add().toString();
+                        });
+                      },
+                    ),
                   ),
 
                   // ADD
@@ -86,7 +104,9 @@ class _ProductToCardWidgetState extends State<ProductToCardWidget> {
                         buttonHeight: 35,
                         buttonCurve: 2.0,
                         //buttonWidth: 100,
-                        onPressedCallback: () {},
+                        onPressedCallback: () {
+                          widget.addToCard();
+                        },
                       ),
                     ),
                   ),
@@ -105,27 +125,10 @@ class _ProductToCardWidgetState extends State<ProductToCardWidget> {
                 fontWeight: FontWeight.w800,
                 boderColor: AppConstants.appColor.redColor,
                 //buttonWidth: 100,
-                onPressedCallback: () {},
+                onPressedCallback: () {
+                  Commons.toastMessage(context, "Saved to Wishlist");
+                },
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   children: [
-              //     Container(
-              //       //width: double.infinity,
-              //       child: FlatStatefulButton(
-              //         text: "Save To WishList",
-              //         fontSize: SizeConfig.textMultiplier * 1.8,
-              //         textColor: AppConstants.appColor.accentColor,
-              //         padding: EdgeInsets.all(screenSize.width * .02),
-              //         backgroundColor: AppConstants.appColor.buttonColor,
-              //         buttonHeight: 35,
-              //         //buttonWidth: 100,
-              //         onPressedCallback: () {},
-              //       ),
-              //     )
-              //   ],
-              // )
             ],
           ),
         ),

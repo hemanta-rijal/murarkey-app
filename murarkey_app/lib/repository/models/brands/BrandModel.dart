@@ -10,14 +10,14 @@ part 'BrandModel.g.dart';
 class BrandModel{
   final int id;
   final String name;
-  final String image;
+  final String imageUrl;
   final String caption;
   final String description;
 
   BrandModel({
     this.id,
     this.name,
-    this.image,
+    this.imageUrl,
     this.caption,
     this.description
   });

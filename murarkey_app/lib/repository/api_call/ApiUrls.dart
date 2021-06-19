@@ -20,4 +20,11 @@ class ApiUrls {
   static final String CATEGORY_URL = ROOT_API_URL + "/categories";
   static final String PARLOR_URL = ROOT_API_URL + "/featured-parlours";
   static final String BRAND_URL = ROOT_API_URL + "/featured-brands";
+
+  //For Product
+  static final String PRODUCT_DETAIL = ROOT_API_URL + "/products/";
+
+  //For
+  static final String JOIN_PARLOR_PROFESSION = ROOT_API_URL + "/join-parlour-profession";
+  static final String CART = ROOT_API_URL + "/cart";
 }

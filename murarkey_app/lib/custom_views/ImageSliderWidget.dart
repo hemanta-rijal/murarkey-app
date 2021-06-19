@@ -40,13 +40,13 @@ class ImageSliderWidgetState extends State<ImageSliderWidget> {
           width: MediaQuery.of(context).size.width,
           margin: EdgeInsets.symmetric(horizontal: 8.0),
           decoration: BoxDecoration(
-              color: AppConstants.appColor.greyColor,
+              color: AppConstants.appColor.backgroundColor2,
               borderRadius: BorderRadius.all(Radius.circular(8))),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
               imgUrl,
-              fit: BoxFit.fill,
+              fit: BoxFit.contain,
             ),
           ));
     }

@@ -15,7 +15,7 @@ class ParlorModel {
   final String about;
 
   final String category_id;
-  final String feature_image;
+  final String featureImageUrl;
   final int featured;
   final int status;
 
@@ -38,7 +38,7 @@ class ParlorModel {
     this.address,
     this.about,
     this.category_id,
-    this.feature_image,
+    this.featureImageUrl,
     this.featured,
     this.status,
     this.phone,

@@ -8,8 +8,11 @@ class PopularParloursWidget extends StatefulWidget {
   //1. list-of-horizontal-list-in-flutter
   //https://stackoverflow.com/questions/51089041/list-of-horizontal-list-in-flutter
   List<ParlorModel> modelList;
+  Function(ParlorModel) onCallBack;
 
-  PopularParloursWidget({Key key, @required this.modelList}) : super(key: key);
+  PopularParloursWidget(
+      {Key key, @required this.modelList, @required this.onCallBack})
+      : super(key: key);
 
   @override
   _PopularParloursWidgetState createState() => _PopularParloursWidgetState();
@@ -42,28 +45,33 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
         return Container(
           width: _containerWidth + 16,
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Column(
-            children: [
-              loadImage(model.feature_image),
-              SizedBox(height: 4),
-              Text(
-                model.name,
-                style: TextStyle(
-                  color: AppConstants.appColor.greyColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: SizeConfig.textMultiplier * 1.2,
+          child: InkResponse(
+            child: Column(
+              children: [
+                loadImage(model.featureImageUrl),
+                SizedBox(height: 4),
+                Text(
+                  model.name,
+                  style: TextStyle(
+                    color: AppConstants.appColor.greyColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: SizeConfig.textMultiplier * 1.2,
+                  ),
                 ),
-              ),
-              SizedBox(height: 2),
-              Text(
-                model.address,
-                style: TextStyle(
-                  color: AppConstants.appColor.textColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: SizeConfig.textMultiplier * 1.4,
-                ),
-              )
-            ],
+                SizedBox(height: 2),
+                Text(
+                  model.address,
+                  style: TextStyle(
+                    color: AppConstants.appColor.textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: SizeConfig.textMultiplier * 1.4,
+                  ),
+                )
+              ],
+            ),
+            onTap: () {
+              widget.onCallBack(model);
+            },
           ),
         );
       }).toList();

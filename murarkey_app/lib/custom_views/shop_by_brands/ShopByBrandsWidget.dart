@@ -36,7 +36,7 @@ class _ShopByBrandsWidgetState extends State<ShopByBrandsWidget> {
         return Container(
           width: _containerWidth, // + 16,
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
-          child: loadImage(model.image),
+          child: loadImage(model.imageUrl),
         );
       }).toList();
     }

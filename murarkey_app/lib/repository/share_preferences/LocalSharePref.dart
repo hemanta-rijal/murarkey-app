@@ -19,6 +19,7 @@ class LocalSharePref {
   }
 
   SharedPreferences getPref(){
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
     return _prefs;
   }
 

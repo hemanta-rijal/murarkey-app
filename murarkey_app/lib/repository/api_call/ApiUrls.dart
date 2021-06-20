@@ -23,6 +23,7 @@ class ApiUrls {
 
   //For Product
   static final String PRODUCT_DETAIL = ROOT_API_URL + "/products/";
+  static final String PRODUCT_SEARCH = ROOT_API_URL + "/product/search";
 
   //For
   static final String JOIN_PARLOR_PROFESSION = ROOT_API_URL + "/join-parlour-profession";

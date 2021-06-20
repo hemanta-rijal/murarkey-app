@@ -13,13 +13,15 @@ class BrandModel{
   final String imageUrl;
   final String caption;
   final String description;
+  final String slug;
 
   BrandModel({
     this.id,
     this.name,
     this.imageUrl,
     this.caption,
-    this.description
+    this.description,
+    this.slug
   });
 
   factory BrandModel.fromJson(Map<String, dynamic> json) =>

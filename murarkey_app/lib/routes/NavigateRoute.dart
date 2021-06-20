@@ -24,7 +24,7 @@ class NavigateRoute {
   static const String ADDRESS_SHIPPING_Edit = "EditShippingAddressWidget";
   static const String BOOK_APPOINTMENT = "BookAppontmentWidget";
   static const String SEARCH = "SearchWidget";
-  static const String PRODUCT_DETAIL ="ProductDetailWidget";
+  static const String PRODUCT_DETAIL = "ProductDetailWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -50,10 +50,12 @@ class NavigateRoute {
         Map<String, dynamic> arguments = args as Map;
         return _MaterialPageRoute(SearchWidget(
             categoryModelList: arguments["categoryModelList"],
-            brandModelList: arguments["brandModelList"]));
+            brandModelList: arguments["brandModelList"],
+            categoryModel: arguments["categoryModel"]));
       case PRODUCT_DETAIL:
         Map<String, dynamic> arguments = args as Map;
-        return _MaterialPageRoute(ProductDetailWidget(parlorModel: arguments["parlorModel"]));
+        return _MaterialPageRoute(
+            ProductDetailWidget(productModel: arguments["productDetailModel"]));
       default:
         LoginWidget();
       //   return _errorRoute();

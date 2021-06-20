@@ -74,12 +74,21 @@ abstract class ApiRequest extends Api {
 
   @override
   Future<Map<String, dynamic>> getData(
-      {String url, List<String> arguments, bool useToken}) async {
+      {String url,
+      Map<String, dynamic> queryParams,
+      List<String> arguments,
+      bool useToken}) async {
     super.getData();
     try {
       //for http url
       var full_url = ApiUrls.BASE_URL + url;
       print(full_url);
+
+      //params
+      if (queryParams != null) {
+        String queryString = Uri(queryParameters: queryParams).query;
+        url = url + "?" + queryString;
+      }
 
       //
       print("headers");

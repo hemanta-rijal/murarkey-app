@@ -18,6 +18,8 @@ ProductDetailModel _$ProductDetailModelFromJson(Map<String, dynamic> json) {
     images: (json['images'] as List)
         .map((e) => HomepageBannerModel.fromJson(e as Map<String, dynamic>))
         .toList(),
+    sku: json['sku'] as int,
+    category: CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
   );
 }
 
@@ -31,4 +33,6 @@ Map<String, dynamic> _$ProductDetailModelToJson(ProductDetailModel instance) =>
       'price': instance.price,
       'price_after_discount': instance.price_after_discount,
       'images': instance.images,
+      'sku': instance.sku,
+      'category': instance.category,
     };

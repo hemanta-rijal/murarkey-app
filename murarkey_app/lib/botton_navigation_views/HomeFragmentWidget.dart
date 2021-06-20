@@ -120,6 +120,14 @@ class _HomeFragmentWidgetState
               categoryModelList != null
                   ? ShopByCategoryWidget(
                       modelList: categoryModelList,
+                      onCallBack: (categoryModel) {
+                        Map<String, dynamic> arguments = new Map();
+                        arguments["categoryModelList"] = categoryModelList;
+                        arguments["brandModelList"] = brandModelList;
+                        arguments["categoryModel"] = categoryModel;
+                        NavigateRoute.pushNamedWithArguments(
+                            context, NavigateRoute.SEARCH, arguments);
+                      },
                     )
                   : Container(),
 
@@ -130,8 +138,8 @@ class _HomeFragmentWidgetState
                       onCallBack: (ParlorModel parlorModel) {
                         Map<String, dynamic> arguments = new Map();
                         arguments["parlorModel"] = parlorModel;
-                        NavigateRoute.pushNamedWithArguments(
-                            context, NavigateRoute.PRODUCT_DETAIL, arguments);
+                        // NavigateRoute.pushNamedWithArguments(
+                        //     context, NavigateRoute.PRODUCT_DETAIL, arguments);
                       },
                     )
                   : Container(),

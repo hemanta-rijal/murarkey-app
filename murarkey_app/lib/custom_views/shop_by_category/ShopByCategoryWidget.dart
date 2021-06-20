@@ -8,8 +8,9 @@ class ShopByCategoryWidget extends StatefulWidget {
   //1. list-of-horizontal-list-in-flutter
   //https://stackoverflow.com/questions/51089041/list-of-horizontal-list-in-flutter
   List<CategoryModel> modelList;
+  Function(CategoryModel) onCallBack;
 
-  ShopByCategoryWidget({Key key, @required this.modelList}) : super(key: key);
+  ShopByCategoryWidget({Key key, @required this.modelList, this.onCallBack}) : super(key: key);
 
   @override
   _ShopByCategoryWidgetState createState() => _ShopByCategoryWidgetState();
@@ -35,22 +36,27 @@ class _ShopByCategoryWidgetState extends State<ShopByCategoryWidget> {
 
     buildItems() {
       return widget.modelList.map((model) {
-        return Container(
-          width: _containerWidth + 16,
-          padding: EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Column(
-            children: [
-              loadImage(model.image_url),
-              SizedBox(height: 4),
-              Text(
-                model.name,
-                style: TextStyle(
-                  color: AppConstants.appColor.textColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: SizeConfig.textMultiplier * 1.4,
-                ),
-              )
-            ],
+        return InkResponse(
+          onTap: (){
+            widget.onCallBack(model);
+          },
+          child: Container(
+            width: _containerWidth + 16,
+            padding: EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Column(
+              children: [
+                loadImage(model.image_url),
+                SizedBox(height: 4),
+                Text(
+                  model.name,
+                  style: TextStyle(
+                    color: AppConstants.appColor.textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: SizeConfig.textMultiplier * 1.4,
+                  ),
+                )
+              ],
+            ),
           ),
         );
       }).toList();

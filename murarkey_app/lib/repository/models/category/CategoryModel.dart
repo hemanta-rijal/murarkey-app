@@ -5,22 +5,6 @@ part 'CategoryModel.g.dart';
  * Created by Suman Prasad Neupane on 6/13/2021.
  */
 
-//  "id": 1,
-//         "name": "Hair",
-//         "slug": "hair",
-//         "parent_id": null,
-//         "description": "This is hair",
-//         "_lft": 1,
-//         "_rgt": 2,
-//         "product_count": 0,
-//         "icon_path": "public/categories/mW2FT7MT1MscRbMy61ShYjRNrH9oOqmRQeGq55NC.svg",
-//         "image_path": "public/categories/xmnLKFy5HZMVormi22iMFlJF57E5d8xceHmmUYMd.jpg",
-//         "size_chart": null,
-//         "featured": 1,
-//         "icon_url": "http://newweb.murarkey.com/storage/categories/mW2FT7MT1MscRbMy61ShYjRNrH9oOqmRQeGq55NC.svg",
-//         "image_url": "http://newweb.murarkey.com/storage/categories/xmnLKFy5HZMVormi22iMFlJF57E5d8xceHmmUYMd.jpg",
-//         "children": []
-
 
 @JsonSerializable(nullable: false)
 class CategoryModel{

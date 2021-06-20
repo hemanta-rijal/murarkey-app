@@ -1,5 +1,6 @@
 import 'package:murarkey_app/custom_views/text_view/RichTextWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
+import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 /**
@@ -7,9 +8,10 @@ import 'package:murarkey_app/utils/Imports.dart';
  */
 
 class SearchItemWidget extends StatefulWidget {
-  final List<dynamic> modelList;
+  final List<ProductDetailModel> modelList;
+  final Function(ProductDetailModel) onCallback;
 
-  SearchItemWidget({Key key, @required this.modelList}) : super(key: key);
+  SearchItemWidget({Key key, @required this.modelList, this.onCallback}) : super(key: key);
 
   @override
   _SearchItemWidgetState createState() => _SearchItemWidgetState();
@@ -37,16 +39,16 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
       );
     }
 
-    buildItems(model) {
+    buildItems(ProductDetailModel model) {
       return Container(
           //height: _containerHeight,
           //width: _containerWidth + 16,
           child: Column(
         children: [
-          loadImage("http://murarkey.surge.sh/img/products/rustic8.jpg"),
+          loadImage(model.images[0].imageUrl),
           SizedBox(height: 4),
           Text(
-            "Towel",
+            model.category.name.toUpperCase(),
             style: TextStyle(
               color: AppConstants.appColor.greyColor,
               fontWeight: FontWeight.bold,
@@ -55,7 +57,7 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
           ),
           SizedBox(height: 2),
           Text(
-            "Rustic Art Juniper Lavender Shampoo For Men 175gms",
+            model.name,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppConstants.appColor.blackColor,
@@ -68,15 +70,16 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
           ),
           RichText(
             text: TextSpan(
-              text: "Rs 300 ",
+              text: "Rs " + model.price_after_discount.toString(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: AppConstants.appColor.primaryColor,
                 fontSize: SizeConfig.textMultiplier * 1.6,
               ),
               children: <TextSpan>[
+                TextSpan(text: " "),
                 TextSpan(
-                    text: "Rs 350",
+                    text: "Rs " + model.price.toString(),
                     style: TextStyle(
                       color: AppConstants.appColor.textColor3,
                       fontSize: SizeConfig.textMultiplier * 1.4,
@@ -110,7 +113,12 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
                       borderRadius: BorderRadius.circular(8)),
                   child: Container(
                     padding: EdgeInsets.all(4),
-                    child: buildItems(widget.modelList[position]),
+                    child: InkResponse(
+                      onTap: (){
+                        widget.onCallback(widget.modelList[position]);
+                      },
+                      child: buildItems(widget.modelList[position]),
+                    )
                   )));
         },
       ),

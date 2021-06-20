@@ -6,7 +6,29 @@ import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel
  */
 
 class ProductRequestApi extends ApiRequest {
-  //Login User
+  //Product List
+  Future<List<ProductDetailModel>> getProductList(
+      {String url, Map<String, dynamic> queryParams}) async {
+    List<ProductDetailModel> result = new List<ProductDetailModel>();
+
+    await this
+        .getData(url: url, queryParams: queryParams)
+        .then((Map<String, dynamic> value) => {
+              print("ProductDetailModel list"),
+              if (value != null)
+                {
+                  result = value["data"]
+                      .map((i) => ProductDetailModel.fromJson(i))
+                      .toList()
+                      .cast<ProductDetailModel>(),
+                }
+              else
+                {result = null}
+            });
+    return result;
+  }
+
+  //Product Detail
   Future<ProductDetailModel> getProductDetail({String url}) async {
     // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
     ProductDetailModel result = new ProductDetailModel();

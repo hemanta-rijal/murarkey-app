@@ -5,6 +5,7 @@ import 'package:murarkey_app/views/address/widgets/EditShippingAddressWidget.dar
 import 'file:///D:/Personal/Projects/murarkey-app/murarkey_app/lib/views/address/widgets/EditAddressWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
+import 'package:murarkey_app/views/order/place_order/PlaceOrderWidget.dart';
 import 'package:murarkey_app/views/product/ProductDetailWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
 import 'package:murarkey_app/views/search/SearchWidget.dart';
@@ -25,6 +26,7 @@ class NavigateRoute {
   static const String BOOK_APPOINTMENT = "BookAppontmentWidget";
   static const String SEARCH = "SearchWidget";
   static const String PRODUCT_DETAIL = "ProductDetailWidget";
+  static const String ORDER_PLACED_PRODUCTS = "PlaceOrderWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -56,6 +58,8 @@ class NavigateRoute {
         Map<String, dynamic> arguments = args as Map;
         return _MaterialPageRoute(
             ProductDetailWidget(productModel: arguments["productDetailModel"]));
+      case ORDER_PLACED_PRODUCTS:
+        return _MaterialPageRoute(PlaceOrderWidget());
       default:
         LoginWidget();
       //   return _errorRoute();

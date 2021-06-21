@@ -1,33 +1,29 @@
-import 'package:murarkey_app/botton_navigation_views/view_model/CardViewModel.dart';
-import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
-import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
-import 'package:murarkey_app/custom_views/buttons/FlatStatefulButton2.dart';
-import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
-import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/cart/CartModel.dart';
 import 'package:murarkey_app/repository/models/content/ContentCartModel.dart';
-import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
-import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/views/order/place_order/widgets/ShippingAndBillingWidget.dart';
 
-class CartFragmentWidget extends StatefulWidget {
+/**
+ * Created by Suman Prasad Neupane on 6/21/2021.
+ */
+
+class PlaceOrderWidget extends StatefulWidget {
   @override
-  _CartFragmentWidgetState createState() => _CartFragmentWidgetState();
+  _PlaceOrderWidgetState createState() => _PlaceOrderWidgetState();
 }
 
-class _CartFragmentWidgetState
-    extends CustomStatefulWidgetState<CartFragmentWidget> {
+class _PlaceOrderWidgetState
+    extends CustomStatefulWidgetState<PlaceOrderWidget> {
   Repository _repository = new Repository();
-  CardViewModel viewModel = new CardViewModel();
   CartModel cartModel = new CartModel();
   bool isTheirContentData = false;
   double _imageHeight = 88.0;
 
-  _CartFragmentWidgetState() {
+  _PlaceOrderWidgetState() {
     loadData();
   }
 
@@ -45,7 +41,7 @@ class _CartFragmentWidgetState
     if (cartModel != null) {
       print("CartFrag");
       if (cartModel.getContent().length > 0) {
-        viewModel.loadProductTextLists(cartModel.getContent());
+        //viewModel.loadProductTextLists(cartModel.getContent());
         isTheirContentData = true;
       } else {
         isTheirContentData = false;
@@ -53,32 +49,8 @@ class _CartFragmentWidgetState
     }
   }
 
-  pushItemData(ContentCartModel content, String noOfItems) async {
-    print("noOfItem= " + noOfItems);
-
-    Map<String, dynamic> params = new Map();
-    params["qty"] = noOfItems;
-
-    await _repository.productRequestApi
-        .updateToCard(
-          url: ApiUrls.CART + "/" + content.rowId,
-          params: params,
-        )
-        .then((value) => {
-              if (value != null)
-                {
-                  //if (value["status"] == true)
-                  // {
-                  loadData(),
-                  //  }
-                }
-            });
-  }
-
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
     final Size screenSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
 
@@ -87,58 +59,6 @@ class _CartFragmentWidgetState
         imgUrl,
         fit: BoxFit.cover,
         height: _imageHeight,
-      );
-    }
-
-    Widget addToCardWidget(ContentCartModel content, int index) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              flex: 1,
-              child: InkResponse(
-                child: svgImageAssert2(
-                    imgUrl: "images/maths/ic_sub.svg", size: 24),
-                onTap: () {
-                  setState(() {
-                    viewModel.productTextList[index].text = viewModel
-                        .subtract(viewModel.productTextList[index].text)
-                        .toString();
-
-                    pushItemData(
-                        content, viewModel.productTextList[index].text);
-                  });
-                },
-              )),
-          Expanded(
-            flex: 6,
-            child: Container(
-              margin: EdgeInsets.only(left: 4.0, right: 4.0),
-              child: textFieldDisableKeyboard(
-                fontSize: SizeConfig.textMultiplier * 1.6,
-                height: 24,
-                controller: viewModel.productTextList[index],
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: InkResponse(
-              child:
-                  svgImageAssert2(imgUrl: "images/maths/ic_add.svg", size: 24),
-              onTap: () {
-                setState(() {
-                  viewModel.productTextList[index].text = viewModel
-                      .add(viewModel.productTextList[index].text)
-                      .toString();
-
-                  pushItemData(content, viewModel.productTextList[index].text);
-                });
-              },
-            ),
-          ),
-        ],
       );
     }
 
@@ -176,8 +96,13 @@ class _CartFragmentWidgetState
                           color: AppConstants.appColor.blackColor,
                           textSize: 1.6,
                           fontWeight: FontWeight.normal),
-                      SizedBox(height: 8),
-                      addToCardWidget(content, index),
+                      SizedBox(height: 2),
+                      textView1(
+                          title: "Item: ${content.qty.toString()}",
+                          textAlign: TextAlign.start,
+                          color: AppConstants.appColor.blackColor,
+                          textSize: 1.6,
+                          fontWeight: FontWeight.normal),
                       SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -251,39 +176,21 @@ class _CartFragmentWidgetState
                   fontWeight: FontWeight.bold),
             ],
           ),
-          FlatStatefulButton(
-            text: "PROCEED TO CHECK OUT",
-            fontSize: SizeConfig.textMultiplier * 1.8,
-            textColor: AppConstants.appColor.accentColor,
-            padding: EdgeInsets.all(screenSize.width * .02),
-            backgroundColor: AppConstants.appColor.primaryColor,
-            buttonHeight: 40,
-            margin: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 16),
-            //buttonWidth: 100,
-            onPressedCallback: () {
-              NavigateRoute.pushNamed(
-                  context, NavigateRoute.ORDER_PLACED_PRODUCTS);
-            },
-          )
         ],
       );
     }
 
-    builder() {
+    buildView() {
       return Column(
         children: [
+          //Shipping and Billing
+          ShippingAndBillingWidget.get(),
           isTheirContentData == true ? horizontalList2 : Container(),
           alignBottom()
         ],
       );
     }
 
-    return renderWithAppBar(
-      appBarText: "Shopping List",
-      showBackbutton: false,
-      appBarTextAlignment: MainAxisAlignment.center,
-      childWidget: builder(),
-      //floatingActionButton: FBFloatingButton().fab(),
-    );
+    return renderWithAppBar(appBarText: "Your Order", childWidget: buildView());
   }
 }

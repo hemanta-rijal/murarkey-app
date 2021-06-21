@@ -28,4 +28,6 @@ class ApiUrls {
   //For
   static final String JOIN_PARLOR_PROFESSION = ROOT_API_URL + "/join-parlour-profession";
   static final String CART = ROOT_API_URL + "/cart";
+  static final String CART_LIST = ROOT_API_URL + "/cart";
+
 }

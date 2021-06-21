@@ -6,4 +6,6 @@ abstract class Api {
   Future<dynamic> getData() {}
 
   Future<dynamic> postData() {}
+
+  Future<dynamic> putData() {}
 }

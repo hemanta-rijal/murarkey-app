@@ -71,7 +71,10 @@ class _ProductDetailWidgetState
     Map<String, dynamic> options = new Map();
     options["image"] = productDetailModel.images[0].imageUrl;
 
-    params["options"] = options.toString(); //json.encode(options);
+    //params["options"] = //json.encode(options); //options.toString(); //
+    params["options"] = {
+      "image": productDetailModel.images[0].imageUrl
+    };
 
     await _repository.productRequestApi
         .addToCard(url: ApiUrls.CART, params: params)

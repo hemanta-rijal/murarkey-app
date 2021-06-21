@@ -8,9 +8,18 @@ import 'package:murarkey_app/utils/Imports.dart';
 class AppBarWidget extends StatefulWidget {
   double height;
   final String title;
+  bool showBackbutton;
+  MainAxisAlignment mainAxisAlignment;
 
-  AppBarWidget({this.title, double height}) {
+  AppBarWidget(
+      {this.title,
+      double height,
+      bool showBackbutton,
+      MainAxisAlignment mainAxisAlignment}) {
     this.height = height == null ? 56 : height;
+    this.showBackbutton = showBackbutton == null ? true : showBackbutton;
+    this.mainAxisAlignment =
+        mainAxisAlignment == null ? MainAxisAlignment.start : mainAxisAlignment;
   }
 
   @override
@@ -19,7 +28,6 @@ class AppBarWidget extends StatefulWidget {
 
 class _AppBarWidgetState extends State<AppBarWidget> {
   var _cardSize = 18.0;
-
 
   loadTitle(String text, double textSize) {
     return Text(text,
@@ -39,7 +47,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           size: _cardSize,
           color: AppConstants.appColor.accentColor,
         ),
-        onTap: (){
+        onTap: () {
           NavigateRoute.pop(context);
         },
       ),
@@ -54,9 +62,15 @@ class _AppBarWidgetState extends State<AppBarWidget> {
       alignment: Alignment.centerLeft,
       child: Row(
         children: [
-          loadImage(),
-          SizedBox(width: 8,),
-          loadTitle(widget.title, 2.0)
+          widget.showBackbutton ? loadImage() : Container(),
+          widget.showBackbutton ? SizedBox(width: 8) : Container(),
+          Expanded(
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: widget.mainAxisAlignment,
+              children: [loadTitle(widget.title, 2.0)],
+            ),
+          ),
         ],
       ),
     );

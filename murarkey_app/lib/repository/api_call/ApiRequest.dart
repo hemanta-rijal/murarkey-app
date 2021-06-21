@@ -146,6 +146,45 @@ abstract class ApiRequest extends Api {
       return null;
     }
   }
+
+  @override
+  Future<Map<String, dynamic>> putData(
+      {String url,
+        Map<String, dynamic> params,
+        List<String> arguments,
+        bool useToken}) async {
+    super.postData();
+    try {
+      // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
+
+      //for https url
+      var full_url = ApiUrls.BASE_URL + url;
+      //print(full_url);
+
+      // Body
+      var body = json.encode(params);
+      print(params);
+
+      //
+      print("headers");
+      var header = await _headers(useToken);
+      print(header);
+
+      // Post Http call
+      // Await the http get response, then decode the json-formatted response.
+      http.Response response = await http
+          .put(
+        full_url,
+        body: body,
+        headers: header,
+      )
+          .timeout(const Duration(seconds: 60));
+      return _parseData(response, url);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }
 
 //TODO: Image upload and multi form data

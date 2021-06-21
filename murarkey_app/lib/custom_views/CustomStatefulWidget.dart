@@ -14,32 +14,64 @@ class CustomStatefulWidgetState<T> extends State {
   }
 
   Widget renderWithAppBar(
-      {@required String appBarText, @required Widget childWidget}) {
-    return render(childWidget: Scaffold(
-      body: SafeArea(
-        child: new LayoutBuilder(builder:
-            (BuildContext context, BoxConstraints viewportConstraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(minHeight: viewportConstraints.maxHeight),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppBarWidget(
-                    title: appBarText,
-                  ),
-                  Container(
-                    // margin: EdgeInsets.all(8),
-                    child: childWidget,
-                  )
-                ],
+      {@required String appBarText,
+      @required Widget childWidget,
+      Widget floatingActionButton,
+      bool showBackbutton,
+      MainAxisAlignment appBarTextAlignment}) {
+    return render(
+      childWidget: Scaffold(
+        floatingActionButton: floatingActionButton,
+        body: SafeArea(
+          child: new LayoutBuilder(builder:
+              (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints:
+                    BoxConstraints(minHeight: viewportConstraints.maxHeight),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppBarWidget(
+                      title: appBarText,
+                      showBackbutton: showBackbutton,
+                      mainAxisAlignment: appBarTextAlignment,
+                    ),
+                    Container(
+                      // margin: EdgeInsets.all(8),
+                      child: childWidget,
+                    )
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
-    ));
+    );
+  }
+
+  Widget renderWithBotomView(
+      {@required String appBarText,
+      @required Widget childWidget,
+      Widget floatingActionButton,
+      bool showBackbutton,
+      MainAxisAlignment appBarTextAlignment}) {
+    return Material(
+        color: AppConstants.appColor.backgroundColor,
+        child: Scaffold(
+          body: Column(
+            children: [
+              AppBarWidget(
+                title: appBarText,
+                showBackbutton: showBackbutton,
+                mainAxisAlignment: appBarTextAlignment,
+              ),
+              childWidget,
+            ],
+          ),
+          floatingActionButton: floatingActionButton,
+        ));
   }
 
   Widget render({@required Widget childWidget, Widget floatingActionButton}) {

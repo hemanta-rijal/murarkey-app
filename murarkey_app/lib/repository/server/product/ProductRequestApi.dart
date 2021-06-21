@@ -1,4 +1,5 @@
 import 'package:murarkey_app/repository/api_call/ApiRequest.dart';
+import 'package:murarkey_app/repository/models/cart/CartModel.dart';
 import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
 
 /**
@@ -57,6 +58,43 @@ class ProductRequestApi extends ApiRequest {
               if (value != null)
                 {
                   result = value,
+                }
+              else
+                {result = null}
+            });
+    return result;
+  }
+
+  //Update to Card
+  Future<dynamic> updateToCard({String url, Map<String, dynamic> params}) async {
+    // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
+    var result;
+
+    await this
+        .putData(url: url, params: params, useToken: true)
+        .then((Map<String, dynamic> value) => {
+      print("updateToCard"),
+      if (value != null)
+        {
+          result = value,
+        }
+      else
+        {result = null}
+    });
+    return result;
+  }
+
+  //Product List
+  Future<CartModel> getCartList({String url}) async {
+    CartModel result = new CartModel();
+
+    await this
+        .getData(url: url, useToken: true)
+        .then((Map<String, dynamic> value) => {
+              print("CartModel list"),
+              if (value != null)
+                {
+                  result = CartModel.fromJson(value["data"]),
                 }
               else
                 {result = null}

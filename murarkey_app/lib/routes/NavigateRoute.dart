@@ -1,8 +1,8 @@
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/MainScreenWidget.dart';
+import 'package:murarkey_app/views/address/EditAddressWidget.dart';
 import 'package:murarkey_app/views/address/widgets/EditBillingAddressWidget.dart';
 import 'package:murarkey_app/views/address/widgets/EditShippingAddressWidget.dart';
-import 'file:///D:/Personal/Projects/murarkey-app/murarkey_app/lib/views/address/widgets/EditAddressWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
 import 'package:murarkey_app/views/order/place_order/PlaceOrderWidget.dart';
@@ -88,6 +88,6 @@ class NavigateRoute {
   }
 
   static String initialRoute() {
-    return NavigateRoute.LOGIN;
+    return NavigateRoute.HOME;
   }
 }

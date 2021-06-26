@@ -20,7 +20,8 @@ abstract class ApiRequest extends Api {
 
   Uri _getUrl(String urlPath) {
     if (ApiUrls.BASE_URL.contains("http")) {
-      return Uri.http(ApiUrls.BASE_URL.replaceAll("http://", "www."), urlPath,
+      //ApiUrls.BASE_URL.replaceAll("http://", "www.")
+      return Uri.http(ApiUrls.BASE_URL.replaceAll("http://", ""), urlPath,
           {'q': '{http}'});
     } else {
       return Uri.https(ApiUrls.BASE_URL.replaceAll("https://", "www."), urlPath,
@@ -98,7 +99,7 @@ abstract class ApiRequest extends Api {
       // Get Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
-          .get(full_url, headers: header)
+          .get(_getUrl(url), headers: header)
           .timeout(const Duration(seconds: 60));
       ;
       return _parseData(response, url);
@@ -110,6 +111,45 @@ abstract class ApiRequest extends Api {
 
   @override
   Future<Map<String, dynamic>> postData(
+      {String url,
+      Map<String, dynamic> params,
+      List<String> arguments,
+      bool useToken}) async {
+    super.postData();
+    try {
+      // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
+
+      //for https url
+      var full_url = ApiUrls.BASE_URL + url;
+      print(full_url);
+
+      // Body
+      var body = json.encode(params);
+      print(params);
+
+      //
+      print("headers");
+      var header = await _headers(useToken);
+      print(header);
+
+      // Post Http call
+      // Await the http get response, then decode the json-formatted response.
+      http.Response response = await http
+          .post(
+            _getUrl(url),
+            body: body,
+            headers: header,
+          )
+          .timeout(const Duration(seconds: 60));
+      return _parseData(response, url);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> putData(
       {String url,
       Map<String, dynamic> params,
       List<String> arguments,
@@ -134,50 +174,11 @@ abstract class ApiRequest extends Api {
       // Post Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
-          .post(
-            full_url,
+          .put(
+            _getUrl(url),
             body: body,
             headers: header,
           )
-          .timeout(const Duration(seconds: 60));
-      return _parseData(response, url);
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
-  @override
-  Future<Map<String, dynamic>> putData(
-      {String url,
-        Map<String, dynamic> params,
-        List<String> arguments,
-        bool useToken}) async {
-    super.postData();
-    try {
-      // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
-
-      //for https url
-      var full_url = ApiUrls.BASE_URL + url;
-      //print(full_url);
-
-      // Body
-      var body = json.encode(params);
-      print(params);
-
-      //
-      print("headers");
-      var header = await _headers(useToken);
-      print(header);
-
-      // Post Http call
-      // Await the http get response, then decode the json-formatted response.
-      http.Response response = await http
-          .put(
-        full_url,
-        body: body,
-        headers: header,
-      )
           .timeout(const Duration(seconds: 60));
       return _parseData(response, url);
     } catch (e) {

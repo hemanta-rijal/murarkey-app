@@ -33,6 +33,14 @@ class ApiUrls {
   static final String CART = ROOT_API_URL + "/cart";
   static final String CART_LIST = ROOT_API_URL + "/cart";
 
+  //For Payment
   static final String PAYMENT_METHODS = ROOT_API_URL + "/payment_methods";
 
+  //For Address
+  static final String COUNTRY_LIST = ROOT_API_URL + "/countries";
+
+  //http://newweb.murarkey.com/api//my-account/shipping-details
+  //For Payment Card Address
+  static final String PAYMENT_BILLING_ADDRESS = ROOT_API_URL + "/my-account/billing-details";
+  static final String PAYMENT_SHIPPING_ADDRESS = ROOT_API_URL + "/my-account/shipment-details";
 }

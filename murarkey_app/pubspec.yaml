@@ -42,7 +42,7 @@ dependencies:
   url_launcher: ^6.0.6
 
   # it easy to consume HTTP resources
-  http: ^0.12.2
+  http: ^0.13.0
 
   #json serialization library
   json_annotation: ^3.1.1
@@ -50,6 +50,8 @@ dependencies:
 
   # persistent storage for simple data
   shared_preferences: 2.0.6
+
+  image_picker: ^0.8.1+1
 
 dev_dependencies:
   flutter_test:

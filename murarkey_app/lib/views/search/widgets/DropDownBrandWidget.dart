@@ -35,7 +35,12 @@ Widget dropDownBrand(
               onChanged: (changedValue) {
                 onChange.call(changedValue);
               },
-            ));
+              hint: Padding(
+                padding: EdgeInsets.all(8),
+                child: _textView("\t-- Select Brand--"),
+              ),
+            ),
+        );
       }));
 }
 

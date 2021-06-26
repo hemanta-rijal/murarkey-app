@@ -1,3 +1,4 @@
+import 'package:murarkey_app/repository/models/country_list/CountryModel.dart';
 import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/themes/AppTheme.dart';
 import 'package:murarkey_app/themes/colors/AppColor.dart';
@@ -14,6 +15,7 @@ class AppConstants {
 
 class GlobalData {
   static UserModel userModel = new UserModel();
+  static List<CountryModel> countryListModel = new List();
 }
 
 class _Constants {

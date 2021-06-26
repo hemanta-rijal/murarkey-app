@@ -1,13 +1,13 @@
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
-import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
+import 'package:murarkey_app/repository/models/country_list/CountryModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 /**
  * Created by Suman Prasad Neupane on 6/19/2021.
  */
 
-Widget dropDownCategory(
-    {@required List<CategoryModel> modelList,
+Widget dropDownCountryWidget(
+    {@required List<CountryModel> modelList,
     @required value,
     margin,
     @required Function(dynamic) onChange}) {
@@ -21,26 +21,27 @@ Widget dropDownCategory(
       ),
       child: StatefulBuilder(builder: (context, setState) {
         return new DropdownButtonHideUnderline(
-            child: new DropdownButton(
-          items: modelList.map<DropdownMenuItem<CategoryModel>>((model) {
-            return new DropdownMenuItem<CategoryModel>(
-              value: model,
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: _textView(model.name),
-              ),
-            );
-          }).toList(),
-          value: value,
-          isExpanded: true,
-          onChanged: (changedValue) {
-            onChange.call(changedValue);
-          },
-          hint: Padding(
-            padding: EdgeInsets.all(8),
-            child: _textView("\t-- Select Category--"),
+          child: new DropdownButton(
+            items: modelList.map<DropdownMenuItem<CountryModel>>((model) {
+              return new DropdownMenuItem<CountryModel>(
+                value: model,
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: _textView(model.name),
+                ),
+              );
+            }).toList(),
+            value: value,
+            isExpanded: true,
+            onChanged: (changedValue) {
+              onChange.call(changedValue);
+            },
+            hint: Padding(
+              padding: EdgeInsets.all(8),
+              child: _textView("\t-- Select Country--"),
+            ),
           ),
-        ));
+        );
       }));
 }
 

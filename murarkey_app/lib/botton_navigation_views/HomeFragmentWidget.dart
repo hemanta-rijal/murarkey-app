@@ -87,6 +87,15 @@ class _HomeFragmentWidgetState
                   print(GlobalData.userModel.name),
                 }
             });
+
+    await _repository.addressApi
+        .getCountryList(url: ApiUrls.COUNTRY_LIST)
+        .then((value) => {
+              if (value != null)
+                {
+                  GlobalData.countryListModel = value,
+                }
+            });
   }
 
   @override

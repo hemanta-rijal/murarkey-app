@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:murarkey_app/repository/models/payment_card_address/PaymentCardAddresModel.dart';
 
 part 'UserModel.g.dart';
 
@@ -15,6 +16,8 @@ class UserModel{
   final String phone;
   final String profileImage;
   final String joined_on;
+  final PaymentCardAddresModel billing_details;
+  final PaymentCardAddresModel shipment_details;
 
   UserModel({
     this.id,
@@ -23,7 +26,9 @@ class UserModel{
     this.email,
     this.phone,
     this.profileImage,
-    this.joined_on
+    this.joined_on,
+    this.billing_details,
+    this.shipment_details
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

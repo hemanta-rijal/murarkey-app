@@ -1,6 +1,7 @@
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
+import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/address/view_model/EditAddressViewModel.dart';
@@ -17,6 +18,16 @@ class EditAddressWidget extends StatefulWidget {
 class _EditAddressWidgetState
     extends CustomStatefulWidgetState<EditAddressWidget> {
   EditAddressViewModel viewModel = new EditAddressViewModel();
+  UserModel userModel = GlobalData.userModel;
+  String name = "";
+
+  _EditAddressWidgetState() {
+    name = userModel != null
+        ? userModel.name != null
+            ? userModel.name
+            : ""
+        : "";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,34 +82,39 @@ class _EditAddressWidgetState
 
     void redirect(String type) {
       if (type == viewModel.Billing_Address) {
-        NavigateRoute.pushNamed(context, NavigateRoute.ADDRESS_BILLING_Edit);
+        NavigateRoute.pushNamed(
+            context, NavigateRoute.ADDRESS_BILLING_Edit);
       }
       if (type == viewModel.Shipping_Address) {
-        NavigateRoute.pushNamed(context, NavigateRoute.ADDRESS_SHIPPING_Edit);
+        NavigateRoute.pushNamed(
+            context, NavigateRoute.ADDRESS_SHIPPING_Edit);
       }
     }
 
     Widget buildView() {
-      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SizedBox(
-          height: 16,
+      return Container(
+        margin: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            addressForm(
+                title: viewModel.Billing_Address,
+                name: name,
+                callback: (type) {
+                  redirect(type);
+                }),
+            SizedBox(
+              height: 16,
+            ),
+            addressForm(
+                title: viewModel.Shipping_Address,
+                name: name,
+                callback: (type) {
+                  redirect(type);
+                }),
+          ],
         ),
-        addressForm(
-            title: viewModel.Billing_Address,
-            name: "Ram Prasad Sitaula",
-            callback: (type) {
-              redirect(type);
-            }),
-        SizedBox(
-          height: 16,
-        ),
-        addressForm(
-            title: viewModel.Shipping_Address,
-            name: "Ram Prasad Sitaula",
-            callback: (type) {
-              redirect(type);
-            }),
-      ]);
+      );
     }
 
     return renderWithAppBar(

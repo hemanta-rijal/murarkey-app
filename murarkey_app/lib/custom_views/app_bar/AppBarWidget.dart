@@ -16,7 +16,7 @@ class AppBarWidget extends StatefulWidget {
       double height,
       bool showBackbutton,
       MainAxisAlignment mainAxisAlignment}) {
-    this.height = height == null ? 56 : height;
+    this.height = height == null ? 46 : height;
     this.showBackbutton = showBackbutton == null ? true : showBackbutton;
     this.mainAxisAlignment =
         mainAxisAlignment == null ? MainAxisAlignment.start : mainAxisAlignment;

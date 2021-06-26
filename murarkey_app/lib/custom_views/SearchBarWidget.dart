@@ -13,8 +13,9 @@ class SearchBarWidget extends StatelessWidget {
     SizeConfig().init(context);
 
     return Container(
+      height: 48,
       color: AppConstants.appColor.primaryColor,
-      padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 8.0, bottom: 12.0),
+      padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 2.0, bottom: 6.0),
       child: TextField(
           onChanged: onTextChange,
           onTap: onTap,

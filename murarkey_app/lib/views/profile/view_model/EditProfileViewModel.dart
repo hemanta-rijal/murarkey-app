@@ -5,9 +5,9 @@ import 'package:murarkey_app/utils/Imports.dart';
  */
 
 class EditProfileViewModel {
-  final TextEditingController formFirstName = new TextEditingController();
-  final TextEditingController formLastName = new TextEditingController();
+  final TextEditingController formName = new TextEditingController();
   final TextEditingController formEmail = new TextEditingController();
+  final TextEditingController formPhoneNo = new TextEditingController();
   final TextEditingController formCurrentPass = new TextEditingController();
   final TextEditingController formNewPass = new TextEditingController();
   final TextEditingController formConfirmPass = new TextEditingController();

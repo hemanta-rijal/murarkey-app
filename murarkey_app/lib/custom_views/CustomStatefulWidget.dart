@@ -37,10 +37,11 @@ class CustomStatefulWidgetState<T> extends State {
                       showBackbutton: showBackbutton,
                       mainAxisAlignment: appBarTextAlignment,
                     ),
-                    Container(
-                      // margin: EdgeInsets.all(8),
-                      child: childWidget,
-                    )
+                    childWidget,
+                    // Container(
+                    //   // margin: EdgeInsets.all(8),
+                    //   child: childWidget,
+                    // )
                   ],
                 ),
               ),

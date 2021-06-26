@@ -1,6 +1,8 @@
 import 'package:murarkey_app/repository/server/auth_request/AuthApiRequest.dart';
 import 'package:murarkey_app/repository/server/home_page/HomeApiRequest.dart';
 import 'package:murarkey_app/repository/server/others/JoinProfessionalApi.dart';
+import 'package:murarkey_app/repository/server/others/PaymentWithApi.dart';
+import 'package:murarkey_app/repository/server/others/UserApiRequest.dart';
 import 'package:murarkey_app/repository/server/product/ProductRequestApi.dart';
 import 'package:murarkey_app/repository/share_preferences/LocalSharePref.dart';
 import 'package:murarkey_app/repository/share_preferences/UserTokenPref.dart';
@@ -14,6 +16,8 @@ class Repository {
   AuthApiRequest authApiRequest = new AuthApiRequest();
   ProductRequestApi productRequestApi = new ProductRequestApi();
   JoinProfessionalApi joinProfessionalApi = new JoinProfessionalApi();
+  PaymentWithApi paymentWithApi = new PaymentWithApi();
+  UserApiRequest userApiRequest = new UserApiRequest();
 
   //Local Storage
   UserTokenPref userTokenPref = new UserTokenPref();

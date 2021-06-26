@@ -119,51 +119,72 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
                   _search();
                 }),
             SizedBox(
-              height: 12,
+              height: 4,
             ),
             Container(
               margin: EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //Filter by Brands
-                  textView1(
-                      title: "Brands",
-                      textSize: 2.0,
-                      textAlign: TextAlign.start,
-                      color: AppConstants.appColor.blackColor,
-                      fontWeight: FontWeight.bold),
-                  dropDownBrand(
-                      margin: EdgeInsets.only(top: 4.0),
-                      modelList: widget.brandModelList,
-                      value: viewModel.brandValue,
-                      onChange: (value) {
-                        setState(() {
-                          viewModel.brandValue = widget.brandModelList[
-                              widget.brandModelList.indexOf(value)];
-                          _search();
-                        });
-                      }),
-                  SizedBox(
-                    height: 16,
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //Filter by Brands
+                            textView1(
+                                title: "Brands",
+                                textSize: 2.0,
+                                textAlign: TextAlign.start,
+                                color: AppConstants.appColor.blackColor,
+                                fontWeight: FontWeight.bold),
+                            dropDownBrand(
+                                margin: EdgeInsets.only(top: 4.0),
+                                modelList: widget.brandModelList,
+                                value: viewModel.brandValue,
+                                onChange: (value) {
+                                  setState(() {
+                                    viewModel.brandValue = widget
+                                            .brandModelList[
+                                        widget.brandModelList.indexOf(value)];
+                                    _search();
+                                  });
+                                }),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //Filter by Category
+                            textView1(
+                                title: "Category",
+                                textSize: 2.0,
+                                textAlign: TextAlign.start,
+                                color: AppConstants.appColor.blackColor,
+                                fontWeight: FontWeight.bold),
+                            dropDownCategory(
+                                margin: EdgeInsets.only(top: 4.0),
+                                modelList: widget.categoryModelList,
+                                value: viewModel.categoryValue,
+                                onChange: (value) {
+                                  setState(() {
+                                    viewModel.categoryValue =
+                                        widget.categoryModelList[widget
+                                            .categoryModelList
+                                            .indexOf(value)];
+                                  });
+                                }),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                  //Filter by Category
-                  textView1(
-                      title: "Category",
-                      textSize: 2.0,
-                      textAlign: TextAlign.start,
-                      color: AppConstants.appColor.blackColor,
-                      fontWeight: FontWeight.bold),
-                  dropDownCategory(
-                      margin: EdgeInsets.only(top: 4.0),
-                      modelList: widget.categoryModelList,
-                      value: viewModel.categoryValue,
-                      onChange: (value) {
-                        setState(() {
-                          viewModel.categoryValue = widget.categoryModelList[
-                              widget.categoryModelList.indexOf(value)];
-                        });
-                      }),
                   SizedBox(
                     height: 16,
                   ),

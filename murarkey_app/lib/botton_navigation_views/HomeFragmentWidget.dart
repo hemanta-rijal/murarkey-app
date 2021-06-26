@@ -77,6 +77,16 @@ class _HomeFragmentWidgetState
               brandModelList = value,
               this.setState(() {}),
             });
+
+    await _repository.userApiRequest
+        .getMyDetails(url: ApiUrls.ABOUT_ME)
+        .then((value) => {
+              if (value != null)
+                {
+                  GlobalData.userModel = value,
+                  print(GlobalData.userModel.name),
+                }
+            });
   }
 
   @override

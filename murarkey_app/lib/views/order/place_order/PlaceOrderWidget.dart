@@ -1,10 +1,15 @@
+import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
+import 'package:murarkey_app/custom_views/dialogs/AlertDialogWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/cart/CartModel.dart';
 import 'package:murarkey_app/repository/models/content/ContentCartModel.dart';
+import 'package:murarkey_app/repository/models/user/UserModel.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/views/order/place_order/widgets/PaymentCardWidget.dart';
 import 'package:murarkey_app/views/order/place_order/widgets/ShippingAndBillingWidget.dart';
 
 /**
@@ -20,6 +25,9 @@ class _PlaceOrderWidgetState
     extends CustomStatefulWidgetState<PlaceOrderWidget> {
   Repository _repository = new Repository();
   CartModel cartModel = new CartModel();
+  UserModel userModel = new UserModel();
+  var paywith;
+
   bool isTheirContentData = false;
   double _imageHeight = 88.0;
 
@@ -34,6 +42,31 @@ class _PlaceOrderWidgetState
               cartModel = value,
               loadContent(),
               this.setState(() {}),
+            });
+
+    await _repository.userApiRequest
+        .getMyDetails(url: ApiUrls.ABOUT_ME)
+        .then((value) => {
+              if (value != null)
+                {
+                  userModel = value,
+                  print(userModel.name)
+                }
+            });
+
+    await _repository.paymentWithApi
+        .getPaymentList(url: ApiUrls.PAYMENT_METHODS)
+        .then((value) => {
+              if (value != null)
+                {
+                  if (value["status"] == 200)
+                    {
+                      paywith = value,
+                      print("getPaymentList"),
+                      print(paywith),
+                    },
+                  this.setState(() {}),
+                }
             });
   }
 
@@ -180,13 +213,80 @@ class _PlaceOrderWidgetState
       );
     }
 
+    paymentDialog(int position) {
+      return AlertDialogWidget.showAlertDialog(
+        context: context,
+        title: "Pay with ${paywith["data"][position]["name"]}",
+        message:
+            "Are you sure you want to pay with ${paywith["data"][position]["name"]}",
+        okText: "Continue",
+        cancelText: "Cancel",
+        okCallback: () {
+          Navigator.pop(context);
+          Commons.toastMessage(context, "Your order is placed successfully.");
+        },
+        cancleCallback: () {
+          Navigator.pop(context);
+        },
+      );
+    }
+
+    payWithGridView() {
+      var _crossAxisCount = 3;
+      double _crossAxisSpacing = 8, _mainAxisSpacing = 12, _aspectRatio = 1;
+      var width =
+          (screenSize.width - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
+              _crossAxisCount;
+      var height = width / _aspectRatio;
+      var _cardSize = 32.0;
+
+      return Container(
+        margin: EdgeInsets.only(top: 32, left: 8, right: 8),
+        child: Column(
+          children: [
+            UnderlinedTextViewWidget(title: "Pay With"),
+            SizedBox(height: 12),
+            GridView.builder(
+              shrinkWrap: true,
+              // new line
+              //physics: NeverScrollableScrollPhysics(),
+              itemCount: paywith["data"].length, //widget.iconLists.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: _crossAxisCount,
+                  crossAxisSpacing: _crossAxisSpacing,
+                  mainAxisSpacing: _mainAxisSpacing,
+                  childAspectRatio: _aspectRatio),
+              itemBuilder: (context, position) {
+                return Container(
+                    padding: EdgeInsets.all(4),
+                    child: Column(
+                      children: [
+                        PaymentCardWidget(
+                          imageSrc: paywith["data"][position]["imageUrl"],
+                          onCallback: () {
+                            paymentDialog(position);
+                          },
+                        ),
+                      ],
+                    ));
+              },
+            )
+          ],
+        ),
+      );
+    }
+
     buildView() {
       return Column(
         children: [
           //Shipping and Billing
           ShippingAndBillingWidget.get(),
           isTheirContentData == true ? horizontalList2 : Container(),
-          alignBottom()
+          alignBottom(),
+
+          //TODO Pay with
+          //http://newweb.murarkey.com/api/payment_methods?fbclid=IwAR1nmL9SlG9Pi-XOpdmW6pMifFhq45hLtkaBD6lz6GGKW4WdKIibG2JKkWs
+          (paywith != null) ? payWithGridView() : Container(),
         ],
       );
     }

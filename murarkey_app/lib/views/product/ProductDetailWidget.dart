@@ -72,9 +72,7 @@ class _ProductDetailWidgetState
     options["image"] = productDetailModel.images[0].imageUrl;
 
     //params["options"] = //json.encode(options); //options.toString(); //
-    params["options"] = {
-      "image": productDetailModel.images[0].imageUrl
-    };
+    params["options"] = {"image": productDetailModel.images[0].imageUrl};
 
     await _repository.productRequestApi
         .addToCard(url: ApiUrls.CART, params: params)
@@ -165,27 +163,38 @@ class _ProductDetailWidgetState
                 //Product Sku
                 SizedBox(height: 4),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: productDetailModel != null
-                            ? productDetailModel.price_after_discount.toString()
-                            : "0",
+                        text: "Price: ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: AppConstants.appColor.primaryLightColor,
-                          fontSize: SizeConfig.textMultiplier * 2.4,
+                          color: AppConstants.appColor.primaryDarkColor,
+                          fontSize: SizeConfig.textMultiplier * 1.6,
                         ),
                         children: <TextSpan>[
                           TextSpan(
+                            text: productDetailModel != null
+                                ? "Rs " +
+                                    productDetailModel.price_after_discount
+                                        .toString()
+                                : "Rs 0",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.appColor.primaryLightColor,
+                              fontSize: SizeConfig.textMultiplier * 1.55,
+                            ),
+                          ),
+                          TextSpan(text: " "),
+                          TextSpan(
                               text: productDetailModel != null
-                                  ? productDetailModel.price.toString()
-                                  : "0",
+                                  ? "Rs " + productDetailModel.price.toString()
+                                  : "Rs 0",
                               style: TextStyle(
                                 color: AppConstants.appColor.greyColor,
-                                fontSize: SizeConfig.textMultiplier * 2.0,
+                                fontSize: SizeConfig.textMultiplier * 1.55,
                                 decoration: TextDecoration.lineThrough,
                                 decorationThickness: 1.2,
                                 decorationColor: AppConstants.appColor.redColor,
@@ -201,6 +210,9 @@ class _ProductDetailWidgetState
                 ProductToCardWidget(
                   title: "Add to Cart",
                   viewModel: viewModel,
+                  price: productDetailModel != null
+                      ? productDetailModel.price_after_discount
+                      : 0,
                   addToCard: () {
                     _addToCard();
                   },

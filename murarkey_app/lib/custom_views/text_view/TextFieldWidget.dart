@@ -4,7 +4,8 @@ import 'package:murarkey_app/utils/Imports.dart';
 /**
  * Created by Suman Prasad Neupane on 5/20/2021.
  */
-textField1({String hint, @required controller, margin}) {
+textField1({String hint, @required controller, margin, keyboardType}) {
+  keyboardType = keyboardType == null? TextInputType.text: keyboardType;
   return Container(
     //width: double.infinity,
     margin: margin,
@@ -17,7 +18,7 @@ textField1({String hint, @required controller, margin}) {
       padding: EdgeInsets.only(left: 8),
       child: TextField(
           controller: controller,
-          keyboardType: TextInputType.number,
+          keyboardType: keyboardType,
           textAlign: TextAlign.left,
           style: TextStyle(
               fontSize: SizeConfig.textMultiplier * 2.0,

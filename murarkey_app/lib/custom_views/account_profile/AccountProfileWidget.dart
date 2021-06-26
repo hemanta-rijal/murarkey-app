@@ -1,13 +1,16 @@
+import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 /**
  * Created by Suman Prasad Neupane on 5/17/2021.
  */
 class AccountProfileWidget extends StatefulWidget {
-  var model;
+  UserModel model;
   Function onTapCallback;
 
-  AccountProfileWidget({Key key, @required this.model, this.onTapCallback}) : super(key: key);
+  AccountProfileWidget({Key key, @required this.model, this.onTapCallback})
+      : super(key: key);
 
   @override
   _AccountProfileWidgetState createState() => _AccountProfileWidgetState();
@@ -20,21 +23,25 @@ class _AccountProfileWidgetState extends State<AccountProfileWidget> {
 
     loadImage(String imgUrl) {
       return Center(
-          child: Column(children: <Widget>[
-        Container(
-          width: _cardSize,
-          height: _cardSize,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image:
-                DecorationImage(image: NetworkImage(imgUrl), fit: BoxFit.fill),
-          ),
-        ),
-      ]));
+        child: Column(children: <Widget>[
+          imgUrl != null
+              ? Container(
+                  width: _cardSize,
+                  height: _cardSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: NetworkImage(imgUrl), fit: BoxFit.fill),
+                  ),
+                )
+              : svgImageAssert2(
+                  imgUrl: "images/ic_profile.svg", size: _cardSize),
+        ]),
+      );
     }
 
     loadUserName(String text, double textSize) {
-      return Text(text,
+      return Text(text != null? text: "",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: SizeConfig.textMultiplier * textSize,
@@ -65,20 +72,21 @@ class _AccountProfileWidgetState extends State<AccountProfileWidget> {
                   margin: EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      loadImage(widget.model["imgUrl"]),
+                      loadImage(widget.model.profileImage),
                       SizedBox(width: 8),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           loadUserName(
-                              widget.model["firstName"] +
-                                  " " +
-                                  widget.model["lastName"],
-                              2.0),
+                            widget.model != null ? widget.model.name : "",
+                            2.0,
+                          ),
                           SizedBox(height: 4),
                           loadBalance(
-                              "Balance: Rs. " + widget.model["balance"], 1.6),
+                            "Balance: ",
+                            1.6,
+                          ),
                         ],
                       ),
                       SizedBox(height: 16),
@@ -96,7 +104,7 @@ class _AccountProfileWidgetState extends State<AccountProfileWidget> {
                           size: 18,
                           color: AppConstants.appColor.accentColor,
                         ),
-                        onTap: (){
+                        onTap: () {
                           widget.onTapCallback.call();
                         },
                       ),

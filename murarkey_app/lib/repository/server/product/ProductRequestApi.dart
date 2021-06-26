@@ -66,21 +66,22 @@ class ProductRequestApi extends ApiRequest {
   }
 
   //Update to Card
-  Future<dynamic> updateToCard({String url, Map<String, dynamic> params}) async {
+  Future<dynamic> updateToCard(
+      {String url, Map<String, dynamic> params}) async {
     // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
     var result;
 
     await this
         .putData(url: url, params: params, useToken: true)
         .then((Map<String, dynamic> value) => {
-      print("updateToCard"),
-      if (value != null)
-        {
-          result = value,
-        }
-      else
-        {result = null}
-    });
+              print("updateToCard"),
+              if (value != null)
+                {
+                  result = value,
+                }
+              else
+                {result = null}
+            });
     return result;
   }
 
@@ -92,6 +93,7 @@ class ProductRequestApi extends ApiRequest {
         .getData(url: url, useToken: true)
         .then((Map<String, dynamic> value) => {
               print("CartModel list"),
+              print(value),
               if (value != null)
                 {
                   result = CartModel.fromJson(value["data"]),

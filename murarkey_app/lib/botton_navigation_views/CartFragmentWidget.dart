@@ -12,6 +12,7 @@ import 'package:murarkey_app/repository/models/cart/CartModel.dart';
 import 'package:murarkey_app/repository/models/content/ContentCartModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class CartFragmentWidget extends StatefulWidget {
@@ -35,9 +36,12 @@ class _CartFragmentWidgetState
     await _repository.productRequestApi
         .getCartList(url: ApiUrls.CART)
         .then((value) => {
-              cartModel = value,
-              loadContent(),
-              this.setState(() {}),
+              if (value != null)
+                {
+                  cartModel = value,
+                  loadContent(),
+                  this.setState(() {}),
+                }
             });
   }
 
@@ -46,7 +50,11 @@ class _CartFragmentWidgetState
       print("CartFrag");
       if (cartModel.getContent().length > 0) {
         viewModel.loadProductTextLists(cartModel.getContent());
-        isTheirContentData = true;
+        if (cartModel.getContent() != null) {
+          isTheirContentData = true;
+        } else {
+          isTheirContentData = false;
+        }
       } else {
         isTheirContentData = false;
       }
@@ -90,6 +98,7 @@ class _CartFragmentWidgetState
       );
     }
 
+//https://stackoverflow.com/questions/52645944/flutter-expanded-vs-flexible
     Widget addToCardWidget(ContentCartModel content, int index) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -261,8 +270,12 @@ class _CartFragmentWidgetState
             margin: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 16),
             //buttonWidth: 100,
             onPressedCallback: () {
-              NavigateRoute.pushNamed(
-                  context, NavigateRoute.ORDER_PLACED_PRODUCTS);
+              if (isTheirContentData == true && cartModel != null) {
+                NavigateRoute.pushNamed(
+                    context, NavigateRoute.ORDER_PLACED_PRODUCTS);
+              } else {
+                Commons.toastMessage(context, "Their is no order to shop");
+              }
             },
           )
         ],
@@ -270,12 +283,23 @@ class _CartFragmentWidgetState
     }
 
     builder() {
-      return Column(
-        children: [
-          isTheirContentData == true ? horizontalList2 : Container(),
-          alignBottom()
-        ],
-      );
+      return isTheirContentData == true
+          ? Column(
+              children: [horizontalList2, alignBottom()],
+            )
+          : Container(
+              margin: EdgeInsets.only(top: 60),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "images/cart/ic_empty_cart.png",
+                    height: 300,
+                    width: 300,
+                  ),
+                ],
+              ),
+            );
     }
 
     return renderWithAppBar(

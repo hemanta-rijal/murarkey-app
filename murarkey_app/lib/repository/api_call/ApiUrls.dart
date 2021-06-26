@@ -16,6 +16,9 @@ class ApiUrls {
   static final String LOGIN_URL = ROOT_API_URL + "/auth/login";
   static final String REGISTER_URL = ROOT_API_URL + "/auth/register";
 
+  //For User
+  static final String ABOUT_ME = ROOT_API_URL + "/me";
+
   static final String HOME_PAGE_BANNER_URL = ROOT_API_URL + "/banners/homepage-1";
   static final String CATEGORY_URL = ROOT_API_URL + "/categories";
   static final String PARLOR_URL = ROOT_API_URL + "/featured-parlours";
@@ -29,5 +32,7 @@ class ApiUrls {
   static final String JOIN_PARLOR_PROFESSION = ROOT_API_URL + "/join-parlour-profession";
   static final String CART = ROOT_API_URL + "/cart";
   static final String CART_LIST = ROOT_API_URL + "/cart";
+
+  static final String PAYMENT_METHODS = ROOT_API_URL + "/payment_methods";
 
 }

@@ -14,12 +14,14 @@ import 'package:murarkey_app/views/product/view_model/ProductDetailViewModel.dar
 class ProductToCardWidget extends StatefulWidget {
   final String title;
   final ProductDetailViewModel viewModel;
+  final int price;
   final Function() addToCard;
 
   ProductToCardWidget({
     Key key,
     @required this.title,
     @required this.viewModel,
+    @required this.price,
     this.addToCard,
   }) : super(key: key);
 
@@ -33,6 +35,27 @@ class _ProductToCardWidgetState extends State<ProductToCardWidget> {
     final screenSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
 
+    Widget totalPriceView() {
+      return RichText(
+        text: TextSpan(
+          text: "Total: ",
+          style: TextStyle(
+              color: AppConstants.appColor.primaryDarkColor,
+              fontSize: SizeConfig.textMultiplier * 1.7,
+              fontWeight: FontWeight.bold),
+          children: <TextSpan>[
+            TextSpan(
+                text: "Rs ${widget.viewModel.count * widget.price}",
+                style: TextStyle(
+                  color: AppConstants.appColor.textColor3,
+                  fontSize: SizeConfig.textMultiplier * 1.7,
+                )),
+          ],
+        ),
+        textAlign: TextAlign.right,
+      );
+    }
+
     return Container(
       width: double.infinity,
       child: Card(
@@ -43,13 +66,24 @@ class _ProductToCardWidgetState extends State<ProductToCardWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //Product Title
-              textView1(
-                  title: widget.title,
-                  textAlign: TextAlign.start,
-                  color: AppConstants.appColor.blackColor,
-                  textSize: 2.2,
-                  fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: //Product Title
+                        textView1(
+                            title: widget.title,
+                            textAlign: TextAlign.start,
+                            color: AppConstants.appColor.blackColor,
+                            textSize: 2.2,
+                            fontWeight: FontWeight.bold),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: totalPriceView(),
+                  )
+                ],
+              ),
 
               //Calculator
               SizedBox(height: 20),

@@ -85,6 +85,29 @@ class _ProductDetailWidgetState
             });
   }
 
+  _saveToWishList() async {
+    //Add product
+    Map<String, dynamic> params = new Map();
+    params["product_id"] = productDetailModel.id.toString();
+    params["qty"] = viewModel.count.toString();
+
+    Map<String, dynamic> options = new Map();
+    options["image"] = productDetailModel.images[0].imageUrl;
+
+    //params["options"] = //json.encode(options); //options.toString(); //
+    params["options"] = {"image": productDetailModel.images[0].imageUrl};
+
+    await _repository.wishlistRequestApi
+        .addToWishlist(url: ApiUrls.ADD_TO_WISHLIST, params: params)
+        .then((value) => {
+      if (value != null)
+        {
+          Commons.toastMessage(context, value["message"]),
+        },
+      this.setState(() {}),
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -215,6 +238,9 @@ class _ProductDetailWidgetState
                       : 0,
                   addToCard: () {
                     _addToCard();
+                  },
+                  saveToWishlist: (){
+                    _saveToWishList();
                   },
                 ),
 

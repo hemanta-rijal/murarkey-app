@@ -23,3 +23,14 @@ svgImageAssert2({String imgUrl, double size}){
     height: size,
   );
 }
+
+svgImageAssert3({String imgUrl, color,  double size}){
+  color = color ?? AppConstants.appColor.whiteColor;
+
+  return SvgPicture.asset(
+    imgUrl,
+    color: color,
+    width: size,
+    height: size,
+  );
+}

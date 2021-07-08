@@ -15,12 +15,8 @@ import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
-import 'package:murarkey_app/repository/server/home_page/HomeApiRequest.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
-import '../repository/api_call/ApiRequest.dart';
-import '../repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/utils/Imports.dart';
-import 'package:murarkey_app/utils/open_social_media/OpenFacebookApp.dart';
 
 class HomeFragmentWidget extends StatefulWidget {
   //https://stackoverflow.com/questions/50250789/expanded-widgets-must-be-placed-inside-flex-widgets
@@ -32,70 +28,14 @@ class HomeFragmentWidget extends StatefulWidget {
 class _HomeFragmentWidgetState
     extends CustomStatefulWidgetState<HomeFragmentWidget> {
   Repository _repository = new Repository();
-  List<HomepageBannerModel> bannerModelList;
-  List<CategoryModel> categoryModelList;
-  List<ParlorModel> parlorModelList;
-  List<BrandModel> brandModelList;
+  List<HomepageBannerModel> bannerModelList = GlobalData.bannerModelList;
+  List<CategoryModel> categoryModelList = GlobalData.categoryModelList;
+  List<ParlorModel> parlorModelList = GlobalData.parlorModelList;
+  List<BrandModel> brandModelList = GlobalData.brandModelList;
 
   @override
   void initState() {
     super.initState();
-    loadData();
-  }
-
-  loadData() async {
-    //Get all api request here
-
-    // Get home page banners list
-    await _repository.homeApiRequest
-        .getBanner(url: ApiUrls.HOME_PAGE_BANNER_URL)
-        .then((value) => {
-              bannerModelList = value,
-              this.setState(() {}),
-            });
-
-    // Get category list
-    await _repository.homeApiRequest
-        .getCategory(url: ApiUrls.CATEGORY_URL)
-        .then((value) => {
-              categoryModelList = value,
-              this.setState(() {}),
-            });
-
-    // Get parlor list
-    await _repository.homeApiRequest
-        .getParlor(url: ApiUrls.PARLOR_URL)
-        .then((value) => {
-              parlorModelList = value,
-              this.setState(() {}),
-            });
-
-    // Get Brand list
-    await _repository.homeApiRequest
-        .getBrand(url: ApiUrls.BRAND_URL)
-        .then((value) => {
-              brandModelList = value,
-              this.setState(() {}),
-            });
-
-    await _repository.userApiRequest
-        .getMyDetails(url: ApiUrls.ABOUT_ME)
-        .then((value) => {
-              if (value != null)
-                {
-                  GlobalData.userModel = value,
-                  print(GlobalData.userModel.name),
-                }
-            });
-
-    await _repository.addressApi
-        .getCountryList(url: ApiUrls.COUNTRY_LIST)
-        .then((value) => {
-              if (value != null)
-                {
-                  GlobalData.countryListModel = value,
-                }
-            });
   }
 
   @override

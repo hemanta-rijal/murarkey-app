@@ -22,10 +22,14 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       widget.models.map((model) => model.widgetView);
 
   navigationItemList() => widget.models
-      .map((model) => BottomNavigationBarItem(
-          icon: Icon(model.icon),
+      .map(
+        (model) => BottomNavigationBarItem(
+          icon: model.icon != null ? Icon(model.icon) : model.svgIcon,
           label: model.title,
-          backgroundColor: AppConstants.appColor.primaryColor))
+          activeIcon: model.svgIcon != null ? model.svgActiveIcon : null,
+          backgroundColor: AppConstants.appColor.primaryColor,
+        ),
+      )
       .toList();
 
   @override
@@ -43,6 +47,8 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
           unselectedItemColor: AppConstants.appColor.whiteColor,
           backgroundColor: AppConstants.appColor.primaryColor,
           onTap: _onItemTapped,
+          iconSize: 22,
+          elevation: 4,
         ),
       ),
     );
@@ -52,8 +58,18 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 class BottomNavigationModel {
   String title;
   IconData icon;
+  Widget svgIcon;
+  Widget svgActiveIcon;
   Widget widgetView;
 
-  BottomNavigationModel(
-      {@required this.title, @required this.icon, @required this.widgetView});
+  //if you use svg image then pass
+  //svgIcon and svgActiveIcon images
+  //and icon = null
+  BottomNavigationModel({
+    @required this.title,
+    @required this.icon,
+    @required this.widgetView,
+    this.svgIcon,
+    this.svgActiveIcon,
+  });
 }

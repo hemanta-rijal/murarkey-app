@@ -11,6 +11,7 @@ class AppColor {
   final Color primaryDarkColor = new Color(0x37173d).withOpacity(1.0);
   final Color primaryColor = new Color(0x37173d).withOpacity(1.0);
   final Color primaryLightColor = new Color(0x623f68).withOpacity(1.0);
+  final Color primaryLightColor2 = new Color(0xceb3d6).withOpacity(1.0);
 
   final Color accentColor = new Color(0xe7ab3c).withOpacity(1.0);
   final Color textColor = new Color(0x150018).withOpacity(1.0);
@@ -31,4 +32,7 @@ class AppColor {
 
   final Color gradientColor1 = new Color(0x4d118b).withOpacity(1.0);
   final Color gradientColor2 = new Color(0x342879).withOpacity(1.0);
+
+  final Color greenColor = new Color(0x21a179).withOpacity(1.0);
+  final Color greenLightColor = new Color(0x56b799).withOpacity(1.0);
 }

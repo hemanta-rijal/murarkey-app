@@ -28,10 +28,16 @@ class ApiUrls {
   static final String PRODUCT_DETAIL = ROOT_API_URL + "/products/";
   static final String PRODUCT_SEARCH = ROOT_API_URL + "/product/search";
 
+  //For our services
+  static final String OUR_SERVICES = ROOT_API_URL + "/services";
+
   //For
   static final String JOIN_PARLOR_PROFESSION = ROOT_API_URL + "/join-parlour-profession";
   static final String CART = ROOT_API_URL + "/cart";
   static final String CART_LIST = ROOT_API_URL + "/cart";
+
+  static final String ADD_TO_WISHLIST = ROOT_API_URL + "/wishlist";
+  static final String GET_ALL_WISHLIST = ROOT_API_URL + "/wishlist";
 
   //For Payment
   static final String PAYMENT_METHODS = ROOT_API_URL + "/payment_methods";
@@ -43,4 +49,7 @@ class ApiUrls {
   //For Payment Card Address
   static final String PAYMENT_BILLING_ADDRESS = ROOT_API_URL + "/my-account/billing-details";
   static final String PAYMENT_SHIPPING_ADDRESS = ROOT_API_URL + "/my-account/shipment-details";
+
+  //For Payment Esewa
+  static final String PAYMENT_ESWEA_CALLACK = BASE_URL + ROOT_API_URL + "/payment_verify";
 }

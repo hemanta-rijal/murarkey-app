@@ -1,14 +1,17 @@
+import 'package:murarkey_app/custom_views/loader/Loader2Widget.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/MainScreenWidget.dart';
 import 'package:murarkey_app/views/address/EditAddressWidget.dart';
 import 'package:murarkey_app/views/address/widgets/EditBillingAddressWidget.dart';
 import 'package:murarkey_app/views/address/widgets/EditShippingAddressWidget.dart';
+import 'package:murarkey_app/views/app_loader/AppLoaderWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
 import 'package:murarkey_app/views/order/place_order/PlaceOrderWidget.dart';
 import 'package:murarkey_app/views/product/ProductDetailWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
 import 'package:murarkey_app/views/search/SearchWidget.dart';
+import 'package:murarkey_app/views/wallet/WalletWidget.dart';
 
 class NavigateRoute {
   //1.
@@ -27,6 +30,8 @@ class NavigateRoute {
   static const String SEARCH = "SearchWidget";
   static const String PRODUCT_DETAIL = "ProductDetailWidget";
   static const String ORDER_PLACED_PRODUCTS = "PlaceOrderWidget";
+  static const String MY_WALLET = "WalletWidget";
+  static const String APP_LOADER = "AppLoaderWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -34,6 +39,8 @@ class NavigateRoute {
     switch (settings.name) {
       case LOGIN:
         return _MaterialPageRoute(LoginWidget());
+      case APP_LOADER:
+        return _MaterialPageRoute(AppLoaderWidget());
       case REGISTER:
         return _MaterialPageRoute(RegisterWidget());
       case HOME:
@@ -60,6 +67,8 @@ class NavigateRoute {
             ProductDetailWidget(productModel: arguments["productDetailModel"]));
       case ORDER_PLACED_PRODUCTS:
         return _MaterialPageRoute(PlaceOrderWidget());
+      case MY_WALLET:
+        return _MaterialPageRoute(WalletWidget());
       default:
         LoginWidget();
       //   return _errorRoute();
@@ -88,6 +97,6 @@ class NavigateRoute {
   }
 
   static String initialRoute() {
-    return NavigateRoute.HOME;
+    return NavigateRoute.APP_LOADER;
   }
 }

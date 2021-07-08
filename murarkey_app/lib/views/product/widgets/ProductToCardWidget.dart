@@ -16,6 +16,7 @@ class ProductToCardWidget extends StatefulWidget {
   final ProductDetailViewModel viewModel;
   final int price;
   final Function() addToCard;
+  final Function() saveToWishlist;
 
   ProductToCardWidget({
     Key key,
@@ -23,6 +24,7 @@ class ProductToCardWidget extends StatefulWidget {
     @required this.viewModel,
     @required this.price,
     this.addToCard,
+    this.saveToWishlist,
   }) : super(key: key);
 
   @override
@@ -160,7 +162,7 @@ class _ProductToCardWidgetState extends State<ProductToCardWidget> {
                 boderColor: AppConstants.appColor.redColor,
                 //buttonWidth: 100,
                 onPressedCallback: () {
-                  Commons.toastMessage(context, "Saved to Wishlist");
+                  widget.saveToWishlist();
                 },
               ),
             ],

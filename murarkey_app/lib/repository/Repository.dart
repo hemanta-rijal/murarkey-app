@@ -6,6 +6,7 @@ import 'package:murarkey_app/repository/server/others/PaymentWithApi.dart';
 import 'package:murarkey_app/repository/server/others/UserApiRequest.dart';
 import 'package:murarkey_app/repository/server/payment_card_address/PaymentCardAddressApi.dart';
 import 'package:murarkey_app/repository/server/product/ProductRequestApi.dart';
+import 'package:murarkey_app/repository/server/product/WishlistRequestApi.dart';
 import 'package:murarkey_app/repository/share_preferences/LocalSharePref.dart';
 import 'package:murarkey_app/repository/share_preferences/UserTokenPref.dart';
 
@@ -22,6 +23,7 @@ class Repository {
   UserApiRequest userApiRequest = new UserApiRequest();
   PaymentCardAddressApi paymentCardAddressApi = new PaymentCardAddressApi();
   AddressApi addressApi = new AddressApi();
+  WishlistRequestApi wishlistRequestApi = new WishlistRequestApi();
 
   //Local Storage
   UserTokenPref userTokenPref = new UserTokenPref();

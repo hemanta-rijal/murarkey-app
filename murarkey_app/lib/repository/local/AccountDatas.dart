@@ -38,4 +38,51 @@ class AccountDatas{
   static var countryList =  ["Nepal", "India", "China"];
 
   static var zoneList =  ["Lumbini", "Gandakhi", "Koshi"];
+
+  static var myMalletList = [
+    {
+      "sn": "1011",
+      "date": "29,June-2021",
+      "amount": "5000",
+      "type": "Credit",
+      "accumulated": "NRP. 5000",
+      "remarks": "Loaded Successfully",
+      "status": "success",
+      "payment": "eSewa",
+      "imageUrl": "http://newweb.murarkey.com/frontend/img/esewa.png"
+    },
+    {
+      "sn": "1012",
+      "date": "29,June-2021",
+      "amount": "5000",
+      "type": "Debit",
+      "accumulated": "NRP. 5000",
+      "remarks": "Loaded Successfully",
+      "status": "success",
+      "payment": "Wallet",
+      "imageUrl": "http://newweb.murarkey.com/frontend/img/wallet.png"
+    },
+    {
+      "sn": "1013",
+      "date": "29,June-2021",
+      "amount": "999.9",
+      "type": "Credit",
+      "accumulated": "NRP. 0",
+      "remarks": "Loaded UnSuccessfully",
+      "status": "Failure",
+      "payment": "Wallet",
+      "imageUrl": "http://newweb.murarkey.com/frontend/img/wallet.png"
+    },
+    {
+      "sn": "1014",
+      "date": "29,June-2021",
+      "amount": "5000",
+      "type": "Credit",
+      "accumulated": "NRP. 5000",
+      "remarks": "Loaded Successfully",
+      "status": "success",
+      "payment": "eSewa",
+      "imageUrl": "http://newweb.murarkey.com/frontend/img/esewa.png"
+    },
+  ];
 }

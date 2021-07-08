@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/app_bar/AppBarWidget.dart';
+import 'package:murarkey_app/custom_views/image_picker/ImagePickerWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
@@ -23,6 +27,7 @@ class _EditProfileWidgetState
   final EditProfileViewModel viewModel = new EditProfileViewModel();
   final UserModel userModel = GlobalData.userModel;
   var _cardSize = 68.0;
+  PickedFile imagePickedFile = null;
 
   _EditProfileWidgetState() {
     if (userModel != null) {
@@ -49,8 +54,19 @@ class _EditProfileWidgetState
                         image: NetworkImage(imgUrl), fit: BoxFit.fill),
                   ),
                 )
-              : svgImageAssert2(
-                  imgUrl: "images/ic_profile.svg", size: _cardSize),
+              : imagePickedFile == null
+                  ? svgImageAssert2(
+                      imgUrl: "images/ic_profile.svg", size: _cardSize)
+                  : Container(
+                      width: _cardSize,
+                      height: _cardSize,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: FileImage(File(imagePickedFile.path)),
+                            fit: BoxFit.fill),
+                      ),
+                    ),
         ]),
       );
     }
@@ -67,7 +83,18 @@ class _EditProfileWidgetState
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  loadImage(userModel.profileImage),
+                  InkResponse(
+                    child: loadImage(userModel.profileImage),
+                    onTap: () async {
+                      PickedFile p =
+                          await ImagePickerWidget.loadFromGallery(context);
+                      if (p != null) {
+                        setState(() {
+                          imagePickedFile = p;
+                        });
+                      }
+                    },
+                  )
                 ],
               ),
               SizedBox(height: 8),
@@ -95,8 +122,7 @@ class _EditProfileWidgetState
                   margin: EdgeInsets.only(top: 8.0)),
 
               //Phone No.
-              textView1(
-                  title: "Phone No.", margin: EdgeInsets.only(top: 16)),
+              textView1(title: "Phone No.", margin: EdgeInsets.only(top: 16)),
               textField1(
                   controller: viewModel.formPhoneNo,
                   keyboardType: TextInputType.number,

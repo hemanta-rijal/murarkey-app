@@ -4,6 +4,7 @@ import 'package:murarkey_app/custom_views/account_profile/AccountProfileWidget.d
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 class AccountFragmentWidget extends StatefulWidget {
@@ -20,8 +21,14 @@ class _AccountFragmentWidgetState
     onTapGridItem(model, index) {
       if (index == 0) {
         print(model);
+      } else if (index == 0) {
+        Commons.toastMessage(context, "Comming soon");
       } else if (index == 1) {
         NavigateRoute.pushNamed(context, NavigateRoute.ADDRESS_Edit);
+      } else if (index == 2) {
+        NavigateRoute.pushNamed(context, NavigateRoute.MY_WALLET);
+      } else if (index == 3) {
+        Commons.toastMessage(context, "Comming soon");
       } else if (index == 4) {
         NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
       }

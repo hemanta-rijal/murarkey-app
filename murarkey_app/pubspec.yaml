@@ -43,6 +43,7 @@ dependencies:
 
   # it easy to consume HTTP resources
   http: ^0.13.0
+  http_parser: ^4.0.0
 
   #json serialization library
   json_annotation: ^3.1.1
@@ -52,6 +53,14 @@ dependencies:
   shared_preferences: 2.0.6
 
   image_picker: ^0.8.1+1
+
+  # esewa payment
+  esewa_pnp: 1.0.4
+
+  # loading indicators
+  flutter_spinkit: "^4.1.2"
+
+  # todo end of dependencies
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +85,7 @@ flutter:
     - images/arrows/
     - images/maths/
     - images/cart/
+    - images/money/
   #     - images/app_logo.jpg
   #     - images/a_dot_ham.jpeg
 

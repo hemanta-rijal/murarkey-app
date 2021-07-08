@@ -12,8 +12,8 @@ part 'CartModel.g.dart';
 @JsonSerializable(nullable: false)
 class CartModel {
   var total;
-  final String tax;
-  final String subTotal;
+  var tax;
+  var subTotal;
   final int shippingAmount;
   final Map<String, ContentCartModel> content;
 

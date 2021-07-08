@@ -54,6 +54,18 @@ flutter {
     source '../..'
 }
 
+//repositories {
+//    mavenCentral()
+//    flatDir {
+//        dirs 'libs'
+//    }
+//}
+
 dependencies {
+    //implementation (name: "eSewaSdk", ext: "aar")
+    //implementation fileTree(dir: 'libs', include: ['*.aar'])
+    //implementation fileTree(dir: 'esewa_pnp', include: ['*.jar'])
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //implementation(name:'C:\\src\\flutter_windows_2.2.1-stable\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\esewa_pnp-1.0.4\\android\\libs\\eSewaSdk', ext:'aar')
 }

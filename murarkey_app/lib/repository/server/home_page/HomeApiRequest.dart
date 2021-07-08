@@ -2,6 +2,7 @@ import 'package:murarkey_app/repository/api_call/ApiRequest.dart';
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
+import 'package:murarkey_app/repository/models/our_services/OurServicesModel.dart';
 import 'dart:convert';
 
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
@@ -84,6 +85,25 @@ class HomeApiRequest extends ApiRequest {
                   .map((i) => BrandModel.fromJson(i))
                   .toList()
                   .cast<BrandModel>(),
+            }
+          else
+            {result = null}
+        });
+    return result;
+  }
+
+  // Get brand list
+  Future<List<OurServicesModel>> getOurServices({String url}) async {
+    List<OurServicesModel> result = new List<OurServicesModel>();
+
+    await this.getData(url: url).then((Map<String, dynamic> value) => {
+          print("OurServices"),
+          if (value != null)
+            {
+              result = value["data"]
+                  .map((i) => OurServicesModel.fromJson(i))
+                  .toList()
+                  .cast<OurServicesModel>(),
             }
           else
             {result = null}

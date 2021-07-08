@@ -1,9 +1,11 @@
 import 'dart:convert' as convert;
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:murarkey_app/repository/api_call/Api.dart';
-import 'package:murarkey_app/repository/share_preferences/LocalSharePref.dart';
 import 'package:murarkey_app/repository/share_preferences/UserTokenPref.dart';
+import 'package:murarkey_app/utils/Imports.dart';
 import 'ApiUrls.dart';
 
 /**
@@ -18,11 +20,11 @@ abstract class ApiRequest extends Api {
     _sharePref = new UserTokenPref();
   }
 
-  Uri _getUrl(String urlPath) {
+  Uri _getUrl(String urlPath, {Map<String, dynamic> queryString}) {
     if (ApiUrls.BASE_URL.contains("http")) {
       //ApiUrls.BASE_URL.replaceAll("http://", "www.")
-      return Uri.http(ApiUrls.BASE_URL.replaceAll("http://", ""), urlPath,
-          {'q': '{http}'});
+      return Uri.http(
+          ApiUrls.BASE_URL.replaceAll("http://", ""), urlPath, queryString);
     } else {
       return Uri.https(ApiUrls.BASE_URL.replaceAll("https://", "www."), urlPath,
           {'q': '{http}'});
@@ -64,15 +66,16 @@ abstract class ApiRequest extends Api {
     }
   }
 
-  _saveUserToken(Map<String, dynamic> jsonResponse, String url) {
+  _saveUserToken(Map<String, dynamic> jsonResponse, String url) async {
     if (url == ApiUrls.LOGIN_URL) {
       _sharePref.setTokenType(jsonResponse["token_type"]);
       _sharePref.setUserToken(jsonResponse["access_token"]);
 
-      _sharePref.getUserToken().then((value) => {print("useToken " + value)});
+      await _sharePref.getUserToken().then((value) => {print("useToken " + value)});
     }
   }
 
+  //TODO GET
   @override
   Future<Map<String, dynamic>> getData(
       {String url,
@@ -82,14 +85,9 @@ abstract class ApiRequest extends Api {
     super.getData();
     try {
       //for http url
-      var full_url = ApiUrls.BASE_URL + url;
+      var full_url = _getUrl(url, queryString: queryParams);
+      print("url= ");
       print(full_url);
-
-      //params
-      if (queryParams != null) {
-        String queryString = Uri(queryParameters: queryParams).query;
-        url = url + "?" + queryString;
-      }
 
       //
       print("headers");
@@ -99,7 +97,7 @@ abstract class ApiRequest extends Api {
       // Get Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
-          .get(_getUrl(url), headers: header)
+          .get(full_url, headers: header)
           .timeout(const Duration(seconds: 60));
       ;
       return _parseData(response, url);
@@ -109,6 +107,7 @@ abstract class ApiRequest extends Api {
     }
   }
 
+  //TODO POST
   @override
   Future<Map<String, dynamic>> postData(
       {String url,
@@ -127,8 +126,7 @@ abstract class ApiRequest extends Api {
       var body = json.encode(params);
       print(params);
 
-      //
-      print("headers");
+      //Header
       var header = await _headers(useToken);
       print(header);
 
@@ -148,6 +146,7 @@ abstract class ApiRequest extends Api {
     }
   }
 
+  //TODO PUT
   @override
   Future<Map<String, dynamic>> putData(
       {String url,
@@ -160,14 +159,12 @@ abstract class ApiRequest extends Api {
 
       //for https url
       var full_url = ApiUrls.BASE_URL + url;
-      //print(full_url);
 
       // Body
       var body = json.encode(params);
       print(params);
 
-      //
-      print("headers");
+      //Header
       var header = await _headers(useToken);
       print(header);
 
@@ -185,6 +182,37 @@ abstract class ApiRequest extends Api {
       print(e);
       return null;
     }
+  }
+
+  @override
+  Future multipartData(
+      {String url,
+      String imagePath,
+      Map<String, dynamic> params,
+      bool useToken}) async {
+    super.multipartData();
+
+    //for https url
+    var postUri = _getUrl(url); //Uri.parse("<APIUrl>");
+
+    //Header
+    var header = await _headers(useToken);
+    print(header);
+
+    // Post Http call
+    // Await the http get response, then decode the json-formatted response.
+    var request = new http.MultipartRequest("POST", postUri);
+    request.headers.addAll(header);
+    request.fields.addAll(params);
+    request.files.add(new http.MultipartFile.fromBytes(
+        'file', await File(imagePath).readAsBytes(),
+        contentType: MediaType('image', 'jpeg')));
+
+    request.send().then((response) {
+      if (response.statusCode == 200) print("Uploaded!");
+    });
+
+    return null;
   }
 }
 

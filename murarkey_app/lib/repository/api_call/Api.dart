@@ -8,4 +8,6 @@ abstract class Api {
   Future<dynamic> postData() {}
 
   Future<dynamic> putData() {}
+
+  Future<dynamic> multipartData() {}
 }

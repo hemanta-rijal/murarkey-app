@@ -9,8 +9,8 @@ part of 'CartModel.dart';
 CartModel _$CartModelFromJson(Map<String, dynamic> json) {
   return CartModel(
     total: json['total'],
-    tax: json['tax'] as String,
-    subTotal: json['subTotal'] as String,
+    tax: json['tax'],
+    subTotal: json['subTotal'],
     shippingAmount: json['shippingAmount'] as int,
     content: (json['content'] as Map<String, dynamic>).map(
       (k, e) =>

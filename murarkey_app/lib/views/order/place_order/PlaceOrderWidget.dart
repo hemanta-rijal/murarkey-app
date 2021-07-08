@@ -9,6 +9,7 @@ import 'package:murarkey_app/repository/models/content/ContentCartModel.dart';
 import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/utils/payments/EsewaPayment.dart';
 import 'package:murarkey_app/views/order/place_order/widgets/PaymentCardWidget.dart';
 import 'package:murarkey_app/views/order/place_order/widgets/ShippingAndBillingWidget.dart';
 
@@ -223,7 +224,8 @@ class _PlaceOrderWidgetState
         cancelText: "Cancel",
         okCallback: () {
           Navigator.pop(context);
-          Commons.toastMessage(context, "Your order is placed successfully.");
+          EsewaPayment().init(context, 0.0);
+          //Commons.toastMessage(context, "Your order is placed successfully.");
         },
         cancleCallback: () {
           Navigator.pop(context);

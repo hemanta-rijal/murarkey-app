@@ -101,6 +101,7 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
       child: GridView.builder(
         shrinkWrap: true,
         itemCount: widget.modelList.length,
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: _crossAxisCount, childAspectRatio: _aspectRatio),
         itemBuilder: (context, position) {

@@ -14,6 +14,7 @@ import 'package:murarkey_app/repository/local/Datas.dart';
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
+import 'package:murarkey_app/repository/models/our_services/OurServicesModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -27,15 +28,18 @@ class HomeFragmentWidget extends StatefulWidget {
 
 class _HomeFragmentWidgetState
     extends CustomStatefulWidgetState<HomeFragmentWidget> {
-  Repository _repository = new Repository();
   List<HomepageBannerModel> bannerModelList = GlobalData.bannerModelList;
   List<CategoryModel> categoryModelList = GlobalData.categoryModelList;
   List<ParlorModel> parlorModelList = GlobalData.parlorModelList;
   List<BrandModel> brandModelList = GlobalData.brandModelList;
+  List<OurServicesModel> ourServicesModelList = GlobalData.ourServicesModelList;
 
   @override
   void initState() {
     super.initState();
+    // GlobalData.ourServicesModelList.forEach((e) {
+    //   ourServicesModelList.add(e);
+    // });
   }
 
   @override
@@ -71,9 +75,11 @@ class _HomeFragmentWidgetState
                   : Container(),
 
               //Our Services
-              OurServicesWidget(
-                iconLists: Datas.ourServicesList,
-              ),
+              ourServicesModelList != null
+                  ? OurServicesWidget(
+                      modelList: ourServicesModelList,
+                    )
+                  : Container(),
 
               //Shop by category
               categoryModelList != null
@@ -104,8 +110,8 @@ class _HomeFragmentWidgetState
                   : Container(),
 
               //Schedule Premium Service
-              SchedulePremiumServiceWidget(
-                  modelList: Datas.schedulePremiumList),
+              // SchedulePremiumServiceWidget(
+              //     modelList: Datas.schedulePremiumList),
 
               //Shop by Brands
               brandModelList != null

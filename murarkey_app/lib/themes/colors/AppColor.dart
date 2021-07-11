@@ -22,9 +22,10 @@ class AppColor {
   final Color buttonColor = new Color(0x37173d).withOpacity(0.8);
   final Color buttonColor2 = new Color(0x6e1d8a).withOpacity(1.0);
 
-  final Color backgroundColor = new Color(0xF9F9F9).withOpacity(1.0);
+  final Color backgroundColor = new Color(0xE6E6E6).withOpacity(1.0);
   final Color backgroundColor2 = new Color(0xe0e0e0).withOpacity(1.0);
   final Color greyColor = new Color(0x959595).withOpacity(1.0);
+  final Color greyColor2 = new Color(0xafb2b7).withOpacity(1.0);
 
   final Color blackColor = new Color(0x252525).withOpacity(1.0);
   final Color whiteColor = new Color(0xFFFFFF).withOpacity(1.0);

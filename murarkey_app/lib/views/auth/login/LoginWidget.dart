@@ -52,7 +52,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             .then((LoginModel value) => {
                   this.setState(() {
                     Commons.toastMessage(context, "Successfully login");
-                    NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);
+                    NavigateRoute.popAndPushNamed(context, NavigateRoute.APP_LOADER);
                   }),
                 });
       }

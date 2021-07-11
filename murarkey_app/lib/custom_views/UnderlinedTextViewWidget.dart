@@ -2,8 +2,9 @@ import 'package:murarkey_app/utils/Imports.dart';
 
 class UnderlinedTextViewWidget extends StatefulWidget {
   final String title;
+  final double fontSize;
 
-  UnderlinedTextViewWidget({Key key, this.title}): super(key: key);
+  UnderlinedTextViewWidget({Key key, this.title, this.fontSize =  2.0,}): super(key: key);
 
   @override
   _UnderlinedTextViewWidgetState createState() => _UnderlinedTextViewWidgetState();
@@ -21,7 +22,7 @@ class _UnderlinedTextViewWidgetState extends State<UnderlinedTextViewWidget> {
           widget.title,
           style: TextStyle(
             color: AppConstants.appColor.textColor,
-            fontSize: SizeConfig.textMultiplier * 2.0,
+            fontSize: SizeConfig.textMultiplier * widget.fontSize,
             fontWeight: FontWeight.bold,
           ),
         ),

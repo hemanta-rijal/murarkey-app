@@ -14,7 +14,7 @@ class ImageSliderWidget extends StatefulWidget {
       {Key key, @required this.bannerModelList, double bannerHeight})
       : super(key: key) {
     this.bannerHeight =
-        bannerHeight == null ? 120.0 : bannerHeight;
+        bannerHeight == null ? 140.0 : bannerHeight;
   }
 
   @override

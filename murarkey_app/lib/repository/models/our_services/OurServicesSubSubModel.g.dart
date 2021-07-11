@@ -1,27 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'OurServicesSubModel.dart';
+part of 'OurServicesSubSubModel.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-OurServicesSubModel _$OurServicesSubModelFromJson(Map<String, dynamic> json) {
-  return OurServicesSubModel(
+OurServicesSubSubModel _$OurServicesSubSubModelFromJson(
+    Map<String, dynamic> json) {
+  return OurServicesSubSubModel(
     id: json['id'],
     name: json['name'],
     icon: json['icon'],
-    services: (json['services'] as List)
-        .map((e) => OurServicesSubSubModel.fromJson(e as Map<String, dynamic>))
-        .toList(),
   );
 }
 
-Map<String, dynamic> _$OurServicesSubModelToJson(
-        OurServicesSubModel instance) =>
+Map<String, dynamic> _$OurServicesSubSubModelToJson(
+        OurServicesSubSubModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'icon': instance.icon,
-      'services': instance.services,
     };

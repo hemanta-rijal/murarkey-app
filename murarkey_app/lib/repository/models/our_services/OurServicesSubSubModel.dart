@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:murarkey_app/repository/models/our_services/OurServicesSubSubModel.dart';
 
-part 'OurServicesSubModel.g.dart';
+part 'OurServicesSubSubModel.g.dart';
 
 /**
  * Created by Suman Prasad Neupane on 7/8/2021.
@@ -10,21 +9,19 @@ part 'OurServicesSubModel.g.dart';
  */
 
 @JsonSerializable(nullable: false)
-class OurServicesSubModel{
+class OurServicesSubSubModel{
   var id;
   var name;
   var icon;
-  List<OurServicesSubSubModel> services;
 
-  OurServicesSubModel({
+  OurServicesSubSubModel({
     this.id,
     this.name,
     this.icon,
-    this.services
   });
 
-  factory OurServicesSubModel.fromJson(Map<String, dynamic> json) =>
-      _$OurServicesSubModelFromJson(json);
+  factory OurServicesSubSubModel.fromJson(Map<String, dynamic> json) =>
+      _$OurServicesSubSubModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$OurServicesSubModelToJson(this);
+  Map<String, dynamic> toJson() => _$OurServicesSubSubModelToJson(this);
 }

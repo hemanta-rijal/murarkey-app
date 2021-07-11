@@ -17,8 +17,18 @@ class CustomStatefulWidgetState<T> extends State {
       {@required String appBarText,
       @required Widget childWidget,
       Widget floatingActionButton,
+      Color backgroundColor,
+      Color backArrowColor,
+      Color textColor,
+      Widget widget,
       bool showBackbutton,
+      double backArrowSize,
+      double titleSize,
       MainAxisAlignment appBarTextAlignment}) {
+    if (widget == null) {
+      widget = Container();
+    }
+
     return render(
       childWidget: Scaffold(
         floatingActionButton: floatingActionButton,
@@ -36,6 +46,12 @@ class CustomStatefulWidgetState<T> extends State {
                       title: appBarText,
                       showBackbutton: showBackbutton,
                       mainAxisAlignment: appBarTextAlignment,
+                      backgroundColor: backgroundColor,
+                      backArrowColor: backArrowColor,
+                      textColor: textColor,
+                      backArrowSize: backArrowSize,
+                      titleSize: titleSize,
+                      widget: widget,
                     ),
                     childWidget,
                     // Container(
@@ -73,6 +89,43 @@ class CustomStatefulWidgetState<T> extends State {
           ),
           floatingActionButton: floatingActionButton,
         ));
+  }
+
+  Widget renderCustomUI({
+    @required Widget childWidget,
+    Widget floatingActionButton,
+  }) {
+    return render(
+      childWidget: Scaffold(
+        floatingActionButton: floatingActionButton,
+        body: SafeArea(
+          child: new LayoutBuilder(builder:
+              (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                ),
+                child: Container(
+                  child: childWidget,
+                )
+                //IntrinsicHeight(
+                //  child:
+                //   Column(
+                //     //mainAxisSize: MainAxisSize.min,
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       childWidget,
+                //     ],
+                //   ),
+                //),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
   }
 
   Widget render({@required Widget childWidget, Widget floatingActionButton}) {

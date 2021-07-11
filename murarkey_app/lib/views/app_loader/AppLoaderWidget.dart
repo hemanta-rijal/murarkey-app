@@ -129,6 +129,7 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
   Widget build(BuildContext context) {
 
     //After getting data delay for 5-6 sec
+    print("apiRequestCount ${apiRequestCount}");
     if (apiRequestCount == 0) {
       Future.delayed(Duration(milliseconds: 5000), () {
         NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);

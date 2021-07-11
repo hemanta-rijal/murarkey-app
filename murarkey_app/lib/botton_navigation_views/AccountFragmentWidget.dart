@@ -76,6 +76,6 @@ class _AccountFragmentWidgetState
 
     return render(
         childWidget: builder(), floatingActionButton: FBFloatingButton().fab());
-    return render(childWidget: builder());
+    //return render(childWidget: builder());
   }
 }

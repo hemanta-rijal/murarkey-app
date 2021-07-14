@@ -16,11 +16,13 @@ svgImageAssert({String imgUrl, color, }){
   );
 }
 
-svgImageAssert2({String imgUrl, double size}){
+svgImageAssert2({String imgUrl, double size, Color color}){
+  color = color == null? AppConstants.appColor.blackColor: color;
   return SvgPicture.asset(
     imgUrl,
     width: size,
     height: size,
+    color: color,
   );
 }
 

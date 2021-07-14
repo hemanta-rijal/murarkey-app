@@ -44,7 +44,7 @@ class _OurServicesItemWidgetState
 
     List<Widget> renderSubPageItems(int position) {
       List<Widget> widgetList = new List();
-      for (int i = 0; i < servicesList[position].services.length; i++) {
+      for (int i = 0; i < servicesList[position].child.length; i++) {
         widgetList.add(
           Container(
             child: Center(
@@ -62,7 +62,7 @@ class _OurServicesItemWidgetState
         widgetList.add(
           Container(
             child: ServicesSubItemTabViewWidget(
-              modelList: servicesList[i].services,
+              modelList: servicesList[i].child,
               pagesLists: renderSubPageItems(i),
             ),
           ),

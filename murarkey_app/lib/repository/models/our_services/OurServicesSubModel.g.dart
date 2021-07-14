@@ -11,7 +11,7 @@ OurServicesSubModel _$OurServicesSubModelFromJson(Map<String, dynamic> json) {
     id: json['id'],
     name: json['name'],
     icon: json['icon'],
-    services: (json['services'] as List)
+    child: (json['child'] as List)
         .map((e) => OurServicesSubSubModel.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
@@ -23,5 +23,5 @@ Map<String, dynamic> _$OurServicesSubModelToJson(
       'id': instance.id,
       'name': instance.name,
       'icon': instance.icon,
-      'services': instance.services,
+      'child': instance.child,
     };

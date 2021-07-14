@@ -89,64 +89,93 @@ class _ProductToCardWidgetState extends State<ProductToCardWidget> {
 
               //Calculator
               SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child: InkResponse(
-                        child: svgImageAssert2(
-                            imgUrl: "images/maths/ic_sub.svg", size: 35),
-                        onTap: () {
-                          setState(() {
-                            widget.viewModel.formAddToCardItem.text =
-                                widget.viewModel.subtract().toString();
-                          });
-                        },
-                      )),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      margin: EdgeInsets.only(left: 4.0, right: 4.0),
-                      child: textFieldDisableKeyboard(
-                        controller: widget.viewModel.formAddToCardItem,
+              Container(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: Border.all(
+                              width: 2, color: AppConstants.appColor.greyColor),
+                          borderRadius: BorderRadius.all(Radius.circular(2)),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: InkResponse(
+                                  child: svgImageAssert2(
+                                    imgUrl: "images/maths/ic_sub_2.svg",
+                                    size: 16,
+                                    color: AppConstants.appColor.greyColor,
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      widget.viewModel.formAddToCardItem.text =
+                                          widget.viewModel
+                                              .subtract()
+                                              .toString();
+                                    });
+                                  },
+                                )),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                                child: textFieldDisableKeyboard(
+                                  textAlign: TextAlign.center,
+                                  borderColor: AppConstants.appColor.whiteColor,
+                                  height: 30,
+                                  controller:
+                                      widget.viewModel.formAddToCardItem,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: InkResponse(
+                                child: svgImageAssert2(
+                                  imgUrl: "images/maths/ic_add_2.svg",
+                                  size: 16,
+                                  color: AppConstants.appColor.greyColor,
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    widget.viewModel.formAddToCardItem.text =
+                                        widget.viewModel.add().toString();
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkResponse(
-                      child: svgImageAssert2(
-                          imgUrl: "images/maths/ic_add.svg", size: 35),
-                      onTap: () {
-                        setState(() {
-                          widget.viewModel.formAddToCardItem.text =
-                              widget.viewModel.add().toString();
-                        });
-                      },
-                    ),
-                  ),
 
-                  // ADD
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                      margin: EdgeInsets.only(left: 16.0),
-                      child: FlatStatefulButton(
-                        text: "ADD",
-                        fontSize: SizeConfig.textMultiplier * 1.8,
-                        textColor: AppConstants.appColor.whiteColor,
-                        padding: EdgeInsets.all(screenSize.width * .02),
-                        backgroundColor: AppConstants.appColor.buttonColor,
-                        buttonHeight: 35,
-                        buttonCurve: 2.0,
-                        //buttonWidth: 100,
-                        onPressedCallback: () {
-                          widget.addToCard();
-                        },
+                    // ADD
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 16.0),
+                        child: FlatStatefulButton(
+                          text: "ADD",
+                          fontSize: SizeConfig.textMultiplier * 1.8,
+                          textColor: AppConstants.appColor.whiteColor,
+                          padding: EdgeInsets.all(screenSize.width * .02),
+                          backgroundColor: AppConstants.appColor.buttonColor3,
+                          buttonHeight: 35,
+                          buttonCurve: 2.0,
+                          //buttonWidth: 100,
+                          onPressedCallback: () {
+                            widget.addToCard();
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
               SizedBox(height: 16),

@@ -52,14 +52,14 @@ abstract class ApiRequest extends Api {
     return headers;
   }
 
-  Map<String, dynamic> _parseData(http.Response response, String url) {
+  Future<Map<String, dynamic>> _parseData(http.Response response, String url) async {
     if (response.statusCode == 200) {
       print(response.body);
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
       print(url);
       print(jsonResponse);
-      _saveUserToken(jsonResponse, url);
+      await _saveUserToken(jsonResponse, url);
       return jsonResponse;
     } else {
       print('Request failed with status: ${response.statusCode}.');
@@ -71,7 +71,7 @@ abstract class ApiRequest extends Api {
       _sharePref.setTokenType(jsonResponse["token_type"]);
       _sharePref.setUserToken(jsonResponse["access_token"]);
 
-      await _sharePref.getUserToken().then((value) => {print("useToken " + value)});
+      await _sharePref.getUserToken().then((value) => {print("useToken ${value}")});
     }
   }
 

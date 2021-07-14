@@ -57,7 +57,7 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
                 child: InkResponse(
                   onTap: () {
                     Map<String, dynamic> arguments = new Map();
-                    arguments["servicesSubModel"] = widget.modelList[position].services;
+                    arguments["servicesSubModel"] = widget.modelList[position].child;
                     arguments["title"] = widget.modelList[position].name;
                     NavigateRoute.pushNamedWithArguments(
                         context, NavigateRoute.OUR_SERVICES_ITEM, arguments);

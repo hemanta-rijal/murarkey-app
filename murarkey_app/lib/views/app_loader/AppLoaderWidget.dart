@@ -38,7 +38,7 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
     // Get our services list
     apiRequestCount++;
     _repository.homeApiRequest
-        .getOurServices(url: ApiUrls.OUR_SERVICES)
+        .getOurServices(url: ApiUrls.OUR_SERVICES_CATEGORIES)
         .then((value) =>
     {
       GlobalData.ourServicesModelList = value,

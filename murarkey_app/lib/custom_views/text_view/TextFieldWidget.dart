@@ -72,17 +72,18 @@ textField2({String hint, @required controller, margin}) {
   );
 }
 
-textFieldDisableKeyboard({String hint, @required controller, margin, double height, double fontSize}) {
+textFieldDisableKeyboard({String hint, @required controller, margin, Color borderColor, TextAlign textAlign, double height, double fontSize}) {
   height = height == null? 35: height;
   fontSize = fontSize == null? SizeConfig.textMultiplier * 2.0: fontSize;
-
+  borderColor = borderColor == null? AppConstants.appColor.greyColor: borderColor;
+  textAlign = textAlign == null? TextAlign.left: textAlign;
   return Container(
     height: height,
     //width: double.infinity,
     margin: margin,
     decoration: BoxDecoration(
       shape: BoxShape.rectangle,
-      border: Border.all(width: 1, color: AppConstants.appColor.greyColor),
+      border: Border.all(width: 1, color: borderColor),
       borderRadius: BorderRadius.all(Radius.circular(2)),
     ),
     child: Padding(
@@ -92,7 +93,7 @@ textFieldDisableKeyboard({String hint, @required controller, margin, double heig
           enabled: false,
           controller: controller,
           keyboardType: TextInputType.number,
-          textAlign: TextAlign.left,
+          textAlign: textAlign,
           style: TextStyle(
               fontSize: fontSize,
               color: AppConstants.appColor.textColor),

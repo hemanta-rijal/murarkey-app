@@ -14,13 +14,13 @@ class OurServicesModel{
   var id;
   var name;
   var icon;
-  List<OurServicesSubModel> services;
+  List<OurServicesSubModel> child;
 
   OurServicesModel({
     this.id,
     this.name,
     this.icon,
-    this.services
+    this.child
   });
 
   factory OurServicesModel.fromJson(Map<String, dynamic> json) =>

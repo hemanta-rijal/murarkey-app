@@ -102,6 +102,6 @@ class NavigateRoute {
   }
 
   static String initialRoute() {
-    return NavigateRoute.APP_LOADER;
+    return NavigateRoute.LOGIN;
   }
 }

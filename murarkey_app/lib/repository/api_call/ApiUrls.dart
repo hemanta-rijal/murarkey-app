@@ -56,4 +56,7 @@ class ApiUrls {
 
   //For Payment Esewa
   static final String PAYMENT_ESWEA_CALLACK = BASE_URL + ROOT_API_URL + "/payment_verify";
+
+ //For Wallet
+  static final String GET_WALLET_HISTORY = ROOT_API_URL + "/my-account/wallet";
 }

@@ -1,6 +1,10 @@
+import 'package:murarkey_app/custom_views/error_pages/DataNotAvailableWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
+import 'package:murarkey_app/repository/Repository.dart';
+import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
+import 'package:murarkey_app/repository/models/wallet/WalletModel.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/wallet/widgets/LoadWalletDialogWidget.dart';
@@ -15,8 +19,22 @@ class WalletWidget extends StatefulWidget {
 }
 
 class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
-  List walletModel = AccountDatas.myMalletList;
+  Repository _repository = new Repository();
+
+  //List walletModel = AccountDatas.myMalletList;
+  List<WalletModel> walletModel = new List();
   double _imageHeight = 38.0;
+
+  @override
+  void initState() {
+    _repository.walletApiRequest
+        .getMyWalletHistory(url: ApiUrls.GET_WALLET_HISTORY)
+        .then((value) {
+      walletModel = value;
+      this.setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +52,12 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
       );
     }
 
-    Widget buildItems(model, int index) {
-      String status = model["status"].toString().toUpperCase();
+    Widget buildItems(WalletModel model, int index) {
+      String status = model.transaction_type.toString().toUpperCase();
       Color statusColor = Colors.green[600];
       String arrowUri = "images/arrows/ic_sort_up.svg";
 
-      if (status == "FAILURE") {
+      if (status == "debit".toUpperCase()) {
         statusColor = Colors.red[600];
         arrowUri = "images/arrows/ic_sort_down.svg";
       }
@@ -65,7 +83,7 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        loadImage(model["imageUrl"]),
+                        loadImage(model.remarks.logo),
                       ],
                     )),
                 SizedBox(
@@ -81,7 +99,7 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
                         children: [
                           //Remarks
                           textView1(
-                              title: model["remarks"],
+                              title: model.remarks.text,
                               textSize: 2.0,
                               fontWeight: FontWeight.normal),
                         ],
@@ -94,7 +112,7 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
                         children: [
                           //Amount
                           textView1(
-                            title: "${model["payment"]}",
+                            title: "${model.payment_method}",
                             textSize: 1.8,
                             color: Colors.blue[900],
                           ),
@@ -108,7 +126,7 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
                         children: [
                           //Amount
                           textView1(
-                            title: "${model["date"]}",
+                            title: "${model.loadedOn}",
                             textSize: 1.8,
                           ),
                         ],
@@ -128,7 +146,7 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
                               ),
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: "${model["accumulated"]}",
+                                  text: "${model.total_amount}",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: AppConstants.appColor.blackColor,
@@ -160,7 +178,7 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
                         width: 6,
                       ),
                       textView1(
-                          title: "${model["amount"]}",
+                          title: "${model.amount}",
                           textSize: 1.8,
                           color: statusColor,
                           fontWeight: FontWeight.bold),
@@ -344,7 +362,17 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
 
     Widget builder() {
       return Column(
-        children: [menu(), verticalView],
+        children: [
+          menu(),
+          walletModel != null && walletModel.length > 0
+              ? verticalView
+              : Container(
+                  margin: EdgeInsets.only(top: 200),
+                  child: DataNotAvailableWidget(
+                    message: "No Wallet History",
+                  ),
+                ),
+        ],
       );
     }
 

@@ -91,23 +91,4 @@ class HomeApiRequest extends ApiRequest {
         });
     return result;
   }
-
-  // Get brand list
-  Future<List<OurServicesModel>> getOurServices({String url}) async {
-    List<OurServicesModel> result = new List<OurServicesModel>();
-
-    await this.getData(url: url).then((Map<String, dynamic> value) => {
-          print("OurServices"),
-          if (value != null)
-            {
-              result = value["data"]
-                  .map((i) => OurServicesModel.fromJson(i))
-                  .toList()
-                  .cast<OurServicesModel>(),
-            }
-          else
-            {result = null}
-        });
-    return result;
-  }
 }

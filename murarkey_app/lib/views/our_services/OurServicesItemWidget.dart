@@ -1,6 +1,8 @@
 import 'package:murarkey_app/custom_views/app_bar/AppBarWidget.dart';
 import 'package:murarkey_app/repository/models/our_services/OurServicesSubModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/views/our_services/widget/ServiceCardItemWidget.dart';
+import 'package:murarkey_app/views/our_services/widget/ServiceNotAvailableWidget.dart';
 import 'package:murarkey_app/views/our_services/widget/ServicesItemTabViewWidget.dart';
 import 'package:murarkey_app/views/our_services/widget/ServicesSubItemTabViewWidget.dart';
 
@@ -44,11 +46,17 @@ class _OurServicesItemWidgetState
 
     List<Widget> renderSubPageItems(int position) {
       List<Widget> widgetList = new List();
+
+      if (servicesList[position].child.length == 0) {
+        widgetList.add(ServiceNotAvailableWidget());
+      }
+
       for (int i = 0; i < servicesList[position].child.length; i++) {
         widgetList.add(
           Container(
-            child: Center(
-              child: Text("Page ${i}"),
+            color: AppConstants.appColor.backgroundColor2,
+            child: ServiceCardItemWidget(
+              model: servicesList[position].child[i],
             ),
           ),
         );
@@ -58,6 +66,10 @@ class _OurServicesItemWidgetState
 
     List<Widget> renderPageItems() {
       List<Widget> widgetList = new List();
+
+      if (servicesList.length == 0) {
+        widgetList.add(ServiceNotAvailableWidget());
+      }
       for (int i = 0; i < servicesList.length; i++) {
         widgetList.add(
           Container(
@@ -73,6 +85,7 @@ class _OurServicesItemWidgetState
 
     Widget builder() {
       return Container(
+        color: AppConstants.appColor.backgroundColor2,
         child: ServicesItemTabViewWidget(
           appBar: appBar,
           modelList: servicesList,

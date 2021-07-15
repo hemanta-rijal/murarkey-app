@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/country_list/CountryModel.dart';
@@ -28,6 +29,8 @@ class GlobalData {
   static UserModel userModel = new UserModel();
   static List<CountryModel> countryListModel = new List();
   static var paywith;
+
+  static Size size;
 }
 
 class _Constants {

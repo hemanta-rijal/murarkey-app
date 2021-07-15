@@ -76,6 +76,7 @@ class _FlatStatefulButton2State extends State<FlatStatefulButton2> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      //mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
           flex: 1,

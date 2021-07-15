@@ -24,6 +24,22 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
 
   loadData() {
     //Get all api request here
+
+    //About me
+    //apiRequestCount++;
+    _repository.userApiRequest
+        .getMyDetails(url: ApiUrls.ABOUT_ME)
+        .then((value) =>
+    {
+      if (value != null)
+        {
+          GlobalData.userModel = value,
+          //print(GlobalData.userModel.name),
+        },
+      //--apiRequestCount,
+      this.setState(() {}),
+    });
+
     // Get home page banners list
     apiRequestCount++;
     _repository.homeApiRequest
@@ -37,8 +53,8 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
 
     // Get our services list
     apiRequestCount++;
-    _repository.homeApiRequest
-        .getOurServices(url: ApiUrls.OUR_SERVICES_CATEGORIES)
+    _repository.servicesApiRequest
+        .getOurServicesList(url: ApiUrls.OUR_SERVICES_CATEGORIES)
         .then((value) =>
     {
       GlobalData.ourServicesModelList = value,
@@ -80,20 +96,6 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
     });
 
     apiRequestCount++;
-    _repository.userApiRequest
-        .getMyDetails(url: ApiUrls.ABOUT_ME)
-        .then((value) =>
-    {
-      if (value != null)
-        {
-          GlobalData.userModel = value,
-          print(GlobalData.userModel.name),
-        },
-      --apiRequestCount,
-      this.setState(() {}),
-    });
-
-    apiRequestCount++;
     _repository.addressApi
         .getCountryList(url: ApiUrls.COUNTRY_LIST)
         .then((value) =>
@@ -127,6 +129,7 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalData.size = MediaQuery.of(context).size;
 
     //After getting data delay for 5-6 sec
     print("apiRequestCount ${apiRequestCount}");

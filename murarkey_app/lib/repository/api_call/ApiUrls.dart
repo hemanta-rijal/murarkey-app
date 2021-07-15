@@ -31,6 +31,9 @@ class ApiUrls {
   //For our services
   static final String OUR_SERVICES = ROOT_API_URL + "/services";
   static final String OUR_SERVICES_CATEGORIES = ROOT_API_URL +"/servicecategory/get-tree";
+  static String SERVICES_CATEGORY_LIST(String id){
+    return ROOT_API_URL + "/servicecategory/${id}/services";
+  }
 
   //For
   static final String JOIN_PARLOR_PROFESSION = ROOT_API_URL + "/join-parlour-profession";

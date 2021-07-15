@@ -45,7 +45,7 @@ abstract class ApiRequest extends Api {
       //'Authorization': 'Bearer $token',
       await _sharePref.getUserToken().then((value) => {
             headers["Authorization"] = "Bearer ${value}",
-            print("useToken " + value)
+            print("_headers useToken ${value}"),
           });
     }
 
@@ -68,8 +68,8 @@ abstract class ApiRequest extends Api {
 
   _saveUserToken(Map<String, dynamic> jsonResponse, String url) async {
     if (url == ApiUrls.LOGIN_URL) {
-      _sharePref.setTokenType(jsonResponse["token_type"]);
-      _sharePref.setUserToken(jsonResponse["access_token"]);
+      await _sharePref.setTokenType(jsonResponse["token_type"]);
+      await _sharePref.setUserToken(jsonResponse["access_token"]);
 
       await _sharePref.getUserToken().then((value) => {print("useToken ${value}")});
     }

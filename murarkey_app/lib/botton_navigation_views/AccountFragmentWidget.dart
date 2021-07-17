@@ -15,6 +15,33 @@ class AccountFragmentWidget extends StatefulWidget {
 class _AccountFragmentWidgetState
     extends CustomStatefulWidgetState<AccountFragmentWidget> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if(mounted) {
+      if (GlobalData.userModel.name == null) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          setState(() {
+            Commons.toastMessage(context, "Please Login to seen your account.");
+            NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+          });
+        });
+      }
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didUpdateWidget(covariant StatefulWidget oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 

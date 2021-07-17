@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatButton3.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatStatefulButton2.dart';
@@ -7,6 +9,10 @@ import 'package:murarkey_app/repository/models/our_services/OurServicesSubSubMod
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/our_services/widget/ServiceNotAvailableWidget.dart';
+
+import 'package:html/parser.dart' as htmlparser;
+import 'package:html/dom.dart' as dom;
+import 'package:flutter_html/flutter_html.dart';
 
 /**
  * Created by Suman Prasad Neupane on 7/14/2021.
@@ -24,9 +30,53 @@ class ServiceCardItemWidget extends StatefulWidget {
 class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
   Repository _repository = new Repository();
   List<ServicesCategoryListsModel> servicesCategoryList = new List();
+  dom.Document document;
+  String htmlData = """<div>
+  <h1>Demo Page</h1>
+  <p>This is a fantastic product that you should buy!</p>
+  <h3>Features</h3>
+  <ul>
+    <li>It actually works</li>
+    <li>It exists</li>
+    <li>It doesn't cost much!</li>
+  </ul>
+  <svg id='svg1' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
+            <circle r="32" cx="35" cy="65" fill="#F00" opacity="0.5"/>
+            <circle r="32" cx="65" cy="65" fill="#0F0" opacity="0.5"/>
+            <circle r="32" cx="50" cy="35" fill="#00F" opacity="0.5"/>
+            
+             <img src='https://flutter.dev/images/flutter-mono-81x100.png' />
+             
+             <p style="color:blue">This is demo content.</p>
+             <h1 style="background-color:powderblue;">This is a heading</h1>
+<p style="background-color:tomato;">This is a paragraph.</p>
+         
+          <h3>youtube video</h3>    
+     <iframe 
+        src="https://www.youtube.com/embed/W8TrvLoPrfQ" 
+        height="100" 
+        frameborder="1"></iframe>
+        
+        <h3>stored video</h3>   
+         <video controls>
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" />
+  </video>
+    
+        
+  <!--You can pretty much put any html in here!-->
+</div>""";
+
+  Widget html() {
+    return Html(
+      data: htmlData,
+    );
+    //tagsList: Html.tags..remove(Platform.isAndroid ? "iframe" : "video"));
+  }
 
   @override
   void initState() {
+    document = htmlparser.parse(htmlData);
+
     _repository.servicesApiRequest
         .getServicesListFromCategory(
             url: ApiUrls.SERVICES_CATEGORY_LIST(widget.model.id.toString()))
@@ -183,6 +233,7 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
               ),
               textAlign: TextAlign.justify,
             ),
+            //html(),
             SizedBox(height: 20),
             RichText(
               text: TextSpan(
@@ -242,7 +293,7 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
   Widget build(BuildContext context) {
     return Container(
       child: servicesCategoryList != null && servicesCategoryList.length > 0
-          ?listView()
+          ? listView()
           : ServiceNotAvailableWidget(),
     );
   }

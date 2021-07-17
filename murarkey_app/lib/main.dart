@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
 
 
     return MaterialApp(
+      //debugShowCheckedModeBanner: false,
       title: AppConstants.constants.APP_NAME,
       theme: AppConstants.appTheme.buildTheme(),
       onGenerateRoute: NavigateRoute.generateRoute,

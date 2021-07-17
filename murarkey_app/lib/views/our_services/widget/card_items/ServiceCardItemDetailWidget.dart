@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
+import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/our_services/widget/card_items/CardDeatilDescriptionWidget.dart';
 
@@ -90,6 +92,21 @@ class _ServiceCardItemDetailWidgetState
               ),
             ),
             textAlign: TextAlign.justify,
+          ),
+          Expanded(
+            flex: 1,
+            child: InkResponse(
+              onTap: () {
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 20),
+                alignment: Alignment.centerRight,
+                child: svgImageAssert4(
+                  imgUrl: "images/cart/ic_trolley.svg",
+                  size: 40,
+                ),
+              ),
+            ),
           ),
         ],
       ),

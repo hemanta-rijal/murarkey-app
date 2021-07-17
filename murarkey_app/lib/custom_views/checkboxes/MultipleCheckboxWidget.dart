@@ -9,6 +9,7 @@ multipleCheckbox1(
     Map<String, bool> lists, value, Function(String, bool) onChanged) {
   return ListView(
     shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
     children: lists.keys.map((String key) {
       return Container(
         height: 30,

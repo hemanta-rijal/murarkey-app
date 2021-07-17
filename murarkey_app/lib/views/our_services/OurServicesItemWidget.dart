@@ -1,8 +1,11 @@
 import 'package:murarkey_app/custom_views/app_bar/AppBarWidget.dart';
 import 'package:murarkey_app/repository/models/our_services/OurServicesSubModel.dart';
+import 'package:murarkey_app/repository/models/our_services/OurServicesSubSubModel.dart';
+import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
+import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
-import 'package:murarkey_app/views/our_services/widget/ServiceCardItemWidget.dart';
-import 'package:murarkey_app/views/our_services/widget/ServiceNotAvailableWidget.dart';
+import 'widget/card_items/ServiceCardItemWidget.dart';
+import 'error/ServiceNotAvailableWidget.dart';
 import 'package:murarkey_app/views/our_services/widget/ServicesItemTabViewWidget.dart';
 import 'package:murarkey_app/views/our_services/widget/ServicesSubItemTabViewWidget.dart';
 
@@ -57,6 +60,15 @@ class _OurServicesItemWidgetState
             color: AppConstants.appColor.backgroundColor2,
             child: ServiceCardItemWidget(
               model: servicesList[position].child[i],
+              cardTappedAt:
+                  (List<ServicesCategoryListsModel> modelList, int pos) {
+                Map<String, dynamic> arguments = new Map();
+                arguments["initialPosition"] = pos;
+                arguments["modelList"] = modelList;
+                arguments["appBarTitle"] = servicesList[position].child[i].name;
+                NavigateRoute.pushNamedWithArguments(
+                    context, NavigateRoute.OUR_SERVICES_ITEM_DETAIL, arguments);
+              },
             ),
           ),
         );

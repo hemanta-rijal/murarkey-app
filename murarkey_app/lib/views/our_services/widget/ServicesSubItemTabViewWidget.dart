@@ -18,7 +18,8 @@ class ServicesSubItemTabViewWidget extends StatefulWidget {
       _ServicesSubItemTabViewWidgetState();
 }
 
-class _ServicesSubItemTabViewWidgetState extends State<ServicesSubItemTabViewWidget> {
+class _ServicesSubItemTabViewWidgetState
+    extends State<ServicesSubItemTabViewWidget> {
   int _selectedPage = 0;
   PageController _pageController;
 
@@ -66,23 +67,26 @@ class _ServicesSubItemTabViewWidgetState extends State<ServicesSubItemTabViewWid
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         Row(
-           children: [
-             Expanded(child: Container(
-                 color: AppConstants.appColor.greyColor2,
-                 child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: [
-                     SingleChildScrollView(
-                       scrollDirection: Axis.horizontal,
-                       child: Row(
-                         children: renderTabItems(),
-                       ),
-                     ),
-                   ],
-                 )),),
-           ],
-         ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  color: AppConstants.appColor.greyColor2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: renderTabItems(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
           Expanded(
             child: PageView(
               onPageChanged: (int page) {
@@ -152,31 +156,31 @@ class _TabItemWidget extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    shape: BoxShape.rectangle,
-                    color: selectedPage == pageNumber
-                        ? AppConstants.appColor.whiteColor
-                        : AppConstants.appColor.greyColor2),
-                margin: EdgeInsets.all(8),
-                padding: EdgeInsets.all(2),
-                child: Container(
-                  margin: EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    style: TextStyle(
-                        fontSize: selectedPage == pageNumber
-                            ? SizeConfig.textMultiplier * 2.1
-                            : SizeConfig.textMultiplier * 1.9,
-                        fontWeight: FontWeight.bold,
-                        color: selectedPage == pageNumber
-                            ? AppConstants.appColor.primaryColor
-                            : AppConstants.appColor.blackColor),
-                  ),
-                )
-              ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                      shape: BoxShape.rectangle,
+                      color: selectedPage == pageNumber
+                          ? AppConstants.appColor.whiteColor
+                          : AppConstants.appColor.greyColor2),
+                  margin: EdgeInsets.all(8),
+                  padding: EdgeInsets.all(2),
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      style: TextStyle(
+                          fontSize: selectedPage == pageNumber
+                              ? SizeConfig.textMultiplier * 2.1
+                              : SizeConfig.textMultiplier * 1.9,
+                          fontWeight: FontWeight.bold,
+                          color: selectedPage == pageNumber
+                              ? AppConstants.appColor.primaryColor
+                              : AppConstants.appColor.blackColor),
+                    ),
+                  )),
               SizedBox(height: 4),
             ],
           ),

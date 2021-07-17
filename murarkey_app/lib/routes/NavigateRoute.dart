@@ -9,6 +9,7 @@ import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
 import 'package:murarkey_app/views/order/place_order/PlaceOrderWidget.dart';
 import 'package:murarkey_app/views/our_services/OurServicesItemWidget.dart';
+import '../views/our_services/widget/card_items/ServiceCardItemDetailWidget.dart';
 import 'package:murarkey_app/views/product/ProductDetailWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
 import 'package:murarkey_app/views/search/SearchWidget.dart';
@@ -34,6 +35,7 @@ class NavigateRoute {
   static const String MY_WALLET = "WalletWidget";
   static const String APP_LOADER = "AppLoaderWidget";
   static const String OUR_SERVICES_ITEM = "OurServicesItemWidget";
+  static const String OUR_SERVICES_ITEM_DETAIL = "ServiceCardItemDetailWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -73,7 +75,16 @@ class NavigateRoute {
         return _MaterialPageRoute(WalletWidget());
       case OUR_SERVICES_ITEM:
         Map<String, dynamic> arguments = args as Map;
-        return _MaterialPageRoute(OurServicesItemWidget(title:arguments["title"], servicesList: arguments["servicesSubModel"],));
+        return _MaterialPageRoute(OurServicesItemWidget(
+          title: arguments["title"],
+          servicesList: arguments["servicesSubModel"],
+        ));
+      case OUR_SERVICES_ITEM_DETAIL:
+        Map<String, dynamic> arguments = args as Map;
+        return _MaterialPageRoute(ServiceCardItemDetailWidget(
+            initialPosition: arguments["initialPosition"],
+            modelList: arguments["modelList"],
+            appBarTitle: arguments["appBarTitle"]));
       default:
         LoginWidget();
       //   return _errorRoute();

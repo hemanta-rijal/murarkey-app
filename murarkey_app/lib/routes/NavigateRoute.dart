@@ -7,6 +7,8 @@ import 'package:murarkey_app/views/address/widgets/EditShippingAddressWidget.dar
 import 'package:murarkey_app/views/app_loader/AppLoaderWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
+import 'package:murarkey_app/views/order/my_order/MyOrderDetailWidget.dart';
+import 'package:murarkey_app/views/order/my_order/RecentOrderWidget.dart';
 import 'package:murarkey_app/views/order/place_order/PlaceOrderWidget.dart';
 import 'package:murarkey_app/views/our_services/OurServicesItemWidget.dart';
 import '../views/our_services/widget/card_items/ServiceCardItemDetailWidget.dart';
@@ -36,6 +38,8 @@ class NavigateRoute {
   static const String APP_LOADER = "AppLoaderWidget";
   static const String OUR_SERVICES_ITEM = "OurServicesItemWidget";
   static const String OUR_SERVICES_ITEM_DETAIL = "ServiceCardItemDetailWidget";
+  static const String RECENT_ORDER = "RecentOrderWidget";
+  static const String MY_ORDER_DETAIL = "MyOrderDetailWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -85,6 +89,11 @@ class NavigateRoute {
             initialPosition: arguments["initialPosition"],
             modelList: arguments["modelList"],
             appBarTitle: arguments["appBarTitle"]));
+      case RECENT_ORDER:
+        return _MaterialPageRoute(RecentOrderWidget());
+      case MY_ORDER_DETAIL:
+        Map<String, dynamic> arguments = args as Map;
+        return _MaterialPageRoute(MyOrderDetailWidget(myOrderModel: arguments["myOrderModel"],));
       default:
         LoginWidget();
       //   return _errorRoute();

@@ -71,8 +71,15 @@ class _ProductDetailWidgetState
     Map<String, dynamic> options = new Map();
     options["image"] = productDetailModel.images[0].imageUrl;
 
-    //params["options"] = //json.encode(options); //options.toString(); //
-    params["options"] = {"image": productDetailModel.images[0].imageUrl};
+    //params["options"] = //json.encode(options);
+    // options.toString(); //
+    params["type"] = "product";
+    params["options"] = {
+      "image": productDetailModel.images[0].imageUrl,
+      "product_type": "product"
+    };
+
+    print(params);
 
     await _repository.productRequestApi
         .addToCard(url: ApiUrls.CART, params: params)
@@ -95,17 +102,21 @@ class _ProductDetailWidgetState
     options["image"] = productDetailModel.images[0].imageUrl;
 
     //params["options"] = //json.encode(options); //options.toString(); //
-    params["options"] = {"image": productDetailModel.images[0].imageUrl};
+    params["type"] = "product";
+    params["options"] = {
+      "image": productDetailModel.images[0].imageUrl,
+      "product_type": "product"
+    };
 
     await _repository.wishlistRequestApi
         .addToWishlist(url: ApiUrls.ADD_TO_WISHLIST, params: params)
         .then((value) => {
-      if (value != null)
-        {
-          Commons.toastMessage(context, value["message"]),
-        },
-      this.setState(() {}),
-    });
+              if (value != null)
+                {
+                  Commons.toastMessage(context, value["message"]),
+                },
+              this.setState(() {}),
+            });
   }
 
   @override
@@ -239,7 +250,7 @@ class _ProductDetailWidgetState
                   addToCard: () {
                     _addToCard();
                   },
-                  saveToWishlist: (){
+                  saveToWishlist: () {
                     _saveToWishList();
                   },
                 ),

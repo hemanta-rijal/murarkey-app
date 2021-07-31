@@ -9,15 +9,17 @@ class ApiUrls {
   static final String HTTPS_BASE_URL = "www.newweb.murarkey.com";
 
   //For HTTP
-  static final String BASE_URL = "http://newweb.murarkey.com";
+  static final String BASE_URL = "https://demo.murarkey.com";//"http://newweb.murarkey.com";
   static final String ROOT_API_URL = "/api";
 
   //For Auth
   static final String LOGIN_URL = ROOT_API_URL + "/auth/login";
   static final String REGISTER_URL = ROOT_API_URL + "/auth/register";
+  static final String LOGOUT_URL = ROOT_API_URL + "/auth/logout";
 
   //For User
   static final String ABOUT_ME = ROOT_API_URL + "/me";
+  static final String UPDATE_PROFILE = ROOT_API_URL + "/my-account/update";
 
   static final String HOME_PAGE_BANNER_URL = ROOT_API_URL + "/banners/homepage-1";
   static final String CATEGORY_URL = ROOT_API_URL + "/categories";
@@ -59,4 +61,7 @@ class ApiUrls {
 
  //For Wallet
   static final String GET_WALLET_HISTORY = ROOT_API_URL + "/my-account/wallet";
+
+  //For My order
+  static final String MY_ORDER = ROOT_API_URL + "/user/my-orders";
 }

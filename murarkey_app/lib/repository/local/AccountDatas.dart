@@ -14,7 +14,7 @@ class AccountDatas{
 
   static var accountItemList = [
     {
-      "name": "Recent Orders",
+      "name": "My Orders",
       "imgIcon": Icons.list_alt_sharp
     },
     {

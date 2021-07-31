@@ -21,13 +21,13 @@ abstract class ApiRequest extends Api {
   }
 
   Uri _getUrl(String urlPath, {Map<String, dynamic> queryString}) {
-    if (ApiUrls.BASE_URL.contains("http")) {
+    if (ApiUrls.BASE_URL.contains("https")) {
       //ApiUrls.BASE_URL.replaceAll("http://", "www.")
+      return Uri.https(
+          ApiUrls.BASE_URL.replaceAll("https://", ""), urlPath, queryString);
+    } else {
       return Uri.http(
           ApiUrls.BASE_URL.replaceAll("http://", ""), urlPath, queryString);
-    } else {
-      return Uri.https(ApiUrls.BASE_URL.replaceAll("https://", "www."), urlPath,
-          {'q': '{http}'});
     }
   }
 
@@ -52,13 +52,19 @@ abstract class ApiRequest extends Api {
     return headers;
   }
 
-  Future<Map<String, dynamic>> _parseData(http.Response response, String url) async {
+  Future<Map<String, dynamic>> _parseData(
+      http.Response response, String url) async {
     if (response.statusCode == 200) {
       print(response.body);
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
       print(url);
       print(jsonResponse);
+      if (jsonResponse.containsKey("success")) {
+        if (jsonResponse["success"] == false) {
+          return jsonResponse;
+        }
+      }
       await _saveUserToken(jsonResponse, url);
       return jsonResponse;
     } else {
@@ -71,7 +77,16 @@ abstract class ApiRequest extends Api {
       await _sharePref.setTokenType(jsonResponse["token_type"]);
       await _sharePref.setUserToken(jsonResponse["access_token"]);
 
-      await _sharePref.getUserToken().then((value) => {print("useToken ${value}")});
+      await _sharePref
+          .getUserToken()
+          .then((value) => {print("useToken ${value}")});
+    } else if (url == ApiUrls.LOGOUT_URL) {
+      await _sharePref.setTokenType("");
+      await _sharePref.setUserToken("");
+
+      await _sharePref
+          .getUserToken()
+          .then((value) => {print("useToken ${value}")});
     }
   }
 
@@ -130,6 +145,8 @@ abstract class ApiRequest extends Api {
       var header = await _headers(useToken);
       print(header);
 
+      print(_getUrl(url));
+
       // Post Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
@@ -139,6 +156,7 @@ abstract class ApiRequest extends Api {
             headers: header,
           )
           .timeout(const Duration(seconds: 60));
+
       return _parseData(response, url);
     } catch (e) {
       print(e);

@@ -6,11 +6,12 @@ import 'package:murarkey_app/utils/Imports.dart';
  */
 
 textView1(
-    {String title, margin, double textSize, FontWeight fontWeight, color, textAlign}) {
+    {String title, margin, double textSize, FontWeight fontWeight, color, textAlign, fontStyle}) {
   textSize = textSize == null ? 2.0 : textSize;
   fontWeight = fontWeight ?? FontWeight.normal;
   color = color ?? AppConstants.appColor.textColor;
   textAlign = textAlign ?? TextAlign.left;
+  fontStyle = fontStyle ?? FontStyle.normal;
 
   return Container(
     margin: margin ?? null,//EdgeInses.zerot,
@@ -20,6 +21,7 @@ textView1(
       style: TextStyle(
         color: color,
         fontWeight: fontWeight,
+        fontStyle: fontStyle,
         fontSize: SizeConfig.textMultiplier * textSize,
       ),
     ),
@@ -43,6 +45,30 @@ textView2(
         decorationColor: AppConstants.appColor.accentColor,
         color: color,
         fontWeight: fontWeight,
+        fontSize: SizeConfig.textMultiplier * textSize,
+      ),
+    ),
+  );
+}
+
+textViewEllipsis(
+    {String title, margin, double textSize, FontWeight fontWeight, color, textAlign, fontStyle}) {
+  textSize = textSize == null ? 2.0 : textSize;
+  fontWeight = fontWeight ?? FontWeight.normal;
+  color = color ?? AppConstants.appColor.textColor;
+  textAlign = textAlign ?? TextAlign.left;
+  fontStyle = fontStyle ?? FontStyle.normal;
+
+  return Container(
+    margin: margin ?? null,//EdgeInses.zerot,
+    child: Text(
+      title,
+      textAlign: textAlign,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+        color: color,
+        fontWeight: fontWeight,
+        fontStyle: fontStyle,
         fontSize: SizeConfig.textMultiplier * textSize,
       ),
     ),

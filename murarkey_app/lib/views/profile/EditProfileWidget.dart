@@ -25,17 +25,39 @@ class EditProfileWidget extends StatefulWidget {
 class _EditProfileWidgetState
     extends CustomStatefulWidgetState<EditProfileWidget> {
   final EditProfileViewModel viewModel = new EditProfileViewModel();
-  final UserModel userModel = GlobalData.userModel;
+  UserModel userModel = GlobalData.userModel;
   var _cardSize = 68.0;
   PickedFile imagePickedFile = null;
 
   _EditProfileWidgetState() {
+    updateProfile();
+  }
+
+  updateProfile() {
     if (userModel != null) {
       viewModel.formEmail.text = userModel.email;
-      viewModel.formName.text = userModel.name;
+      viewModel.firstName.text = userModel.first_name;
+      viewModel.lastName.text = userModel.last_name;
       viewModel.formPhoneNo.text = userModel.phone;
+      viewModel.phoneVerification = userModel.phoneVerification;
+      viewModel.emailVerification = userModel.emailVerification;
     }
   }
+
+  refresh() {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() {
+        userModel = GlobalData.userModel;
+        updateProfile();
+      });
+    });
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   refresh();
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -108,21 +130,67 @@ class _EditProfileWidgetState
                 ],
               ),
 
-              //Name
-              textView1(title: "Full Name", margin: EdgeInsets.only(top: 16)),
+              //FName
+              textView1(title: "First Name", margin: EdgeInsets.only(top: 16)),
               textField1(
-                  controller: viewModel.formName,
+                  controller: viewModel.firstName,
+                  margin: EdgeInsets.only(top: 8.0)),
+
+              //LName
+              textView1(title: "Last Name", margin: EdgeInsets.only(top: 16)),
+              textField1(
+                  controller: viewModel.lastName,
                   margin: EdgeInsets.only(top: 8.0)),
 
               //Email Address
-              textView1(
-                  title: "Email Address", margin: EdgeInsets.only(top: 16)),
+              Container(
+                child: Row(
+                  children: [
+                    textView1(
+                        title: "Email Address",
+                        margin: EdgeInsets.only(top: 16)),
+                    Expanded(
+                      flex: 1,
+                      child: textView1(
+                          textAlign: TextAlign.right,
+                          title: viewModel.emailVerification == 0
+                              ? "Not Verified"
+                              : "Verified",
+                          color: viewModel.emailVerification == 0
+                              ? Colors.red[500]
+                              : Colors.green[500],
+                          fontWeight: FontWeight.w700,
+                          margin: EdgeInsets.only(top: 16)),
+                    ),
+                  ],
+                ),
+              ),
               textField1(
                   controller: viewModel.formEmail,
                   margin: EdgeInsets.only(top: 8.0)),
 
               //Phone No.
-              textView1(title: "Phone No.", margin: EdgeInsets.only(top: 16)),
+              Container(
+                child: Row(
+                  children: [
+                    textView1(
+                        title: "Phone No.", margin: EdgeInsets.only(top: 16)),
+                    Expanded(
+                      flex: 1,
+                      child: textView1(
+                          textAlign: TextAlign.right,
+                          title: viewModel.phoneVerification == 0
+                              ? "Not Verified"
+                              : "Verified",
+                          color: viewModel.phoneVerification == 0
+                              ? Colors.red[500]
+                              : Colors.green[500],
+                          fontWeight: FontWeight.w700,
+                          margin: EdgeInsets.only(top: 16)),
+                    ),
+                  ],
+                ),
+              ),
               textField1(
                   controller: viewModel.formPhoneNo,
                   keyboardType: TextInputType.number,
@@ -143,20 +211,11 @@ class _EditProfileWidgetState
                       buttonHeight: 35,
                       buttonCurve: 8.0,
                       onPressedCallback: () {
-                        Commons.toastMessage(context, "Saved Successfully.");
-                        // String emailValidate = Validation.validateEmail(
-                        //     widget.viewModel.formEmail.text.trim());
-                        // String passwordValid = Validation.validatePassword(
-                        //     widget.viewModel.formPassword.text.trim());
-                        //
-                        // if (emailValidate != Validation.SUCCESS) {
-                        //   Commons.toastMessage(context, emailValidate);
-                        // } else if (passwordValid != Validation.SUCCESS) {
-                        //   Commons.toastMessage(context, passwordValid);
-                        // } else {
-                        //   Commons.toastMessage(context, "Successfully login");
-                        //   NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);
-                        // }
+                        viewModel.updateProfile(context, this).then((value) {
+                          setState(() {
+                            refresh();
+                          });
+                        });
                       },
                     ),
                   )
@@ -217,19 +276,6 @@ class _EditProfileWidgetState
                       onPressedCallback: () {
                         Commons.toastMessage(
                             context, "Password changed successfully.");
-                        // String emailValidate = Validation.validateEmail(
-                        //     widget.viewModel.formEmail.text.trim());
-                        // String passwordValid = Validation.validatePassword(
-                        //     widget.viewModel.formPassword.text.trim());
-                        //
-                        // if (emailValidate != Validation.SUCCESS) {
-                        //   Commons.toastMessage(context, emailValidate);
-                        // } else if (passwordValid != Validation.SUCCESS) {
-                        //   Commons.toastMessage(context, passwordValid);
-                        // } else {
-                        //   Commons.toastMessage(context, "Successfully login");
-                        //   NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);
-                        // }
                       },
                     ),
                   )
@@ -250,34 +296,7 @@ class _EditProfileWidgetState
             userDetailForm(),
             SizedBox(height: 30),
             changePassword(),
-
             SizedBox(height: 50),
-
-            //Log in
-            // new FlatStatefulButton(
-            //   text: AppConstants.constants.BUTTON_SAVE_CHANCES,
-            //   fontSize: SizeConfig.textMultiplier * 2.0,
-            //   textColor: AppConstants.appColor.accentColor,
-            //   padding: EdgeInsets.all(screenSize.width * .02),
-            //   backgroundColor: AppConstants.appColor.buttonColor,
-            //   buttonHeight: 40,
-            //   onPressedCallback: () {
-            //     Commons.toastMessage(context, "Saved Successfully.");
-            //     // String emailValidate = Validation.validateEmail(
-            //     //     widget.viewModel.formEmail.text.trim());
-            //     // String passwordValid = Validation.validatePassword(
-            //     //     widget.viewModel.formPassword.text.trim());
-            //     //
-            //     // if (emailValidate != Validation.SUCCESS) {
-            //     //   Commons.toastMessage(context, emailValidate);
-            //     // } else if (passwordValid != Validation.SUCCESS) {
-            //     //   Commons.toastMessage(context, passwordValid);
-            //     // } else {
-            //     //   Commons.toastMessage(context, "Successfully login");
-            //     //   NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);
-            //     // }
-            //   },
-            // ),
             SizedBox(
               height: 20,
             ),

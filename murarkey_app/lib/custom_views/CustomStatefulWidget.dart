@@ -18,6 +18,7 @@ class CustomStatefulWidgetState<T> extends State {
       @required Widget childWidget,
       Widget floatingActionButton,
       Color backgroundColor,
+      Color bodybackgroundColor,
       Color backArrowColor,
       Color textColor,
       Widget widget,
@@ -32,13 +33,16 @@ class CustomStatefulWidgetState<T> extends State {
     return render(
       childWidget: Scaffold(
         floatingActionButton: floatingActionButton,
+        backgroundColor: bodybackgroundColor,
         body: SafeArea(
           child: new LayoutBuilder(builder:
               (BuildContext context, BoxConstraints viewportConstraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
-                constraints:
-                    BoxConstraints(minHeight: viewportConstraints.maxHeight),
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                  minWidth: viewportConstraints.minWidth,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -104,23 +108,23 @@ class CustomStatefulWidgetState<T> extends State {
             return SingleChildScrollView(
               physics: NeverScrollableScrollPhysics(),
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                ),
-                child: Container(
-                  child: childWidget,
-                )
-                //IntrinsicHeight(
-                //  child:
-                //   Column(
-                //     //mainAxisSize: MainAxisSize.min,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       childWidget,
-                //     ],
-                //   ),
-                //),
-              ),
+                  constraints: BoxConstraints(
+                    minHeight: viewportConstraints.maxHeight,
+                  ),
+                  child: Container(
+                    child: childWidget,
+                  )
+                  //IntrinsicHeight(
+                  //  child:
+                  //   Column(
+                  //     //mainAxisSize: MainAxisSize.min,
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       childWidget,
+                  //     ],
+                  //   ),
+                  //),
+                  ),
             );
           }),
         ),

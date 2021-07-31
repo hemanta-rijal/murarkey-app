@@ -2,7 +2,10 @@ import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/account_list/AcountListWidget.dart';
 import 'package:murarkey_app/custom_views/account_profile/AccountProfileWidget.dart';
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
+import 'package:murarkey_app/repository/Repository.dart';
+import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
+import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -14,15 +17,17 @@ class AccountFragmentWidget extends StatefulWidget {
 
 class _AccountFragmentWidgetState
     extends CustomStatefulWidgetState<AccountFragmentWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  Repository _repository = new Repository();
+  UserModel userModel = GlobalData.userModel;
 
   @override
   void didChangeDependencies() {
-    if(mounted) {
-      if (GlobalData.userModel.name == null) {
+    if (mounted) {
+      userModel = GlobalData.userModel;
+      setState(() {
+
+      });
+      if (userModel.name == null) {
         Future.delayed(const Duration(milliseconds: 500), () {
           setState(() {
             Commons.toastMessage(context, "Please Login to seen your account.");
@@ -34,11 +39,12 @@ class _AccountFragmentWidgetState
     super.didChangeDependencies();
   }
 
-  @override
-  void didUpdateWidget(covariant StatefulWidget oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-
+  redirectToLogin(){
+    Future.delayed(const Duration(milliseconds: 100), () {
+      setState(() {
+        NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+      });
+    });
   }
 
   @override
@@ -47,9 +53,7 @@ class _AccountFragmentWidgetState
 
     onTapGridItem(model, index) {
       if (index == 0) {
-        print(model);
-      } else if (index == 0) {
-        Commons.toastMessage(context, "Comming soon");
+        NavigateRoute.pushNamed(context, NavigateRoute.RECENT_ORDER);
       } else if (index == 1) {
         NavigateRoute.pushNamed(context, NavigateRoute.ADDRESS_Edit);
       } else if (index == 2) {
@@ -57,7 +61,14 @@ class _AccountFragmentWidgetState
       } else if (index == 3) {
         Commons.toastMessage(context, "Comming soon");
       } else if (index == 4) {
-        NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+        _repository.authApiRequest
+            .logout(url: ApiUrls.LOGOUT_URL)
+            .then((value) {
+          if (value != null) {
+            Commons.toastMessage(context, value["message"]);
+            redirectToLogin();
+          }
+        });
       }
     }
 
@@ -83,7 +94,7 @@ class _AccountFragmentWidgetState
                   margin: EdgeInsets.only(left: 16, right: 16),
                   child: Column(children: [
                     AccountProfileWidget(
-                        model: GlobalData.userModel,
+                        model: userModel,
                         onTapCallback: () {
                           onTapEditProfile();
                         }),

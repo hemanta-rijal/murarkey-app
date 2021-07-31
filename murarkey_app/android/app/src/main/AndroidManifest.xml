@@ -8,6 +8,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="murarkey_app"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"

@@ -9,6 +9,7 @@ import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/local/LoadHtml.dart';
 import 'package:murarkey_app/repository/models/our_services/OurServicesSubSubModel.dart';
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import '../../error/ServiceNotAvailableWidget.dart';
 
@@ -20,7 +21,8 @@ class ServiceCardItemWidget extends StatefulWidget {
   final OurServicesSubSubModel model;
   final Function(List<ServicesCategoryListsModel>, int) cardTappedAt;
 
-  const ServiceCardItemWidget({Key key, this.model, this.cardTappedAt}) : super(key: key);
+  const ServiceCardItemWidget({Key key, this.model, this.cardTappedAt})
+      : super(key: key);
 
   @override
   _ServiceCardItemWidgetState createState() => _ServiceCardItemWidgetState();
@@ -32,7 +34,6 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
 
   @override
   void initState() {
-
     _repository.servicesApiRequest
         .getServicesListFromCategory(
             url: ApiUrls.SERVICES_CATEGORY_LIST(widget.model.id.toString()))
@@ -43,6 +44,32 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
     super.initState();
   }
 
+  addToCartToServer() async {
+    //Add product
+    Map<String, dynamic> params = new Map();
+    params["product_id"] = widget.model.id.toString();
+    params["qty"] = 1.toString();
+
+    Map<String, dynamic> options = new Map();
+    options["image"] = widget.model.icon;
+
+    //params["options"] = //json.encode(options);
+    // options.toString(); //
+    params["type"] = "product";
+    params["options"] = {"image": widget.model.icon, "product_type": "service"};
+
+    print(params);
+
+    await _repository.productRequestApi
+        .addToCard(url: ApiUrls.CART, params: params)
+        .then((value) {
+      if (value != null) {
+        Commons.toastMessage(context, value["message"]);
+      }
+      this.setState(() {});
+    });
+  }
+
   Widget shortDecription(short_description) {
     return Container(
       child: Html(
@@ -51,7 +78,7 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
         style: {
           "body": Style(
             padding: EdgeInsets.all(0),
-            margin:  EdgeInsets.all(0),
+            margin: EdgeInsets.all(0),
           ),
         },
         //tagsList: Html.tags..remove(Platform.isAndroid ? "iframe" : "video"));
@@ -171,7 +198,7 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
                         boderColor: AppConstants.appColor.redColor,
                         //buttonWidth: 100,
                         onPressedCallback: () {
-                          //widget.saveToWishlist();
+                          addToCartToServer();
                         },
                       ),
                     ],
@@ -196,23 +223,22 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
             shortDecription(model.short_description),
             //html(),
             SizedBox(height: 20),
-           InkResponse(
-             onTap: (){
-               widget.cardTappedAt(servicesCategoryList, position);
-             },
-             child:  RichText(
-               text: TextSpan(
-                 text: "VIEW DETAILS",
-                 style: TextStyle(
-                     fontWeight: FontWeight.w700,
-                     color: Colors.blue[600],
-                     fontSize: SizeConfig.textMultiplier * 2.0,
-                     decoration: TextDecoration.underline),
-               ),
-               textAlign: TextAlign.justify,
-             ),
-           ),
-
+            InkResponse(
+              onTap: () {
+                widget.cardTappedAt(servicesCategoryList, position);
+              },
+              child: RichText(
+                text: TextSpan(
+                  text: "VIEW DETAILS",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.blue[600],
+                      fontSize: SizeConfig.textMultiplier * 2.0,
+                      decoration: TextDecoration.underline),
+                ),
+                textAlign: TextAlign.justify,
+              ),
+            ),
           ],
         ),
       ),

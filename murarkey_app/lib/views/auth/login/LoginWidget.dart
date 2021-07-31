@@ -48,11 +48,14 @@ class _LoginWidgetState extends State<LoginWidget> {
         params["password"] = widget.viewModel.formPassword.text.trim();
 
         await _repository.authApiRequest
-            .login(url: ApiUrls.LOGIN_URL, params: params)
+            .login(url: ApiUrls.LOGIN_URL, params: params, context: context)
             .then((LoginModel value) => {
                   this.setState(() {
-                    Commons.toastMessage(context, "Successfully login");
-                    NavigateRoute.popAndPushNamed(context, NavigateRoute.APP_LOADER);
+                    if (value != null) {
+                      Commons.toastMessage(context, "Successfully login");
+                      NavigateRoute.popAndPushNamed(
+                          context, NavigateRoute.APP_LOADER);
+                    }
                   }),
                 });
       }

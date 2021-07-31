@@ -1,5 +1,6 @@
 import 'package:murarkey_app/repository/server/auth_request/AuthApiRequest.dart';
 import 'package:murarkey_app/repository/server/home_page/HomeApiRequest.dart';
+import 'package:murarkey_app/repository/server/order/OrderApiService.dart';
 import 'package:murarkey_app/repository/server/others/AddressApi.dart';
 import 'package:murarkey_app/repository/server/others/JoinProfessionalApi.dart';
 import 'package:murarkey_app/repository/server/others/PaymentWithApi.dart';
@@ -28,6 +29,7 @@ class Repository {
   WishlistRequestApi wishlistRequestApi = new WishlistRequestApi();
   WalletApiRequest walletApiRequest = new WalletApiRequest();
   ServicesApiRequest servicesApiRequest = new ServicesApiRequest();
+  OrderApiService orderApiService = new OrderApiService();
 
   //Local Storage
   UserTokenPref userTokenPref = new UserTokenPref();

@@ -11,6 +11,8 @@ part 'UserModel.g.dart';
 class UserModel{
   final int id;
   final String name;
+  final String first_name;
+  final String last_name;
   final String role;
   final String email;
   final String phone;
@@ -18,15 +20,21 @@ class UserModel{
   final String joined_on;
   final PaymentCardAddresModel billing_details;
   final PaymentCardAddresModel shipment_details;
+  var emailVerification;
+  var phoneVerification;
 
   UserModel({
     this.id,
     this.name,
+    this.first_name,
+    this.last_name,
     this.role,
     this.email,
     this.phone,
     this.profileImage,
     this.joined_on,
+    this.emailVerification,
+    this.phoneVerification,
     this.billing_details,
     this.shipment_details
   });

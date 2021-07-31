@@ -44,19 +44,14 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
     super.initState();
   }
 
-  addToCartToServer() async {
+  addToCartToServer(ServicesCategoryListsModel model) async {
     //Add product
     Map<String, dynamic> params = new Map();
-    params["product_id"] = widget.model.id.toString();
+    params["product_id"] = model.id.toString();
     params["qty"] = 1.toString();
 
-    Map<String, dynamic> options = new Map();
-    options["image"] = widget.model.icon;
-
-    //params["options"] = //json.encode(options);
-    // options.toString(); //
-    params["type"] = "product";
-    params["options"] = {"image": widget.model.icon, "product_type": "service"};
+    params["type"] = "service";
+    params["options"] = {"image": model.featured_image, "product_type": "service"};
 
     print(params);
 
@@ -198,7 +193,7 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
                         boderColor: AppConstants.appColor.redColor,
                         //buttonWidth: 100,
                         onPressedCallback: () {
-                          addToCartToServer();
+                          addToCartToServer(model);
                         },
                       ),
                     ],

@@ -25,12 +25,22 @@ class SearchWidget extends StatefulWidget {
   final List<CategoryModel> categoryModelList;
   final List<BrandModel> brandModelList;
   final CategoryModel categoryModel;
+  final BrandModel brandModel;
+
+  final String slugType;
+  final String slug;
+
+  static final String TYPE_CATEGORY_SLUG = "category";
+  static final String TYPE_BRAND_SLUG = "brand";
 
   SearchWidget(
       {Key key,
       @required this.categoryModelList,
       @required this.brandModelList,
-      this.categoryModel})
+      this.categoryModel,
+      this.brandModel,
+      this.slug,
+      this.slugType})
       : super(key: key);
 
   @override
@@ -44,8 +54,17 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
   List<ProductDetailModel> productDetailList = new List<ProductDetailModel>();
 
   _SearchWidgetState({this.widget}) {
-    if (widget.categoryModel != null) {
-      viewModel.categoryValue = widget.categoryModel;
+
+    if(widget.slugType != null && widget.slug != null){
+      viewModel.slugType = widget.slugType;
+      viewModel.slug = widget.slug;
+
+      if (viewModel.slug != SearchWidget.TYPE_CATEGORY_SLUG) {
+        viewModel.categoryValue = widget.categoryModel;
+      }
+      if (viewModel.slug != SearchWidget.TYPE_BRAND_SLUG) {
+        viewModel.brandValue = widget.brandModel;
+      }
     }
 
     _search();
@@ -83,6 +102,7 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
     if (viewModel.categoryValue != null) {
       queryParams["category"] = viewModel.categoryValue.slug;
     }
+
     if (viewModel.formMin.text != null && viewModel.formMin.text != "") {
       queryParams["lower_price"] = viewModel.formMin.text;
       //print("lower_price = " + viewModel.formMin.text);

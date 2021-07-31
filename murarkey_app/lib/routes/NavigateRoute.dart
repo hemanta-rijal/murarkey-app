@@ -68,7 +68,11 @@ class NavigateRoute {
         return _MaterialPageRoute(SearchWidget(
             categoryModelList: arguments["categoryModelList"],
             brandModelList: arguments["brandModelList"],
-            categoryModel: arguments["categoryModel"]));
+            slugType: arguments["slugType"],
+            slug: arguments["slug"],
+            categoryModel: arguments["categoryModel"],
+            brandModel: arguments["brandModel"]
+        ));
       case PRODUCT_DETAIL:
         Map<String, dynamic> arguments = args as Map;
         return _MaterialPageRoute(

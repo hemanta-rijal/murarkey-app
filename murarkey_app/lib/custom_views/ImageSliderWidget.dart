@@ -46,7 +46,7 @@ class ImageSliderWidgetState extends State<ImageSliderWidget> {
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
               imgUrl,
-              fit: BoxFit.contain,
+              fit: BoxFit.fill,
             ),
           ));
     }

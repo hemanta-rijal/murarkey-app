@@ -18,6 +18,7 @@ import 'package:murarkey_app/repository/models/our_services/OurServicesModel.dar
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/views/search/SearchWidget.dart';
 
 class HomeFragmentWidget extends StatefulWidget {
   //https://stackoverflow.com/questions/50250789/expanded-widgets-must-be-placed-inside-flex-widgets
@@ -75,20 +76,22 @@ class _HomeFragmentWidgetState
                   : Container(),
 
               //Our Services
-              ourServicesModelList != null
+              ourServicesModelList != null && ourServicesModelList.length > 0
                   ? OurServicesWidget(
                       modelList: ourServicesModelList,
                     )
                   : Container(),
 
               //Shop by category
-              categoryModelList != null
+              categoryModelList != null && categoryModelList.length > 0
                   ? ShopByCategoryWidget(
                       modelList: categoryModelList,
                       onCallBack: (categoryModel) {
                         Map<String, dynamic> arguments = new Map();
                         arguments["categoryModelList"] = categoryModelList;
                         arguments["brandModelList"] = brandModelList;
+                        arguments["slugType"] = SearchWidget.TYPE_CATEGORY_SLUG;
+                        arguments["slug"] = categoryModel.slug;
                         arguments["categoryModel"] = categoryModel;
                         NavigateRoute.pushNamedWithArguments(
                             context, NavigateRoute.SEARCH, arguments);
@@ -97,7 +100,7 @@ class _HomeFragmentWidgetState
                   : Container(),
 
               //Popular Parlours
-              parlorModelList != null
+              parlorModelList != null && parlorModelList.length > 0
                   ? PopularParloursWidget(
                       modelList: parlorModelList,
                       onCallBack: (ParlorModel parlorModel) {
@@ -114,9 +117,19 @@ class _HomeFragmentWidgetState
               //     modelList: Datas.schedulePremiumList),
 
               //Shop by Brands
-              brandModelList != null
+              brandModelList != null && brandModelList.length > 0
                   ? ShopByBrandsWidget(
                       modelList: brandModelList,
+                      onCallBack: (BrandModel brandModel) {
+                        Map<String, dynamic> arguments = new Map();
+                        arguments["categoryModelList"] = categoryModelList;
+                        arguments["brandModelList"] = brandModelList;
+                        arguments["slugType"] = SearchWidget.TYPE_BRAND_SLUG;
+                        arguments["slug"] = brandModel.slug;
+                        arguments["brandModel"] = brandModel;
+                        NavigateRoute.pushNamedWithArguments(
+                            context, NavigateRoute.SEARCH, arguments);
+                      },
                     )
                   : Container(),
 

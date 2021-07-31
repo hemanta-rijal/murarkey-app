@@ -1,5 +1,7 @@
 import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/repository/Repository.dart';
+import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -25,6 +27,32 @@ class CardDeatilDescriptionWidget extends StatefulWidget {
 class _CardDeatilDescriptionWidgetState
     extends State<CardDeatilDescriptionWidget> {
   bool checked = false;
+
+  Repository _repository = new Repository();
+
+  addToCartToServer() async {
+    //Add service
+    Map<String, dynamic> params = new Map();
+    params["product_id"] = widget.model.id.toString();
+    params["qty"] = 1.toString();
+
+    params["type"] = "service";
+    params["options"] = {
+      "image": widget.model.featured_image,
+      "product_type": "service"
+    };
+
+    print(params);
+
+    await _repository.productRequestApi
+        .addToCard(url: ApiUrls.CART, params: params)
+        .then((value) {
+      if (value != null) {
+        Commons.toastMessage(context, value["message"]);
+      }
+      this.setState(() {});
+    });
+  }
 
   Widget loadBannerImage() {
     return Image.network(
@@ -171,10 +199,10 @@ class _CardDeatilDescriptionWidgetState
         ),
         Expanded(
           flex: 1,
-          child: InkResponse(
+          child: InkWell(
             onTap: () {
               setState(() {
-                Commons.toastMessage(context, "Added to card");
+                addToCartToServer();
               });
             },
             child: Container(

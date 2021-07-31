@@ -6,8 +6,9 @@ import 'package:murarkey_app/utils/Imports.dart';
 
 class ShopByBrandsWidget extends StatefulWidget {
   List<BrandModel> modelList;
+  Function(BrandModel) onCallBack;
 
-  ShopByBrandsWidget({Key key, @required this.modelList}) : super(key: key);
+  ShopByBrandsWidget({Key key, @required this.modelList, @required this.onCallBack}) : super(key: key);
 
   @override
   _ShopByBrandsWidgetState createState() => _ShopByBrandsWidgetState();
@@ -36,7 +37,12 @@ class _ShopByBrandsWidgetState extends State<ShopByBrandsWidget> {
         return Container(
           width: _containerWidth, // + 16,
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
-          child: loadImage(model.imageUrl),
+          child: InkWell(
+            onTap: (){
+              widget.onCallBack(model);
+            },
+            child: loadImage(model.imageUrl),
+          ),
         );
       }).toList();
     }

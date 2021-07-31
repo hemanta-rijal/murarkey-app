@@ -13,5 +13,7 @@ class SearchViewModel{
    String formSearch = "";
    BrandModel brandValue = null;
    CategoryModel categoryValue = null;
+   String slugType = null;
+   String slug = null;
 
 }

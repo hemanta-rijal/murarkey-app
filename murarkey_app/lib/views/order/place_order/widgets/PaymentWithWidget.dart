@@ -90,7 +90,7 @@ class PaymentWithWidget extends StatelessWidget {
       return Container(
         width: size.width,
         color: AppConstants.appColor.whiteColor,
-        margin: EdgeInsets.only(top: 24),
+        margin: EdgeInsets.only(top: 8),
         padding: EdgeInsets.only(top: 8, bottom: 24, left: 8, right: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

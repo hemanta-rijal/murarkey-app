@@ -28,17 +28,16 @@ class _PlaceOrderWidgetState
     extends CustomStatefulWidgetState<PlaceOrderWidget> {
   Repository _repository = new Repository();
   CartModel cartModel = new CartModel();
-  UserModel userModel = new UserModel();
   var paywith;
 
   bool isTheirContentData = false;
-  double _imageHeight = 88.0;
 
   Size size;
   var _cardSize = 100.0;
   var appBarHeight = 50.0;
 
   _PlaceOrderWidgetState() {
+    paywith = GlobalData.paywith;
     loadData();
   }
 
@@ -49,27 +48,6 @@ class _PlaceOrderWidgetState
               cartModel = value,
               loadContent(),
               this.setState(() {}),
-            });
-
-    await _repository.userApiRequest
-        .getMyDetails(url: ApiUrls.ABOUT_ME)
-        .then((value) => {
-              if (value != null) {userModel = value, print(userModel.name)}
-            });
-
-    await _repository.paymentWithApi
-        .getPaymentList(url: ApiUrls.PAYMENT_METHODS)
-        .then((value) => {
-              if (value != null)
-                {
-                  if (value["status"] == 200)
-                    {
-                      paywith = value,
-                      print("getPaymentList"),
-                      print(paywith),
-                    },
-                  this.setState(() {}),
-                }
             });
   }
 
@@ -231,9 +209,21 @@ class _PlaceOrderWidgetState
       return Column(
         children: [
           //Shipping and Billing
+          isTheirContentData == true ? horizontalList2 : Container(),
+          isTheirContentData == true
+              ? Container(
+                  margin: EdgeInsets.only(top: 16),
+                  child: OrderItemTotalWidget(
+                    subTotal: "${cartModel.subTotal}",
+                    shippingCharge: "${cartModel.shippingAmount}",
+                    tax: "${cartModel.tax}",
+                    total: "${cartModel.total}",
+                  ),
+                )
+              : Container(),
           Container(
-            margin: EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
-            child:  Row(
+            margin: EdgeInsets.only(top: 16, bottom: 8, left: 8, right: 8),
+            child: Row(
               children: [
                 Expanded(
                   child: ShippingAndBillingWidget.get(
@@ -256,18 +246,6 @@ class _PlaceOrderWidgetState
               ],
             ),
           ),
-          isTheirContentData == true ? horizontalList2 : Container(),
-          isTheirContentData == true
-              ? Container(
-                  margin: EdgeInsets.only(top: 16),
-                  child: OrderItemTotalWidget(
-                    subTotal: "${cartModel.subTotal}",
-                    shippingCharge: "${cartModel.shippingAmount}",
-                    tax: "${cartModel.tax}",
-                    total: "${cartModel.total}",
-                  ),
-                )
-              : Container(),
           (paywith != null)
               ? PaymentWithWidget(
                   paywith: paywith,

@@ -31,6 +31,10 @@ class _WishlistFragmentWidgetState
   bool isTheirContentData = false;
   double _imageHeight = 88.0;
 
+  Size size;
+  var _cardSize = 100.0;
+  var appBarHeight = 50.0;
+
   _WishlistFragmentWidgetState() {
     loadData();
   }
@@ -310,7 +314,8 @@ class _WishlistFragmentWidgetState
       showBackbutton: false,
       appBarTextAlignment: MainAxisAlignment.center,
       childWidget: builder(),
-      //floatingActionButton: FBFloatingButton().fab(),
+      appBarHeight: appBarHeight,
+      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
     );
   }
 }

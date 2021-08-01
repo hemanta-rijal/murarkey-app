@@ -387,9 +387,9 @@ class _CartFragmentWidgetState
       appBarText: "Shopping List",
       showBackbutton: false,
       appBarTextAlignment: MainAxisAlignment.center,
-      childWidget: builder(),
       appBarHeight: appBarHeight,
       bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+      childWidget: builder(),
       floatingWidget: floatingWidget(),
       //floatingActionButton: FBFloatingButton().fab(),
     );

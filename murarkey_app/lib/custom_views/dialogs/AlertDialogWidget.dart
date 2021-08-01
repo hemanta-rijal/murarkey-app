@@ -17,13 +17,13 @@ class AlertDialogWidget {
     Widget cancelButton = FlatButton(
       child: Text(cancelText),
       onPressed: () {
-        okCallback();
+        cancleCallback();
       },
     );
     Widget continueButton = FlatButton(
       child: Text(okText),
       onPressed: () {
-        cancleCallback();
+        okCallback();
       },
     );
 

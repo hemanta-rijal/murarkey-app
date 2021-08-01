@@ -67,6 +67,9 @@ class _AccountFragmentWidgetState
           if (value != null) {
             Commons.toastMessage(context, value["message"]);
             redirectToLogin();
+          }else{
+            Commons.toastMessage(context, "Logout successfully");
+            redirectToLogin();
           }
         });
       }

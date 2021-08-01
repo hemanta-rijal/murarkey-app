@@ -11,6 +11,7 @@ class AppColor {
   final Color primaryDarkColor = new Color(0x37173d).withOpacity(1.0);
   final Color primaryColor = new Color(0x37173d).withOpacity(1.0);
   final Color primaryLightColor = new Color(0x623f68).withOpacity(1.0);
+  final Color primaryLightColor3 = new Color(0x623f68).withOpacity(0.9);
   final Color primaryLightColor2 = new Color(0xceb3d6).withOpacity(1.0);
 
   final Color accentColor = new Color(0xe7ab3c).withOpacity(1.0);

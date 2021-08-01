@@ -25,6 +25,8 @@ class CustomStatefulWidgetState<T> extends State {
       bool showBackbutton,
       double backArrowSize,
       double titleSize,
+      double appBarHeight,
+      Widget floatingWidget,
       MainAxisAlignment appBarTextAlignment}) {
     if (widget == null) {
       widget = Container();
@@ -37,34 +39,47 @@ class CustomStatefulWidgetState<T> extends State {
         body: SafeArea(
           child: new LayoutBuilder(builder:
               (BuildContext context, BoxConstraints viewportConstraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                  minWidth: viewportConstraints.minWidth,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppBarWidget(
-                      title: appBarText,
-                      showBackbutton: showBackbutton,
-                      mainAxisAlignment: appBarTextAlignment,
-                      backgroundColor: backgroundColor,
-                      backArrowColor: backArrowColor,
-                      textColor: textColor,
-                      backArrowSize: backArrowSize,
-                      titleSize: titleSize,
-                      widget: widget,
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: viewportConstraints.maxHeight,
+                      minWidth: viewportConstraints.minWidth,
                     ),
-                    childWidget,
-                    // Container(
-                    //   // margin: EdgeInsets.all(8),
-                    //   child: childWidget,
-                    // )
-                  ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppBarWidget(
+                          title: appBarText,
+                          showBackbutton: showBackbutton,
+                          mainAxisAlignment: appBarTextAlignment,
+                          backgroundColor: backgroundColor,
+                          backArrowColor: backArrowColor,
+                          textColor: textColor,
+                          backArrowSize: backArrowSize,
+                          titleSize: titleSize,
+                          widget: widget,
+                          height: appBarHeight,
+                        ),
+                        childWidget,
+                        // Container(
+                        //   // margin: EdgeInsets.all(8),
+                        //   child: childWidget,
+                        // )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                floatingWidget != null
+                    ? new Positioned(
+                        child: new Align(
+                          alignment: FractionalOffset.bottomCenter,
+                          child: floatingWidget,
+                        ),
+                      )
+                    : Container(),
+              ],
             );
           }),
         ),

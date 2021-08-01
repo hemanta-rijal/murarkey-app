@@ -26,7 +26,9 @@ class _CartFragmentWidgetState
   CardViewModel viewModel = new CardViewModel();
   CartModel cartModel = new CartModel();
   bool isTheirContentData = false;
-  double _imageHeight = 88.0;
+  Size size;
+  var _cardSize = 100.0;
+  var appBarHeight = 50.0;
 
   _CartFragmentWidgetState() {
     loadData();
@@ -86,121 +88,156 @@ class _CartFragmentWidgetState
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    final Size screenSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
+    size = MediaQuery.of(context).size;
 
     Widget loadImage(String imgUrl) {
+      _cardSize = size.width * 0.25;
       return Image.network(
         imgUrl,
         fit: BoxFit.cover,
-        height: _imageHeight,
+        height: _cardSize,
       );
     }
 
-//https://stackoverflow.com/questions/52645944/flutter-expanded-vs-flexible
-    Widget addToCardWidget(ContentCartModel content, int index) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              flex: 1,
-              child: InkResponse(
-                child: svgImageAssert2(
-                    imgUrl: "images/maths/ic_sub.svg", size: 24),
-                onTap: () {
-                  setState(() {
-                    viewModel.productTextList[index].text = viewModel
-                        .subtract(viewModel.productTextList[index].text)
-                        .toString();
+    Widget addToCardWidget2(ContentCartModel content, int index) {
+      return Container(
+        child: Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Container(
+                // decoration: BoxDecoration(
+                //   shape: BoxShape.rectangle,
+                //   border: Border.all(
+                //       width: 1, color: AppConstants.appColor.greyColor),
+                //   borderRadius: BorderRadius.all(Radius.circular(2)),
+                // ),
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: InkResponse(
+                          child: svgImageAssert2(
+                            imgUrl: "images/maths/ic_sub_2.svg",
+                            size: 16,
+                            color: AppConstants.appColor.blackColor,
+                          ),
+                          onTap: () {
+                            setState(() {
+                              viewModel.productTextList[index].text = viewModel
+                                  .subtract(
+                                      viewModel.productTextList[index].text)
+                                  .toString();
 
-                    pushItemData(
-                        content, viewModel.productTextList[index].text);
-                  });
-                },
-              )),
-          Expanded(
-            flex: 6,
-            child: Container(
-              margin: EdgeInsets.only(left: 4.0, right: 4.0),
-              child: textFieldDisableKeyboard(
-                fontSize: SizeConfig.textMultiplier * 1.6,
-                height: 24,
-                controller: viewModel.productTextList[index],
+                              pushItemData(content,
+                                  viewModel.productTextList[index].text);
+                            });
+                          },
+                        )),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                        color: Colors.grey[200],
+                        child: textFieldDisableKeyboard(
+                          textAlign: TextAlign.center,
+                          borderColor: AppConstants.appColor.whiteColor,
+                          height: 30,
+                          controller: viewModel.productTextList[index],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: InkResponse(
+                        child: svgImageAssert2(
+                          imgUrl: "images/maths/ic_add_2.svg",
+                          size: 16,
+                          color: AppConstants.appColor.blackColor,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            viewModel.productTextList[index].text = viewModel
+                                .add(viewModel.productTextList[index].text)
+                                .toString();
+
+                            pushItemData(
+                                content, viewModel.productTextList[index].text);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: InkResponse(
-              child:
-                  svgImageAssert2(imgUrl: "images/maths/ic_add.svg", size: 24),
-              onTap: () {
-                setState(() {
-                  viewModel.productTextList[index].text = viewModel
-                      .add(viewModel.productTextList[index].text)
-                      .toString();
-
-                  pushItemData(content, viewModel.productTextList[index].text);
-                });
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       );
     }
 
     Widget buildItems(ContentCartModel content, int index) {
       return Container(
-        //height: double.infinity,
+        margin: EdgeInsets.only(left: 4),
         padding:
-            EdgeInsets.only(left: 8.0, top: 16.0, right: 16.0, bottom: 16.0),
+            EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 16.0),
         child: Column(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                loadImage(content.options["image"]),
                 Expanded(
-                  flex: 2,
-                  child: loadImage(content.options[
-                      "image"]), //"https://murarkey.surge.sh/img/products/rustic1.jpg"),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      textView1(
-                          title: content.name,
-                          textAlign: TextAlign.start,
-                          color: AppConstants.appColor.blackColor,
-                          textSize: 1.6,
-                          fontWeight: FontWeight.bold),
-                      SizedBox(height: 2),
-                      textView1(
-                          title:
-                              "Price: Rs. ${content.price.toString()} per item",
-                          textAlign: TextAlign.start,
-                          color: AppConstants.appColor.blackColor,
-                          textSize: 1.6,
-                          fontWeight: FontWeight.normal),
-                      SizedBox(height: 8),
-                      addToCardWidget(content, index),
-                      SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          textView1(
-                              title:
-                                  "Total: Rs. ${content.subtotal.toString()}",
-                              textAlign: TextAlign.right,
-                              color: AppConstants.appColor.primaryLightColor,
-                              textSize: 1.8,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: size.width - _cardSize - 88,
+                          child: textView1(
+                              title: content.name,
+                              textAlign: TextAlign.start,
+                              color: AppConstants.appColor.blackColor,
+                              textSize: 2.0,
                               fontWeight: FontWeight.bold),
-                        ],
-                      )
-                    ],
+                        ),
+                        SizedBox(height: 2),
+                        textView1(
+                            title:
+                                "${content.options["product_type"].toString().toUpperCase()}",
+                            textAlign: TextAlign.start,
+                            color: AppConstants.appColor.greyColor,
+                            textSize: 2.0,
+                            fontWeight: FontWeight.normal),
+                        SizedBox(height: 2),
+                        textView1(
+                            title: "NRP ${content.price.toString()} per item",
+                            textAlign: TextAlign.start,
+                            color: AppConstants.appColor.greyColor,
+                            textSize: 2.0,
+                            fontWeight: FontWeight.normal),
+                        SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Expanded(
+                              child: textView1(
+                                  title: "NRP ${content.subtotal.toString()}",
+                                  textAlign: TextAlign.left,
+                                  color:
+                                      AppConstants.appColor.primaryLightColor,
+                                  textSize: 2.3,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Expanded(
+                              child: addToCardWidget2(content, index),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -211,13 +248,13 @@ class _CartFragmentWidgetState
     }
 
     Widget horizontalList2 = ListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(8),
         itemCount: cartModel.getContent().length,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.only(top: 8, bottom: 8),
+            margin: EdgeInsets.only(top: 4, bottom: 4),
             child: Card(
               elevation: 4.0,
               shape: RoundedRectangleBorder(
@@ -228,64 +265,108 @@ class _CartFragmentWidgetState
         });
 
     alignBottom() {
-      return Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              textView1(
-                  title: "Tax: Rs. " +
-                      (isTheirContentData == true ? "${cartModel.tax}" : "0.0"),
-                  textAlign: TextAlign.right,
-                  color: AppConstants.appColor.primaryLightColor,
-                  textSize: 2.0,
-                  margin:
-                      EdgeInsets.only(left: 16, right: 32, top: 32, bottom: 0),
-                  fontWeight: FontWeight.bold),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              textView1(
-                  title: "Total Price: Rs. " +
-                      (isTheirContentData == true
-                          ? "${cartModel.total}"
-                          : "0.0"),
-                  textAlign: TextAlign.right,
-                  color: AppConstants.appColor.primaryLightColor,
-                  textSize: 2.0,
-                  margin:
-                      EdgeInsets.only(left: 16, right: 32, top: 0, bottom: 0),
-                  fontWeight: FontWeight.bold),
-            ],
-          ),
-          FlatStatefulButton(
-            text: "PROCEED TO CHECK OUT",
-            fontSize: SizeConfig.textMultiplier * 1.8,
-            textColor: AppConstants.appColor.accentColor,
-            padding: EdgeInsets.all(screenSize.width * .02),
-            backgroundColor: AppConstants.appColor.primaryColor,
-            buttonHeight: 40,
-            margin: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 16),
-            //buttonWidth: 100,
-            onPressedCallback: () {
-              if (isTheirContentData == true && cartModel != null) {
-                NavigateRoute.pushNamed(
-                    context, NavigateRoute.ORDER_PLACED_PRODUCTS);
-              } else {
-                Commons.toastMessage(context, "Their is no order to shop");
-              }
-            },
-          )
-        ],
+      return Container(
+        color: Colors.white,
+        padding: EdgeInsets.only(left: 8, right: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      margin: EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          textView1(
+                              title: "Tax: NRP. " +
+                                  (isTheirContentData == true
+                                      ? "${cartModel.tax}"
+                                      : "0.0"),
+                              color: AppConstants.appColor.primaryLightColor,
+                              textSize: 2.0,
+                              fontWeight: FontWeight.bold),
+                          RichText(
+                            text: TextSpan(
+                              text: "Total: ",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: SizeConfig.textMultiplier * 2.3,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: "NRP. " +
+                                      (isTheirContentData == true
+                                          ? "${cartModel.total}"
+                                          : "0.0"),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        AppConstants.appColor.primaryLightColor,
+                                    fontSize: SizeConfig.textMultiplier * 2.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ],
+                      ),
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: Container(
+                      height: 45,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                          AppConstants.appColor.primaryLightColor3,
+                          AppConstants.appColor.primaryColor
+                        ]),
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          if (isTheirContentData == true && cartModel != null) {
+                            NavigateRoute.pushNamed(
+                                context, NavigateRoute.ORDER_PLACED_PRODUCTS);
+                          } else {
+                            Commons.toastMessage(context, "Their is no order to shop");
+                          }
+                        },
+                        child: Text(
+                          "Check out",
+                          style: TextStyle(
+                            color: AppConstants.appColor.whiteColor,
+                            fontSize: SizeConfig.textMultiplier * 2.0,
+                            //fontWeight: setFontWeight(),
+                          ),
+                        ),
+                      ),
+                    ))
+              ],
+            ),
+          ],
+        ),
       );
+    }
+
+    Widget floatingWidget() {
+      return isTheirContentData ? alignBottom() : Container();
     }
 
     builder() {
       return isTheirContentData == true
           ? Column(
-              children: [horizontalList2, alignBottom()],
+              children: [
+                horizontalList2,
+                SizedBox(
+                  height: _cardSize - 16,
+                )
+              ],
             )
           : Container(
               margin: EdgeInsets.only(top: 60),
@@ -307,6 +388,9 @@ class _CartFragmentWidgetState
       showBackbutton: false,
       appBarTextAlignment: MainAxisAlignment.center,
       childWidget: builder(),
+      appBarHeight: appBarHeight,
+      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+      floatingWidget: floatingWidget(),
       //floatingActionButton: FBFloatingButton().fab(),
     );
   }

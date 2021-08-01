@@ -31,7 +31,7 @@ class AppBarWidget extends StatefulWidget {
     bool setElevation,
     this.widget,
   }) {
-    this.height = height == null ? 46 : height;
+    this.height = height; //== null ? 46 : height;
     this.showBackbutton = showBackbutton == null ? true : showBackbutton;
     this.mainAxisAlignment =
         mainAxisAlignment == null ? MainAxisAlignment.start : mainAxisAlignment;
@@ -57,9 +57,9 @@ class AppBarWidget extends StatefulWidget {
 
 class _AppBarWidgetState extends State<AppBarWidget> {
   loadTitle(String text, double textSize) {
-    var margin = EdgeInsets.all(0);
+    var margin = EdgeInsets.all(12);
     return Container(
-      margin: margin,
+      padding: margin,
       child: Text(text,
           textAlign: TextAlign.start,
           style: TextStyle(
@@ -102,15 +102,6 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           ),
         ],
       ): null,
-      // BoxDecoration(
-      //   //borderRadius: BorderRadius.circular(5.0),
-      //   boxShadow: [
-      //     BoxShadow(
-      //       offset: Offset(0.0, 1.0), //(x,y)
-      //     ),
-      //   ],
-      //     color: widget.backgroundColor,
-      // ),
       child: Column(
         children: [
           Row(

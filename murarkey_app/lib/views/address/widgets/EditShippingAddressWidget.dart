@@ -127,27 +127,59 @@ class _EditShippingAddressWidgetState
           SizedBox(
             height: 50,
           ),
-
-          //Log in
-          new FlatStatefulButton(
-            text: "Save Shipping Address",
-            fontSize: SizeConfig.textMultiplier * 2.0,
-            textColor: AppConstants.appColor.accentColor,
-            padding: EdgeInsets.all(screenSize.width * .02),
-            backgroundColor: AppConstants.appColor.buttonColor,
-            buttonHeight: 40,
-            onPressedCallback: () {
-              viewModel.updateShippingAddress(context);
-            },
-          ),
-          SizedBox(
-            height: 20,
-          ),
         ]),
       );
     }
 
+    floatingWidget() {
+      return Container(
+        color: Colors.white,
+        padding: EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                        AppConstants.appColor.primaryLightColor3,
+                        AppConstants.appColor.primaryColor
+                      ]),
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        viewModel.updateShippingAddress(context);
+                      },
+                      child: Text(
+                        "Save Billing Address",
+                        style: TextStyle(
+                          color: AppConstants.appColor.whiteColor,
+                          fontSize: SizeConfig.textMultiplier * 2.0,
+                          //fontWeight: setFontWeight(),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+
     return renderWithAppBar(
-        appBarText: "Edit Shipping Address", childWidget: buildView());
+      appBarText: "Edit Shipping Address",
+      showBackbutton: true,
+      appBarTextAlignment: MainAxisAlignment.start,
+      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+      childWidget: buildView(),
+      floatingWidget: floatingWidget(),
+    );
   }
 }

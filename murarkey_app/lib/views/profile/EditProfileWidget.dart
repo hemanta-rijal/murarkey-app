@@ -93,6 +93,32 @@ class _EditProfileWidgetState
       );
     }
 
+    Widget buttonWidget({String title, Function callback}) {
+      return Container(
+        height: 40,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            AppConstants.appColor.primaryLightColor3,
+            AppConstants.appColor.primaryColor
+          ]),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+        child: TextButton(
+          onPressed: () {
+            callback();
+          },
+          child: Text(
+            title,
+            style: TextStyle(
+              color: AppConstants.appColor.whiteColor,
+              fontSize: SizeConfig.textMultiplier * 2.0,
+              //fontWeight: setFontWeight(),
+            ),
+          ),
+        ),
+      );
+    }
+
     Widget userDetailForm() {
       return Card(
         elevation: 4.0,
@@ -202,22 +228,15 @@ class _EditProfileWidgetState
                   Expanded(flex: 2, child: Container()),
                   Expanded(
                     flex: 1,
-                    child: new FlatStatefulButton(
-                      text: "Save",
-                      fontSize: SizeConfig.textMultiplier * 2.0,
-                      textColor: AppConstants.appColor.accentColor,
-                      padding: EdgeInsets.all(screenSize.width * .02),
-                      backgroundColor: AppConstants.appColor.buttonColor,
-                      buttonHeight: 35,
-                      buttonCurve: 8.0,
-                      onPressedCallback: () {
-                        viewModel.updateProfile(context, this).then((value) {
-                          setState(() {
-                            refresh();
+                    child: buttonWidget(
+                        title: "Save",
+                        callback: () {
+                          viewModel.updateProfile(context, this).then((value) {
+                            setState(() {
+                              refresh();
+                            });
                           });
-                        });
-                      },
-                    ),
+                        }),
                   )
                 ],
               ),
@@ -265,19 +284,12 @@ class _EditProfileWidgetState
                   Expanded(flex: 2, child: Container()),
                   Expanded(
                     flex: 1,
-                    child: new FlatStatefulButton(
-                      text: "Done",
-                      fontSize: SizeConfig.textMultiplier * 2.0,
-                      textColor: AppConstants.appColor.accentColor,
-                      padding: EdgeInsets.all(screenSize.width * .02),
-                      backgroundColor: AppConstants.appColor.buttonColor,
-                      buttonHeight: 35,
-                      buttonCurve: 8.0,
-                      onPressedCallback: () {
-                        Commons.toastMessage(
-                            context, "Password changed successfully.");
-                      },
-                    ),
+                    child: buttonWidget(
+                        title: "Done",
+                        callback: () {
+                          Commons.toastMessage(
+                              context, "Password changed successfully.");
+                        }),
                   )
                 ],
               )
@@ -305,7 +317,15 @@ class _EditProfileWidgetState
       );
     }
 
+    // return renderWithAppBar(
+    //     appBarText: "Edit Pofile", childWidget: buildView());
+
     return renderWithAppBar(
-        appBarText: "Edit Pofile", childWidget: buildView());
+      appBarText: "Edit Pofile",
+      showBackbutton: true,
+      appBarTextAlignment: MainAxisAlignment.start,
+      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+      childWidget: buildView(),
+    );
   }
 }

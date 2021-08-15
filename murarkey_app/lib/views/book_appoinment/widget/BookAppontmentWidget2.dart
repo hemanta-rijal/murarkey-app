@@ -59,83 +59,7 @@ class _BookAppontmentWidgetState
       }
     }
 
-    Widget title() {
-      return Container(
-        color: Colors.white,
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Center(
-              child: textView1(
-                  title: "INTRODUCING",
-                  textAlign: TextAlign.center,
-                  textSize: 2.0,
-                  fontWeight: FontWeight.bold),
-            ),
-
-            // Center(
-            //   child: richText1("Murarkey Pro", "\nOwn Your Career With Murarkey")
-            // ),
-            Center(
-              child: textView1(
-                  title: "Murarkey Pro",
-                  textAlign: TextAlign.center,
-                  color: AppConstants.appColor.primaryColor,
-                  textSize: 2.5,
-                  fontWeight: FontWeight.bold),
-            ),
-            Center(
-              child: textView1(
-                  title: "Own Your Career With Murarkey",
-                  textAlign: TextAlign.center,
-                  color: AppConstants.appColor.textColor2,
-                  textSize: 1.8,
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget name() {
-      return Container(
-        margin: EdgeInsets.all(8),
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: AppConstants.appColor.whiteColor,
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey,
-              offset: Offset(0.0, 1.0), //(x,y)
-              blurRadius: 6.0,
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //First Name
-            textView1(
-              title: "First Name",
-              margin: EdgeInsets.only(top: 8),
-            ),
-            textField1(
-                controller: viewModel.formFirstName,
-                margin: EdgeInsets.only(top: 8.0)),
-
-            //Last Name
-            textView1(title: "Last Name", margin: EdgeInsets.only(top: 16)),
-            textField1(
-                controller: viewModel.formLastName,
-                margin: EdgeInsets.only(top: 8.0)),
-          ],
-        ),
-      );
-    }
-
-    Widget joinUsForm() {
+    Widget billingAddressForm() {
       return Container(
         margin: EdgeInsets.all(8),
         child: Card(
@@ -146,11 +70,36 @@ class _BookAppontmentWidgetState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //First Name
-                textView1(
-                  title: "First Name",
-                  margin: EdgeInsets.only(top: 8),
+                Center(
+                  child: textView1(
+                      title: "INTRODUCING",
+                      textAlign: TextAlign.center,
+                      textSize: 1.9,
+                      fontWeight: FontWeight.bold),
                 ),
+
+                // Center(
+                //   child: richText1("Murarkey Pro", "\nOwn Your Career With Murarkey")
+                // ),
+                Center(
+                  child: textView1(
+                      title: "Murarkey Pro",
+                      textAlign: TextAlign.center,
+                      color: AppConstants.appColor.primaryColor,
+                      textSize: 2.4,
+                      fontWeight: FontWeight.bold),
+                ),
+                Center(
+                  child: textView1(
+                      title: "Own Your Career With Murarkey",
+                      textAlign: TextAlign.center,
+                      color: AppConstants.appColor.textColor2,
+                      textSize: 1.7,
+                      fontWeight: FontWeight.bold),
+                ),
+
+                //First Name
+                textView1(title: "First Name", margin: EdgeInsets.only(top: 8)),
                 textField1(
                     controller: viewModel.formFirstName,
                     margin: EdgeInsets.only(top: 8.0)),
@@ -160,6 +109,7 @@ class _BookAppontmentWidgetState
                 textField1(
                     controller: viewModel.formLastName,
                     margin: EdgeInsets.only(top: 8.0)),
+
                 //Preferred Work
                 textView1(
                     title: "Preferred Work ", margin: EdgeInsets.only(top: 16)),
@@ -254,68 +204,42 @@ class _BookAppontmentWidgetState
     }
 
     Widget buildView() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          title(),
-          //name(),
-          joinUsForm(),
-          SizedBox(
-            height: 88,
-          ),
-        ],
-      );
-    }
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        billingAddressForm(),
 
-    floatingWidget() {
-      return Container(
-        color: Colors.white,
-        padding: EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    height: 45,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        AppConstants.appColor.primaryLightColor3,
-                        AppConstants.appColor.primaryColor
-                      ]),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        validation();
-                      },
-                      child: Text(
-                        AppConstants.constants.BUTTON_SUBMIT,
-                        style: TextStyle(
-                          color: AppConstants.appColor.whiteColor,
-                          fontSize: SizeConfig.textMultiplier * 2.0,
-                          //fontWeight: setFontWeight(),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
+        SizedBox(
+          height: 42,
         ),
-      );
+
+        //Log in
+        new FlatStatefulButton(
+          margin: EdgeInsets.all(8),
+          text: AppConstants.constants.BUTTON_SUBMIT,
+          fontSize: SizeConfig.textMultiplier * 2.0,
+          textColor: AppConstants.appColor.accentColor,
+          padding: EdgeInsets.all(screenSize.width * .02),
+          backgroundColor: AppConstants.appColor.buttonColor,
+          buttonHeight: 40,
+          onPressedCallback: () {
+            validation();
+          },
+        ),
+        SizedBox(
+          height: 20,
+        ),
+      ]);
     }
 
     return renderWithAppBar(
       appBarText: AppConstants.constants.BOOK_AN_APPOINTMENT,
-      showBackbutton: true,
-      appBarTextAlignment: MainAxisAlignment.start,
       bodybackgroundColor: AppConstants.appColor.backgroundColor2,
       childWidget: buildView(),
-      floatingWidget: floatingWidget(),
     );
+
+    // return renderWithAppBar(
+    //       appBarText: "Search Product",
+    //       bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+    //       childWidget: buildWidget(),
+    //     );
   }
 }

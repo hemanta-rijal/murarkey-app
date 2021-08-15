@@ -118,6 +118,14 @@ class _EditAddressWidgetState
     }
 
     return renderWithAppBar(
-        appBarText: "Edit Address", childWidget: buildView());
+      appBarText: "Edit Address",
+      showBackbutton: true,
+      appBarTextAlignment: MainAxisAlignment.start,
+      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+      childWidget: buildView(),
+    );
+
+    // return renderWithAppBar(
+    //     appBarText: "Edit Address", childWidget: buildView());
   }
 }

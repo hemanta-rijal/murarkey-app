@@ -54,7 +54,8 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
   List<ProductDetailModel> productDetailList = new List<ProductDetailModel>();
 
   _SearchWidgetState({this.widget}) {
-    if (widget.slugType != null && widget.slug != null) {
+
+    if(widget.slugType != null && widget.slug != null){
       viewModel.slugType = widget.slugType;
       viewModel.slug = widget.slug;
 
@@ -254,9 +255,6 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
     }
 
     return renderWithAppBar(
-      appBarText: "Search Product",
-      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
-      childWidget: buildWidget(),
-    );
+        appBarText: "Search Product", childWidget: buildWidget());
   }
 }

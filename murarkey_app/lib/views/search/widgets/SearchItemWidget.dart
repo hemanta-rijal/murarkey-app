@@ -11,7 +11,8 @@ class SearchItemWidget extends StatefulWidget {
   final List<ProductDetailModel> modelList;
   final Function(ProductDetailModel) onCallback;
 
-  SearchItemWidget({Key key, @required this.modelList, this.onCallback}) : super(key: key);
+  SearchItemWidget({Key key, @required this.modelList, this.onCallback})
+      : super(key: key);
 
   @override
   _SearchItemWidgetState createState() => _SearchItemWidgetState();
@@ -22,8 +23,8 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
   double _containerHeight = 160.0;
   double _containerWidth = 120.0;
 
-  var _crossAxisCount = 3;
-  var _aspectRatio = 0.60;
+  var _crossAxisCount = 2;
+  var _aspectRatio = 0.82;
   var _cardSize = 50.0;
 
   @override
@@ -41,58 +42,79 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
 
     buildItems(ProductDetailModel model) {
       return Container(
-          //height: _containerHeight,
-          //width: _containerWidth + 16,
-          child: Column(
-        children: [
-          loadImage(model.images[0].imageUrl),
-          SizedBox(height: 4),
-          Text(
-            model.category.name.toUpperCase(),
-            style: TextStyle(
-              color: AppConstants.appColor.greyColor,
-              fontWeight: FontWeight.bold,
-              fontSize: SizeConfig.textMultiplier * 1.2,
-            ),
-          ),
-          SizedBox(height: 2),
-          Text(
-            model.name,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: AppConstants.appColor.blackColor,
-              fontWeight: FontWeight.normal,
-              fontSize: SizeConfig.textMultiplier * 1.4,
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          RichText(
-            text: TextSpan(
-              text: "Rs " + model.price_after_discount.toString(),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppConstants.appColor.primaryColor,
-                fontSize: SizeConfig.textMultiplier * 1.6,
-              ),
-              children: <TextSpan>[
-                TextSpan(text: " "),
-                TextSpan(
-                    text: "Rs " + model.price.toString(),
+        child: Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 16, left: 8, right: 8),
+              child: Column(
+                children: [
+                  loadImage(model.images[0].imageUrl),
+                  SizedBox(height: 4),
+                  Text(
+                    model.category.name.toUpperCase(),
                     style: TextStyle(
-                      color: AppConstants.appColor.textColor3,
-                      fontSize: SizeConfig.textMultiplier * 1.4,
-                      decoration: TextDecoration.lineThrough,
-                      decorationThickness: 1.2,
-                      decorationColor: AppConstants.appColor.redColor,
-                    )),
-              ],
+                      color: AppConstants.appColor.greyColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizeConfig.textMultiplier * 1.8,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    model.name,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: AppConstants.appColor.blackColor,
+                      fontWeight: FontWeight.normal,
+                      fontSize: SizeConfig.textMultiplier * 1.6,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                ],
+              ),
             ),
-            textAlign: TextAlign.justify,
-          )
-        ],
-      ));
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Expanded(
+                child: Container(
+                  width: double.infinity,
+                  height: 40,
+                  alignment: Alignment.center,
+                  color: Colors.green[500],
+                  padding: EdgeInsets.only(top: 8, bottom: 8),
+                  child: RichText(
+                    text: TextSpan(
+                      text: "NRP. " + model.price_after_discount.toString(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppConstants.appColor.whiteColor,
+                        fontSize: SizeConfig.textMultiplier * 1.8,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(text: " "),
+                        TextSpan(
+                          text: "NRP. " + model.price.toString(),
+                          style: TextStyle(
+                            color: AppConstants.appColor.blackColor,
+                            fontSize: SizeConfig.textMultiplier * 1.8,
+                            decoration: TextDecoration.lineThrough,
+                            decorationThickness: 1.2,
+                            decorationColor: AppConstants.appColor.redColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
     }
 
     Widget list1 = new Container(
@@ -106,21 +128,22 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
             crossAxisCount: _crossAxisCount, childAspectRatio: _aspectRatio),
         itemBuilder: (context, position) {
           return Container(
-              padding: EdgeInsets.all(4),
-              margin: EdgeInsets.only(top: 2),
-              child: Card(
-                  elevation: 4.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Container(
-                    padding: EdgeInsets.all(4),
-                    child: InkResponse(
-                      onTap: (){
-                        widget.onCallback(widget.modelList[position]);
-                      },
-                      child: buildItems(widget.modelList[position]),
-                    )
-                  )));
+            padding: EdgeInsets.all(4),
+            margin: EdgeInsets.only(top: 2),
+            child: Card(
+              elevation: 4.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              child: Container(
+                child: InkResponse(
+                  onTap: () {
+                    widget.onCallback(widget.modelList[position]);
+                  },
+                  child: buildItems(widget.modelList[position]),
+                ),
+              ),
+            ),
+          );
         },
       ),
     );

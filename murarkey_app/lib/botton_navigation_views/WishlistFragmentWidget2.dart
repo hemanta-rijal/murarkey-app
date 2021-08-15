@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:murarkey_app/botton_navigation_views/view_model/CardViewModel.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
-import 'package:murarkey_app/custom_views/buttons/FlatButton3.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/loader/LoaderDialog.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
@@ -12,7 +11,6 @@ import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/cart/CartModel.dart';
 import 'package:murarkey_app/repository/models/content/ContentCartModel.dart';
-import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
@@ -23,13 +21,13 @@ import 'package:url_launcher/url_launcher.dart';
 //https://medium.com/flutter-community/build-a-chatbot-in-20-minutes-using-flutter-and-dialogflow-8e9af1014463
 //https://stackoverflow.com/questions/55838430/flutter-open-facebook-link-in-facebook-app-android-ios
 
-class WishlistFragmentWidget extends StatefulWidget {
+class WishlistFragmentWidget2 extends StatefulWidget {
   @override
-  _WishlistFragmentWidgetState createState() => _WishlistFragmentWidgetState();
+  _WishlistFragmentWidget2State createState() => _WishlistFragmentWidget2State();
 }
 
-class _WishlistFragmentWidgetState
-    extends CustomStatefulWidgetState<WishlistFragmentWidget> {
+class _WishlistFragmentWidget2State
+    extends CustomStatefulWidgetState<WishlistFragmentWidget2> {
   Repository _repository = new Repository();
   CardViewModel viewModel = new CardViewModel();
   CartModel cartModel = new CartModel();
@@ -42,7 +40,7 @@ class _WishlistFragmentWidgetState
 
   UserModel userModel = GlobalData.userModel;
 
-  _WishlistFragmentWidgetState() {
+  _WishlistFragmentWidget2State() {
     loadData();
   }
 
@@ -50,12 +48,13 @@ class _WishlistFragmentWidgetState
   void didChangeDependencies() {
     if (mounted) {
       userModel = GlobalData.userModel;
-      setState(() {});
+      setState(() {
+
+      });
       if (userModel.name == null) {
         Future.delayed(const Duration(milliseconds: 500), () {
           setState(() {
-            Commons.toastMessage(
-                context, "Please Login to seen your wishlist order placed.");
+            Commons.toastMessage(context, "Please Login to seen your wishlist order placed.");
             NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
           });
         });
@@ -115,28 +114,6 @@ class _WishlistFragmentWidgetState
             });
   }
 
-  addToCartToServer(ContentCartModel model) async {
-    //Add product
-    Map<String, dynamic> params = new Map();
-    params["product_id"] = model.id.toString();
-    params["qty"] = 1.toString();
-
-    params["type"] = "product";
-    params["options"] = {"image": model.options["image"], "product_type": "product"};
-
-    print(params);
-
-    await _repository.productRequestApi
-        .addToCard(url: ApiUrls.CART, params: params)
-        .then((value) async {
-      if (value != null) {
-        Commons.toastMessage(context, value["message"]);
-        await loadData();
-      }
-      this.setState(() {});
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -146,23 +123,14 @@ class _WishlistFragmentWidgetState
   Widget build(BuildContext context) {
     super.build(context);
 
-    final Size size = MediaQuery.of(context).size;
+    final Size screenSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
 
     Widget loadImage(String imgUrl) {
-      _cardSize = size.width * 0.25;
-
-      if (imgUrl != null) {
-        return Image.network(
-          imgUrl,
-          fit: BoxFit.cover,
-          height: _cardSize,
-        );
-      }
-
-      return Container(
-        height: _cardSize,
-        width: _cardSize,
+      return Image.network(
+        imgUrl,
+        fit: BoxFit.cover,
+        height: _imageHeight,
       );
     }
 
@@ -221,75 +189,54 @@ class _WishlistFragmentWidgetState
 
     Widget buildItems(ContentCartModel content, int index) {
       return Container(
-        margin: EdgeInsets.only(left: 4),
+        //height: double.infinity,
         padding:
-            EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 16.0),
+            EdgeInsets.only(left: 8.0, top: 16.0, right: 16.0, bottom: 16.0),
         child: Column(
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                loadImage(content.options["image"]),
                 Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: size.width - _cardSize - 88,
-                          child: textView1(
-                              title: content.name,
-                              textAlign: TextAlign.start,
-                              color: AppConstants.appColor.blackColor,
-                              textSize: 2.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 2),
-                        textView1(
-                            title:
-                                "${content.options["product_type"].toString().toUpperCase()}",
-                            textAlign: TextAlign.start,
-                            color: AppConstants.appColor.greyColor,
-                            textSize: 2.0,
-                            fontWeight: FontWeight.normal),
-                        SizedBox(height: 2),
-                        textView1(
-                            title: "NRP ${content.price.toString()} per item",
-                            textAlign: TextAlign.start,
-                            color: AppConstants.appColor.greyColor,
-                            textSize: 2.0,
-                            fontWeight: FontWeight.normal),
-                        SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: Container()),
-                            Expanded(
-                              flex: 2,
-                              child: FlatButton3(
-                                text: "ADD TO CARD",
-                                fontSize: SizeConfig.textMultiplier * 1.8,
-                                textColor: AppConstants.appColor.redColor,
-                                padding: EdgeInsets.only(left: 16, right: 16),
-                                backgroundColor:
-                                    AppConstants.appColor.whiteColor,
-                                buttonHeight: 30,
-                                //buttonWidth: double.infinity,
-                                buttonCurve: 1.2,
-                                fontWeight: FontWeight.w800,
-                                boderColor: AppConstants.appColor.primaryColor,
-                                //buttonWidth: 100,
-                                onPressedCallback: () {
-                                  addToCartToServer(content);
-                                },
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                  flex: 2,
+                  child: loadImage(content.options[
+                      "image"]), //"https://murarkey.surge.sh/img/products/rustic1.jpg"),
+                ),
+                Expanded(
+                  flex: 6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      textView1(
+                          title: content.name,
+                          textAlign: TextAlign.start,
+                          color: AppConstants.appColor.blackColor,
+                          textSize: 1.6,
+                          fontWeight: FontWeight.bold),
+                      SizedBox(height: 2),
+                      textView1(
+                          title:
+                              "Price: Rs. ${content.price.toString()} per item",
+                          textAlign: TextAlign.start,
+                          color: AppConstants.appColor.blackColor,
+                          textSize: 1.6,
+                          fontWeight: FontWeight.normal),
+                      SizedBox(height: 8),
+                      // addToCardWidget(content, index),
+                      // SizedBox(height: 16),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.end,
+                      //   children: [
+                      //     textView1(
+                      //         title:
+                      //         "Total: Rs. ${content.subtotal.toString()}",
+                      //         textAlign: TextAlign.right,
+                      //         color: AppConstants.appColor.primaryLightColor,
+                      //         textSize: 1.8,
+                      //         fontWeight: FontWeight.bold),
+                      //   ],
+                      // )
+                    ],
                   ),
                 ),
               ],
@@ -300,13 +247,13 @@ class _WishlistFragmentWidgetState
     }
 
     Widget horizontalList2 = ListView.builder(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16),
         itemCount: cartModel.getContent().length,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.only(top: 4, bottom: 4),
+            margin: EdgeInsets.only(top: 8, bottom: 8),
             child: Card(
               elevation: 4.0,
               shape: RoundedRectangleBorder(
@@ -317,62 +264,64 @@ class _WishlistFragmentWidgetState
         });
 
     alignBottom() {
-      return Container(
-        color: Colors.white,
-        padding: EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    height: 45,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        AppConstants.appColor.primaryLightColor3,
-                        AppConstants.appColor.primaryColor
-                      ]),
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        if (isTheirContentData == true && cartModel != null) {
-                          // NavigateRoute.pushNamed(
-                          //     context, NavigateRoute.ORDER_PLACED_PRODUCTS);
-                        } else {
-                          Commons.toastMessage(
-                              context, "Their is no order to shop");
-                        }
-                      },
-                      child: Text(
-                        "Proceed All Products To Cart",
-                        style: TextStyle(
-                          color: AppConstants.appColor.whiteColor,
-                          fontSize: SizeConfig.textMultiplier * 2.0,
-                          //fontWeight: setFontWeight(),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
+      return Column(
+        children: [
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     textView1(
+          //         title: "Tax: Rs. " +
+          //             (isTheirContentData == true ? "${cartModel.tax}" : "0.0"),
+          //         textAlign: TextAlign.right,
+          //         color: AppConstants.appColor.primaryLightColor,
+          //         textSize: 2.0,
+          //         margin:
+          //         EdgeInsets.only(left: 16, right: 32, top: 32, bottom: 0),
+          //         fontWeight: FontWeight.bold),
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     textView1(
+          //         title: "Total Price: Rs. " +
+          //             (isTheirContentData == true
+          //                 ? "${cartModel.total}"
+          //                 : "0.0"),
+          //         textAlign: TextAlign.right,
+          //         color: AppConstants.appColor.primaryLightColor,
+          //         textSize: 2.0,
+          //         margin:
+          //         EdgeInsets.only(left: 16, right: 32, top: 0, bottom: 0),
+          //         fontWeight: FontWeight.bold),
+          //   ],
+          // ),
+          FlatStatefulButton(
+            text: "PROCEED TO CHECK OUT",
+            fontSize: SizeConfig.textMultiplier * 1.8,
+            textColor: AppConstants.appColor.accentColor,
+            padding: EdgeInsets.all(screenSize.width * .02),
+            backgroundColor: AppConstants.appColor.primaryColor,
+            buttonHeight: 40,
+            margin: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 16),
+            //buttonWidth: 100,
+            onPressedCallback: () {
+              if (isTheirContentData == true && cartModel != null) {
+                // NavigateRoute.pushNamed(
+                //     context, NavigateRoute.ORDER_PLACED_PRODUCTS);
+              } else {
+                Commons.toastMessage(context, "Their is no order to shop");
+              }
+            },
+          )
+        ],
       );
     }
 
     builder() {
       return isTheirContentData == true
           ? Column(
-              children: [
-                horizontalList2,
-                SizedBox(
-                  height: _cardSize - 16,
-                ),
-              ],
+              children: [horizontalList2, alignBottom()],
             )
           : Container(
               margin: EdgeInsets.only(top: 60),
@@ -389,18 +338,13 @@ class _WishlistFragmentWidgetState
             );
     }
 
-    Widget floatingWidget() {
-      return isTheirContentData ? alignBottom() : Container();
-    }
-
     return renderWithAppBar(
       appBarText: "Wishlist",
       showBackbutton: false,
       appBarTextAlignment: MainAxisAlignment.center,
+      childWidget: builder(),
       appBarHeight: appBarHeight,
       bodybackgroundColor: AppConstants.appColor.backgroundColor2,
-      childWidget: builder(),
-      floatingWidget: floatingWidget(),
     );
   }
 }

@@ -11,7 +11,7 @@ CartModel _$CartModelFromJson(Map<String, dynamic> json) {
     total: json['total'],
     tax: json['tax'],
     subTotal: json['subTotal'],
-    shippingAmount: json['shippingAmount'] as int,
+    shippingAmount: json['shippingAmount'],
     content: (json['content'] as Map<String, dynamic>).map(
       (k, e) =>
           MapEntry(k, ContentCartModel.fromJson(e as Map<String, dynamic>)),

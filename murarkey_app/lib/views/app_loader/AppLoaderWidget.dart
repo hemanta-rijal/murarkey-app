@@ -142,7 +142,7 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
     return Material(
       child: Scaffold(
         body: SafeArea(
-          child: Center(
+          child:  Center(
             child: Loader2Widget(radius: 30, dotRadius: 5.0),
           ),
         ),

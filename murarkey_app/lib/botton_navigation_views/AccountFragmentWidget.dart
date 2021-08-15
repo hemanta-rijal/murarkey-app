@@ -24,9 +24,7 @@ class _AccountFragmentWidgetState
   void didChangeDependencies() {
     if (mounted) {
       userModel = GlobalData.userModel;
-      setState(() {
-
-      });
+      setState(() {});
       if (userModel.name == null) {
         Future.delayed(const Duration(milliseconds: 500), () {
           setState(() {
@@ -39,7 +37,7 @@ class _AccountFragmentWidgetState
     super.didChangeDependencies();
   }
 
-  redirectToLogin(){
+  redirectToLogin() {
     Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {
         NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
@@ -67,7 +65,7 @@ class _AccountFragmentWidgetState
           if (value != null) {
             Commons.toastMessage(context, value["message"]);
             redirectToLogin();
-          }else{
+          } else {
             Commons.toastMessage(context, "Logout successfully");
             redirectToLogin();
           }
@@ -116,7 +114,10 @@ class _AccountFragmentWidgetState
     }
 
     return render(
-        childWidget: builder(), floatingActionButton: FBFloatingButton().fab());
+      childWidget: builder(),
+      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+      floatingActionButton: FBFloatingButton().fab(),
+    );
     //return render(childWidget: builder());
   }
 }

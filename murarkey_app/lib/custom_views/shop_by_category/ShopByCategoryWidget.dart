@@ -10,7 +10,8 @@ class ShopByCategoryWidget extends StatefulWidget {
   List<CategoryModel> modelList;
   Function(CategoryModel) onCallBack;
 
-  ShopByCategoryWidget({Key key, @required this.modelList, this.onCallBack}) : super(key: key);
+  ShopByCategoryWidget({Key key, @required this.modelList, this.onCallBack})
+      : super(key: key);
 
   @override
   _ShopByCategoryWidgetState createState() => _ShopByCategoryWidgetState();
@@ -37,7 +38,7 @@ class _ShopByCategoryWidgetState extends State<ShopByCategoryWidget> {
     buildItems() {
       return widget.modelList.map((model) {
         return InkResponse(
-          onTap: (){
+          onTap: () {
             widget.onCallBack(model);
           },
           child: Container(
@@ -52,7 +53,7 @@ class _ShopByCategoryWidgetState extends State<ShopByCategoryWidget> {
                   style: TextStyle(
                     color: AppConstants.appColor.textColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: SizeConfig.textMultiplier * 1.4,
+                    fontSize: SizeConfig.textMultiplier * 1.8,
                   ),
                 )
               ],
@@ -69,11 +70,16 @@ class _ShopByCategoryWidgetState extends State<ShopByCategoryWidget> {
             scrollDirection: Axis.horizontal, children: buildItems()));
 
     return Container(
-      margin: EdgeInsets.only(top: 24, left: 8, right: 8),
+      color: Colors.white,
+      margin: EdgeInsets.only(top: 12),
+      padding: EdgeInsets.only(top: 16, left: 8, right: 8),
       child: Column(
         children: [
-          UnderlinedTextViewWidget(title: AppConstants.constants.SHOP_BY_CATEGORY),
-          SizedBox(height: 12),
+          UnderlinedTextViewWidget(
+            title: AppConstants.constants.SHOP_BY_CATEGORY,
+            fontSize: 2.2,
+          ),
+          SizedBox(height: 16),
           horizontalList1,
         ],
       ),

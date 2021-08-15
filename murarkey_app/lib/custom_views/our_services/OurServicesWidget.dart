@@ -21,7 +21,7 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
   Widget build(BuildContext context) {
     var _crossAxisCount = 3;
     var _aspectRatio = 0.68;
-    var _cardSize = 72.0;
+    var _cardSize = 73.0;
     var _itemCount = widget.modelList.length;
 
     Widget loadImage(String imgUrl) {
@@ -33,14 +33,16 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
     }
 
     return Container(
-      margin: EdgeInsets.only(top: 24, left: 8, right: 8),
+      color: Colors.white,
+      margin: EdgeInsets.only(top: 12),
+      padding: EdgeInsets.only(top: 16, bottom: 4, left: 8, right: 8),
       child: Column(
         children: [
           UnderlinedTextViewWidget(
             title: AppConstants.constants.OUR_SERVICES,
             fontSize: 2.2,
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 16),
           GridView.builder(
             shrinkWrap: true,
             // new line
@@ -57,7 +59,8 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
                 child: InkResponse(
                   onTap: () {
                     Map<String, dynamic> arguments = new Map();
-                    arguments["servicesSubModel"] = widget.modelList[position].child;
+                    arguments["servicesSubModel"] =
+                        widget.modelList[position].child;
                     arguments["title"] = widget.modelList[position].name;
                     NavigateRoute.pushNamedWithArguments(
                         context, NavigateRoute.OUR_SERVICES_ITEM, arguments);
@@ -69,7 +72,6 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
                             shape: BoxShape.circle,
                             color: AppConstants.appColor.backgroundColor2),
                         margin: EdgeInsets.all(4),
-                        padding: EdgeInsets.all(1),
                         child: Container(
                             height: _cardSize,
                             width: _cardSize,
@@ -78,10 +80,11 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
                                 child: loadImage(
                                     widget.modelList[position].icon))),
                       ),
-                      SizedBox(height: 4),
+                      SizedBox(height: 2),
                       Text(widget.modelList[position].name,
                           textAlign: TextAlign.center,
                           maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: SizeConfig.textMultiplier * 1.8,
                               fontWeight: FontWeight.bold,

@@ -84,7 +84,7 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
             scrollDirection: Axis.horizontal, children: buildItems()));
 
     return Container(
-      margin: EdgeInsets.only(top: 36, left: 8, right: 8),
+      margin: EdgeInsets.only(top: 24, left: 8, right: 8),
       child: Column(
         children: [
           UnderlinedTextViewWidget(

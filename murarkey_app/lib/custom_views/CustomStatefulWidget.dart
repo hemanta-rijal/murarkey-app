@@ -147,10 +147,17 @@ class CustomStatefulWidgetState<T> extends State {
     );
   }
 
-  Widget render({@required Widget childWidget, Widget floatingActionButton}) {
+  Widget render(
+      {@required Widget childWidget,
+      Color bodybackgroundColor,
+      Widget floatingActionButton}) {
+    bodybackgroundColor = bodybackgroundColor == null
+        ? AppConstants.appColor.backgroundColor
+        : bodybackgroundColor;
     return Material(
-        color: AppConstants.appColor.backgroundColor,
+        color: bodybackgroundColor,
         child: Scaffold(
+          backgroundColor: bodybackgroundColor,
           body: childWidget,
           floatingActionButton: floatingActionButton,
         ));

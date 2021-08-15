@@ -4,6 +4,7 @@ import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatStatefulButton2.dart';
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/loader/LoaderDialog.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -11,6 +12,7 @@ import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/cart/CartModel.dart';
 import 'package:murarkey_app/repository/models/content/ContentCartModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
+import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -29,9 +31,40 @@ class _CartFragmentWidgetState
   Size size;
   var _cardSize = 100.0;
   var appBarHeight = 50.0;
+  LoaderDialog loaderDialog = new LoaderDialog();
+  UserModel userModel = GlobalData.userModel;
 
   _CartFragmentWidgetState() {
     loadData();
+  }
+
+  showLoader(BuildContext context) {
+    //loaderDialog.show(context);
+  }
+
+  dismissLoader(BuildContext context) {
+    // if (loaderDialog != null && loaderDialog.isShowing()) {
+    //   loaderDialog.dismiss(context);
+    // }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (mounted) {
+      userModel = GlobalData.userModel;
+      setState(() {
+
+      });
+      if (userModel.name == null) {
+        Future.delayed(const Duration(milliseconds: 500), () {
+          setState(() {
+            Commons.toastMessage(context, "Please Login to seen your order placed.");
+            NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+          });
+        });
+      }
+    }
+    super.didChangeDependencies();
   }
 
   loadData() async {
@@ -86,6 +119,14 @@ class _CartFragmentWidgetState
   }
 
   @override
+  void initState() {
+    if (!isTheirContentData) {
+      showLoader(context);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
     SizeConfig().init(context);
@@ -93,10 +134,18 @@ class _CartFragmentWidgetState
 
     Widget loadImage(String imgUrl) {
       _cardSize = size.width * 0.25;
-      return Image.network(
-        imgUrl,
-        fit: BoxFit.cover,
+
+      if (imgUrl != null) {
+        return Image.network(
+          imgUrl,
+          fit: BoxFit.cover,
+          height: _cardSize,
+        );
+      }
+
+      return Container(
         height: _cardSize,
+        width: _cardSize,
       );
     }
 
@@ -334,7 +383,8 @@ class _CartFragmentWidgetState
                             NavigateRoute.pushNamed(
                                 context, NavigateRoute.ORDER_PLACED_PRODUCTS);
                           } else {
-                            Commons.toastMessage(context, "Their is no order to shop");
+                            Commons.toastMessage(
+                                context, "Their is no order to shop");
                           }
                         },
                         child: Text(
@@ -359,6 +409,9 @@ class _CartFragmentWidgetState
     }
 
     builder() {
+      if (isTheirContentData) {
+        dismissLoader(context);
+      }
       return isTheirContentData == true
           ? Column(
               children: [

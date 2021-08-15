@@ -70,10 +70,17 @@ class _PlaceOrderWidgetState
 
     Widget loadImage(String imgUrl) {
       _cardSize = size.width * 0.25;
-      return Image.network(
-        imgUrl,
-        fit: BoxFit.cover,
+      if (imgUrl != null) {
+        return Image.network(
+          imgUrl,
+          fit: BoxFit.cover,
+          height: _cardSize,
+        );
+      }
+
+      return Container(
         height: _cardSize,
+        width: _cardSize,
       );
     }
 
@@ -227,7 +234,7 @@ class _PlaceOrderWidgetState
               children: [
                 Expanded(
                   child: ShippingAndBillingWidget.get(
-                    title: "Billing Address",
+                    title: "Billing\nAddress",
                     address: bAddress,
                     email: "${u.email}",
                     phoneNo: "${u.phone}",
@@ -236,7 +243,7 @@ class _PlaceOrderWidgetState
                 ),
                 Expanded(
                   child: ShippingAndBillingWidget.get(
-                    title: "Shipping Address",
+                    title: "Shipping\nAddress",
                     address: sAddress,
                     email: "${u.email}",
                     phoneNo: "${u.phone}",

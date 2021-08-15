@@ -47,6 +47,16 @@ class _HomeFragmentWidgetState
   Widget build(BuildContext context) {
     super.build(context);
 
+    Widget divider(modelList) {
+      return modelList != null && modelList.length > 0
+          ? Container(
+              color: Colors.black38,
+              width: double.infinity,
+              height: 8,
+            )
+          : Container();
+    }
+
     builder() {
       return new LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -83,6 +93,7 @@ class _HomeFragmentWidgetState
                   : Container(),
 
               //Shop by category
+              //divider(categoryModelList),
               categoryModelList != null && categoryModelList.length > 0
                   ? ShopByCategoryWidget(
                       modelList: categoryModelList,
@@ -100,6 +111,7 @@ class _HomeFragmentWidgetState
                   : Container(),
 
               //Popular Parlours
+              //divider(parlorModelList),
               parlorModelList != null && parlorModelList.length > 0
                   ? PopularParloursWidget(
                       modelList: parlorModelList,
@@ -117,6 +129,7 @@ class _HomeFragmentWidgetState
               //     modelList: Datas.schedulePremiumList),
 
               //Shop by Brands
+              //divider(brandModelList),
               brandModelList != null && brandModelList.length > 0
                   ? ShopByBrandsWidget(
                       modelList: brandModelList,
@@ -145,6 +158,9 @@ class _HomeFragmentWidgetState
     }
 
     return render(
-        childWidget: builder(), floatingActionButton: FBFloatingButton().fab());
+      childWidget: builder(),
+      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+      floatingActionButton: FBFloatingButton().fab(),
+    );
   }
 }

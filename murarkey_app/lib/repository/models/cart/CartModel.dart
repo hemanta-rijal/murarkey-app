@@ -14,7 +14,7 @@ class CartModel {
   var total;
   var tax;
   var subTotal;
-  final int shippingAmount;
+  var shippingAmount;
   final Map<String, ContentCartModel> content;
 
   CartModel(

@@ -132,54 +132,6 @@ class _ProductDetailWidgetState
       }
     }
 
-    Widget divider() {
-      return Container(
-        width: double.infinity,
-        height: 1,
-        color: Colors.black26,
-      );
-    }
-
-    Widget productName() {
-      return Container(
-        margin: EdgeInsets.only(top: 12, bottom: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Product Category
-            RichText(
-              text: TextSpan(
-                text: productDetailModel != null
-                    ? productDetailModel.category.name.toUpperCase()
-                    : "",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppConstants.appColor.blackColor,
-                  fontSize: SizeConfig.textMultiplier * 2.8,
-                ),
-              ),
-              textAlign: TextAlign.justify,
-            ),
-
-            //Product Name
-            RichText(
-              text: TextSpan(
-                text: productDetailModel != null
-                    ? productDetailModel.name
-                    : "",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppConstants.appColor.greyColor,
-                  fontSize: SizeConfig.textMultiplier * 2.6,
-                ),
-              ),
-              textAlign: TextAlign.justify,
-            ),
-          ],
-        ),
-      );
-    }
-
     buildView() {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +140,7 @@ class _ProductDetailWidgetState
           productDetailModel != null
               ? ImageSliderWidget(
                   bannerModelList: productDetailModel.images,
-                  bannerHeight: 200,
+                  bannerHeight: 210,
                 )
               : Container(),
 
@@ -198,8 +150,27 @@ class _ProductDetailWidgetState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                productName(),
-                divider(),
+                //Product Category
+                textView1(
+                    title: productDetailModel != null
+                        ? productDetailModel.category.name.toUpperCase()
+                        : "",
+                    textAlign: TextAlign.start,
+                    color: AppConstants.appColor.greyColor,
+                    textSize: 1.8,
+                    fontWeight: FontWeight.bold),
+
+                //Product Name
+                SizedBox(height: 2),
+                textView1(
+                    title: productDetailModel != null
+                        ? productDetailModel.name
+                        : "",
+                    textAlign: TextAlign.start,
+                    color: AppConstants.appColor.blackColor,
+                    textSize: 2.3,
+                    fontWeight: FontWeight.bold),
+
                 //Product Categories
                 SizedBox(height: 16),
                 ProductTypeWidget(

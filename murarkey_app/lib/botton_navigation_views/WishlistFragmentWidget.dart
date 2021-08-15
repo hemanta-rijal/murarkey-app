@@ -122,12 +122,27 @@ class _WishlistFragmentWidgetState
     params["qty"] = 1.toString();
 
     params["type"] = "product";
-    params["options"] = {"image": model.options["image"], "product_type": "product"};
+    params["options"] = {
+      "image": model.options["image"],
+      "product_type": "product"
+    };
 
     print(params);
 
     await _repository.productRequestApi
         .addToCard(url: ApiUrls.CART, params: params)
+        .then((value) async {
+      if (value != null) {
+        Commons.toastMessage(context, value["message"]);
+        await loadData();
+      }
+      this.setState(() {});
+    });
+  }
+
+  proceedAllToCard() async {
+    await _repository.productRequestApi
+        .proceedAllToCard(url: ApiUrls.PROCEED_ALL_TO_CART_WISHLIST)
         .then((value) async {
       if (value != null) {
         Commons.toastMessage(context, value["message"]);
@@ -263,9 +278,7 @@ class _WishlistFragmentWidgetState
                         SizedBox(height: 8),
                         Row(
                           children: [
-                            Expanded(
-                                flex: 1,
-                                child: Container()),
+                            Expanded(flex: 1, child: Container()),
                             Expanded(
                               flex: 2,
                               child: FlatButton3(
@@ -339,8 +352,7 @@ class _WishlistFragmentWidgetState
                     child: TextButton(
                       onPressed: () {
                         if (isTheirContentData == true && cartModel != null) {
-                          // NavigateRoute.pushNamed(
-                          //     context, NavigateRoute.ORDER_PLACED_PRODUCTS);
+                          proceedAllToCard();
                         } else {
                           Commons.toastMessage(
                               context, "Their is no order to shop");

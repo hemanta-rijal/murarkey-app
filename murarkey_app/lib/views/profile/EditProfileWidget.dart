@@ -286,9 +286,13 @@ class _EditProfileWidgetState
                     flex: 1,
                     child: buttonWidget(
                         title: "Done",
-                        callback: () {
-                          Commons.toastMessage(
-                              context, "Password changed successfully.");
+                        callback: () async {
+                          var status =
+                              await viewModel.changePassword(context, this);
+                          if (status == "200") {
+                            viewModel.logout(context, this);
+                          }
+                          setState(() {});
                         }),
                   )
                 ],

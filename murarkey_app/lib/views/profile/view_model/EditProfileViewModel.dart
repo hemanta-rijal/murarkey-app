@@ -1,5 +1,6 @@
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
+import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/utils/Validation.dart';
@@ -24,15 +25,15 @@ class EditProfileViewModel {
 
   Future updateProfile(BuildContext context, state) async {
     String firstNameValidate =
-        Validation.validateUserName(firstName.text.trim(), "First name");
+    Validation.validateUserName(firstName.text.trim(), "First name");
 
     String lastNameValidate =
-        Validation.validateUserName(lastName.text.trim(), "Last name");
+    Validation.validateUserName(lastName.text.trim(), "Last name");
 
     String emailValidate = Validation.validateEmail(formEmail.text.trim());
 
     String phoneNoValidate =
-        Validation.validatePhoneNo(formPhoneNo.text.trim());
+    Validation.validatePhoneNo(formPhoneNo.text.trim());
 
     if (firstNameValidate != Validation.SUCCESS) {
       Commons.toastMessage(context, firstNameValidate);
@@ -64,61 +65,82 @@ class EditProfileViewModel {
     }
   }
 
+  Future changePassword(BuildContext context, state) async {
+    String currentPassValidate =
+    Validation.validatePassword(formCurrentPass.text.trim());
+
+    String newPassValidate =
+    Validation.validatePassword(formNewPass.text.trim());
+
+    String confirmPassValidate =
+    Validation.validatePassword(formConfirmPass.text.trim());
+
+    String validateConfirmPassword = Validation.validateConfirmPassword(
+        formNewPass.text.trim(), formConfirmPass.text.trim());
+
+    var status = "0";
+
+    if (currentPassValidate != Validation.SUCCESS) {
+      Commons.toastMessage(context, currentPassValidate);
+    } else if (newPassValidate != Validation.SUCCESS) {
+      Commons.toastMessage(context, newPassValidate);
+    } else if (confirmPassValidate != Validation.SUCCESS) {
+      Commons.toastMessage(context, confirmPassValidate);
+    } else if (validateConfirmPassword != Validation.SUCCESS) {
+      Commons.toastMessage(context, validateConfirmPassword);
+    } else {
+      Map<String, dynamic> params = new Map();
+      params["current_password"] = formCurrentPass.text.trim();
+      params["newpassword"] = formNewPass.text.trim();
+      params["newpassword_confirmation"] = formConfirmPass.text.trim();
+
+      await _repository.userApiRequest
+          .changePassword(url: ApiUrls.CHANGE_PASSWORD, params: params)
+          .then((value) {
+        if (value["status"] == 200) {
+          Commons.toastMessage(context, value["message"]);
+          status = "${value["status"]}";
+        }
+      });
+
+      return status;
+    }
+  }
+
+  Future logout(BuildContext context, state) async {
+    await _repository.authApiRequest
+        .logout(url: ApiUrls.LOGOUT_URL)
+        .then((value) {
+      if (value != null) {
+        Commons.toastMessage(context, value["message"]);
+        _redirectToLogin(context, state);
+      } else {
+        Commons.toastMessage(context, "Logout successfully");
+        _redirectToLogin(context, state);
+      }
+    });
+
+    return;
+  }
+
+  _redirectToLogin(BuildContext context, state) {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      state.setState(() {
+        NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+      });
+    });
+  }
+
   Future _refreshUserDetails() async {
     await _repository.userApiRequest
         .getMyDetails(url: ApiUrls.ABOUT_ME)
-        .then((value) => {
-              if (value != null)
-                {
-                  GlobalData.userModel = value,
-                  print(GlobalData.userModel.name),
-                }
-            });
+        .then((value) =>
+    {
+      if (value != null)
+        {
+          GlobalData.userModel = value,
+          print(GlobalData.userModel.name),
+        }
+    });
   }
-
-// void updatePassword(BuildContext context) async {
-//   String firstNameValidate = Validation.validateUserName(
-//       firstName.text.trim(), "First name");
-//
-//   String lastNameValidate = Validation.validateUserName(
-//       lastName.text.trim(), "Last name");
-//
-//   String emailValidate =
-//   Validation.validateEmail(formEmail.text.trim());
-//
-//   String passwordValid = Validation.validatePassword(
-//       formCurrentPass.text.trim());
-//
-//   String confirmPasswordValid = Validation.validateConfirmPassword(
-//       formNewPass.text.trim(),
-//       formConfirmPass.text.trim());
-//
-//   if (firstNameValidate != Validation.SUCCESS) {
-//     Commons.toastMessage(context, firstNameValidate);
-//   } else if (firstNameValidate != Validation.SUCCESS) {
-//     Commons.toastMessage(context, lastNameValidate);
-//   } else if (emailValidate != Validation.SUCCESS) {
-//     Commons.toastMessage(context, emailValidate);
-//   } else if (passwordValid != Validation.SUCCESS) {
-//     Commons.toastMessage(context, passwordValid);
-//   } else if (confirmPasswordValid != Validation.SUCCESS) {
-//     Commons.toastMessage(context, confirmPasswordValid);
-//   } else {
-//     Map<String, dynamic> params = new Map();
-//     params["first_name"] = formFirstName.text.trim();
-//     params["last_name"] = formLastName.text.trim();
-//     params["email"] = formEmail.text.trim();
-//     params["password"] = formPassword.text.trim();
-//     params["role"] = formRole;
-//
-//     await _repository.authApiRequest
-//         .register(url: ApiUrls.REGISTER_URL, params: params)
-//         .then((UserModel value) => {
-//       this.setState(() {
-//         Commons.toastMessage(context, "Registered Successfully! Please Login.");
-//         NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-//       }),
-//     });
-//   }
-// }
 }

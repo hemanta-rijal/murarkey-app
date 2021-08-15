@@ -40,4 +40,21 @@ class UserApiRequest extends ApiRequest {
     });
     return result;
   }
+
+  //Change Password
+  Future changePassword({String url,  Map<String, dynamic> params}) async {
+    var result;
+
+    await this
+        .postData(url: url,params: params, useToken: true)
+        .then((Map<String, dynamic> value) {
+      print("changePassword");
+      if (value != null) {
+        result = value;
+      } else {
+        result = null;
+      }
+    });
+    return result;
+  }
 }

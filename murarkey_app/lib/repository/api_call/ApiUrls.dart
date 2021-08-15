@@ -21,6 +21,9 @@ class ApiUrls {
   static final String ABOUT_ME = ROOT_API_URL + "/me";
   static final String UPDATE_PROFILE = ROOT_API_URL + "/my-account/update";
 
+  //For Password
+  static final String CHANGE_PASSWORD = ROOT_API_URL +"/password/change";
+
   static final String HOME_PAGE_BANNER_URL = ROOT_API_URL + "/banners/homepage-1";
   static final String CATEGORY_URL = ROOT_API_URL + "/categories";
   static final String PARLOR_URL = ROOT_API_URL + "/featured-parlours";
@@ -44,6 +47,7 @@ class ApiUrls {
 
   static final String ADD_TO_WISHLIST = ROOT_API_URL + "/wishlist";
   static final String GET_ALL_WISHLIST = ROOT_API_URL + "/wishlist";
+  static final String PROCEED_ALL_TO_CART_WISHLIST = ROOT_API_URL +  "/wishlist/proceedalltocart";
 
   //For Payment
   static final String PAYMENT_METHODS = ROOT_API_URL + "/payment_methods";

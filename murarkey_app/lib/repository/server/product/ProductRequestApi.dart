@@ -65,6 +65,24 @@ class ProductRequestApi extends ApiRequest {
     return result;
   }
 
+  //Add to Card
+  Future<dynamic> proceedAllToCard({String url}) async {
+    var result;
+
+    await this
+        .postData(url: url, useToken: true)
+        .then((Map<String, dynamic> value) => {
+      print("proceedAllToCard"),
+      if (value != null)
+        {
+          result = value,
+        }
+      else
+        {result = null}
+    });
+    return result;
+  }
+
   //Update to Card
   Future<dynamic> updateToCard(
       {String url, Map<String, dynamic> params}) async {

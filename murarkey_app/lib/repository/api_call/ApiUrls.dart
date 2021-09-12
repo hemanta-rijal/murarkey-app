@@ -68,4 +68,7 @@ class ApiUrls {
 
   //For My order
   static final String MY_ORDER = ROOT_API_URL + "/user/my-orders";
+
+  //For Pay pal
+  static final String PAYPAL_TRANSACTION = ROOT_API_URL + "/paypal_transaction";
 }

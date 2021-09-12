@@ -10,6 +10,7 @@ import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/utils/payments/EsewaPayment.dart';
+import 'package:murarkey_app/utils/payments/PayPalPayment.dart';
 import 'package:murarkey_app/views/order/place_order/widgets/OrderItemTotalWidget.dart';
 import 'package:murarkey_app/views/order/place_order/widgets/PaymentCardWidget.dart';
 import 'package:murarkey_app/views/order/place_order/widgets/PaymentWithWidget.dart';
@@ -198,7 +199,17 @@ class _PlaceOrderWidgetState
         cancelText: "Cancel",
         okCallback: () {
           Navigator.pop(context);
-          EsewaPayment().init(context, 0.0);
+          String type = paywith["data"][position]["name"].toLowerCase();
+          if (type == "esewa") {
+            EsewaPayment().init(context, 0.0);
+          } else if (type == "paypal") {
+            PayPalPayment().payBalance(
+              repository: _repository,
+              amount: cartModel.total.toString(),
+              displayName: GlobalData.userModel.name,
+              currencyCode: PayPalPayment.USA_CODE,
+            );
+          }
         },
         cancleCallback: () {
           Navigator.pop(context);

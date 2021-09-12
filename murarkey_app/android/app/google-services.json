@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "540611889723",
+    "firebase_url": "https://simpleblog-9ddc1.firebaseio.com",
+    "project_id": "simpleblog-9ddc1",
+    "storage_bucket": "simpleblog-9ddc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540611889723:android:2c2132b1787673a0",
+        "android_client_info": {
+          "package_name": "com.example.suman.simpleblog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540611889723-425d9n613v3ejf7nt87p6ubv6k8e8vmb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkhFPS54gQxgbV7ZyUxJhDE5UkaOXyCYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540611889723-425d9n613v3ejf7nt87p6ubv6k8e8vmb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540611889723:android:07b7861fa02ea471b72a1e",
+        "android_client_info": {
+          "package_name": "com.webroot.murarkeyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540611889723-425d9n613v3ejf7nt87p6ubv6k8e8vmb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkhFPS54gQxgbV7ZyUxJhDE5UkaOXyCYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "540611889723-425d9n613v3ejf7nt87p6ubv6k8e8vmb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

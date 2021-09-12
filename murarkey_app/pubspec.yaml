@@ -52,16 +52,31 @@ dependencies:
   # persistent storage for simple data
   shared_preferences: 2.0.6
 
+#  flutter_plugin_android_lifecycle: 1.0.3
+#  image_picker: 0.6.2+3
   image_picker: ^0.8.1+1
 
   # esewa payment
-  esewa_pnp: 1.0.4
+  #  esewa_pnp: 1.0.4
+  esewa_pnp: 1.0.7
+
+  #PayPal / Venmo / 3D Secure payment
+  flutter_braintree: 2.0.0
+  #  flutter_braintree: 1.2.0
 
   # loading indicators
   flutter_spinkit: "^4.1.2"
 
   #rendering HTML and CSS as Flutter widgets
   flutter_html: ^2.1.0
+
+  #google sign in
+  firebase_core:
+  firebase_auth: 3.1.1
+  google_sign_in: 5.1.0
+
+  #state management
+  provider: 6.0.0
 
   # todo end of dependencies
 

@@ -6,6 +6,7 @@ import 'package:murarkey_app/repository/server/others/JoinProfessionalApi.dart';
 import 'package:murarkey_app/repository/server/others/PaymentWithApi.dart';
 import 'package:murarkey_app/repository/server/others/UserApiRequest.dart';
 import 'package:murarkey_app/repository/server/payment_card_address/PaymentCardAddressApi.dart';
+import 'package:murarkey_app/repository/server/paypal/PayPalApi.dart';
 import 'package:murarkey_app/repository/server/product/ProductRequestApi.dart';
 import 'package:murarkey_app/repository/server/product/WishlistRequestApi.dart';
 import 'package:murarkey_app/repository/server/services/ServicesApiRequest.dart';
@@ -22,14 +23,17 @@ class Repository {
   AuthApiRequest authApiRequest = new AuthApiRequest();
   ProductRequestApi productRequestApi = new ProductRequestApi();
   JoinProfessionalApi joinProfessionalApi = new JoinProfessionalApi();
-  PaymentWithApi paymentWithApi = new PaymentWithApi();
   UserApiRequest userApiRequest = new UserApiRequest();
   PaymentCardAddressApi paymentCardAddressApi = new PaymentCardAddressApi();
   AddressApi addressApi = new AddressApi();
   WishlistRequestApi wishlistRequestApi = new WishlistRequestApi();
-  WalletApiRequest walletApiRequest = new WalletApiRequest();
   ServicesApiRequest servicesApiRequest = new ServicesApiRequest();
   OrderApiService orderApiService = new OrderApiService();
+
+  //payments
+  PayPalApi payPalApi = new PayPalApi();
+  WalletApiRequest walletApiRequest = new WalletApiRequest();
+  PaymentWithApi paymentWithApi = new PaymentWithApi();
 
   //Local Storage
   UserTokenPref userTokenPref = new UserTokenPref();

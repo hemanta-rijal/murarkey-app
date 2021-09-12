@@ -1,4 +1,4 @@
-package com.webroot.murarkey_app
+package com.webroot.murarkeyapp
 
 import io.flutter.embedding.android.FlutterActivity
 

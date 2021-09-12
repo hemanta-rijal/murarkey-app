@@ -22,6 +22,7 @@ if (flutterVersionName == null) {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -34,8 +35,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.webroot.murarkey_app"
-        minSdkVersion 19
+        applicationId "com.webroot.murarkeyapp"
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -67,7 +68,9 @@ dependencies {
     //implementation fileTree(dir: 'libs', include: ['*.aar'])
     //implementation fileTree(dir: 'esewa_pnp', include: ['*.jar'])
 
-    implementation 'com.android.support:multidex:2.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    //implementation(name:'C:\\src\\flutter_windows_2.2.1-stable\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\esewa_pnp-1.0.4\\android\\libs\\eSewaSdk', ext:'aar')
+    implementation 'io.card:android-sdk:5.5.1'
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }

@@ -1,0 +1,14 @@
+key store path: D:\Personal\Projects\murarkey-app\murarkey_app\android\app\key.jks
+key store password: murarkey123
+key alias: key0
+key password: murarkey123
+
+
+
+//SHA key generation
+1. GOTO C:\Program Files\Java\jdk-16\bin and open cmd in bin directory
+2. PASTE this command in cmd: keytool -list -v -keystore "D:\Personal\Projects\murarkey-app\murarkey_app\android\app\key.jks"  -alias "key0"
+3. Provide password: murarkey123
+4. Certificate fingerprints:
+         SHA1: 97:2F:AA:4F:7B:A5:D4:38:47:27:83:83:A5:2C:94:8E:01:80:EC:57
+         SHA256: 6B:07:2A:DA:1A:04:4A:47:89:2A:94:0F:EF:9F:ED:F9:6B:23:12:B7:DE:40:B7:75:FC:2B:19:04:A6:96:92:6F

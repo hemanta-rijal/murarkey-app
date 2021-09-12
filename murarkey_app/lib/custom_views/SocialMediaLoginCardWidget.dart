@@ -6,13 +6,14 @@ class SocialMediaLoginCardWidget extends StatefulWidget {
   final Color textColor;
   final double fontSize;
   final String imageSrc;
+  final Function onTap;
 
   SocialMediaLoginCardWidget(
       {Key key,
       @required this.text,
       this.textColor,
       @required this.fontSize,
-      @required this.imageSrc})
+      @required this.imageSrc, @required this.onTap})
       : super(key: key);
 
   @override
@@ -33,7 +34,7 @@ class _SocialMediaLoginCardWidgetState
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        print("Tapped");
+        widget.onTap();
       },
       child: Card(
         elevation: 4.0,

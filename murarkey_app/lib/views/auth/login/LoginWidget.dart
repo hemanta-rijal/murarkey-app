@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:murarkey_app/custom_views/CheckBoxWidget.dart';
 import 'package:murarkey_app/custom_views/EditText.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
@@ -6,12 +8,14 @@ import 'package:murarkey_app/custom_views/SocialMediaLoginCardWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/auth/LoginModel.dart';
+import 'package:murarkey_app/repository/provider/GoogleSignInProvider.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/utils/Validation.dart';
 import 'package:murarkey_app/views/auth/login/view_model/LoginViewModel.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
+import 'package:provider/provider.dart';
 
 class LoginWidget extends StatefulWidget {
   final LoginViewModel viewModel = new LoginViewModel();
@@ -31,6 +35,37 @@ class _LoginWidgetState extends State<LoginWidget> {
         [SystemUiOverlay.bottom, SystemUiOverlay.top]);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: AppConstants.appColor.primaryDarkColor));
+
+    braintreeView() async {
+      var amount = "10.0";
+
+      var request = BraintreeDropInRequest(
+        tokenizationKey: "sandbox_ndhr5c7k_b5wny6h357jq7kp4",
+        collectDeviceData: true,
+        paypalRequest: BraintreePayPalRequest(
+          amount: amount,
+          displayName: "Suman Neupane",
+          currencyCode: "USD",
+        ),
+        cardEnabled: false,
+      );
+
+      BraintreeDropInResult result = await BraintreeDropIn.start(request);
+      if (result != null) {
+        print(result.paymentMethodNonce.description);
+        print(result.paymentMethodNonce.nonce);
+        //mount,payment_method_nonce,device_data
+        Map<String, dynamic> params = new Map<String, dynamic>();
+        params["amount"] = amount;
+        params["payment_method_nonce"] = result.paymentMethodNonce.nonce;
+        params["device_data"] = result.deviceData;
+
+        var data = await _repository.payPalApi.addToTransaction(
+          url: ApiUrls.PAYPAL_TRANSACTION,
+          params: params,
+        );
+      }
+    }
 
     login() async {
       String emailValidate =
@@ -59,6 +94,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                   }),
                 });
       }
+
+      //braintreeView();
     }
 
     return Material(
@@ -252,19 +289,44 @@ class _LoginWidgetState extends State<LoginWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // ChangeNotifierProvider(
+                          //   create: (contect) => GoogleSignInProvider(),
+                          //   child: SocialMediaLoginCardWidget(
+                          //     text: "Google",
+                          //     imageSrc: 'images/ic_google.png',
+                          //     textColor: AppConstants.appColor.textColor3,
+                          //     fontSize: SizeConfig.textMultiplier * 1.5,
+                          //     onTap: () {
+                          //       final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                          //       provider.googleLogin();
+                          //       provider.googleLogin();
+                          //     },
+                          //   ),
+                          // ),
                           SocialMediaLoginCardWidget(
-                              text: "Google",
-                              imageSrc: 'images/ic_google.png',
-                              textColor: AppConstants.appColor.textColor3,
-                              fontSize: SizeConfig.textMultiplier * 1.5),
+                            text: "Google",
+                            imageSrc: 'images/ic_google.png',
+                            textColor: AppConstants.appColor.textColor3,
+                            fontSize: SizeConfig.textMultiplier * 1.5,
+                            onTap: () async {
+                              // final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                              // provider.googleLogin();
+                              GoogleSignInProvider google = new GoogleSignInProvider();
+                              UserCredential user = await google.googleLogin();
+
+
+                            },
+                          ),
                           SizedBox(
                             width: 30,
                           ),
                           SocialMediaLoginCardWidget(
-                              text: "Facebook",
-                              imageSrc: 'images/ic_facebook.png',
-                              textColor: AppConstants.appColor.textColor3,
-                              fontSize: SizeConfig.textMultiplier * 1.5),
+                            text: "Facebook",
+                            imageSrc: 'images/ic_facebook.png',
+                            textColor: AppConstants.appColor.textColor3,
+                            fontSize: SizeConfig.textMultiplier * 1.5,
+                            onTap: () {},
+                          ),
                         ],
                       ),
 

@@ -71,4 +71,9 @@ class ApiUrls {
 
   //For Pay pal
   static final String PAYPAL_TRANSACTION = ROOT_API_URL + "/paypal_transaction";
+
+  //For Esewa
+  //http://demo.murarkey.com/api/esewa-verify
+  static final String ESEWA_SUCCESS_URL = ROOT_API_URL + "/esewa-verify";
+  static final String ESEWA_FAILURE_URL = ROOT_API_URL + "/esewa-verify";
 }

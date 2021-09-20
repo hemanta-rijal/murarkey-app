@@ -1,6 +1,7 @@
 import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 /**
@@ -16,7 +17,7 @@ class PayPalPayment {
       {@required Repository repository,
       @required var amount,
       @required String displayName,
-      @required String currencyCode}) async {
+      @required String currencyCode, Function(bool) onCallback}) async {
     var request = BraintreeDropInRequest(
       tokenizationKey: _tokenizationKey,
       collectDeviceData: true,
@@ -42,6 +43,8 @@ class PayPalPayment {
         url: ApiUrls.PAYPAL_TRANSACTION,
         params: params,
       );
+
+      onCallback(data["success"]);
     }
   }
 

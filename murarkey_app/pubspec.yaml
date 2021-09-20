@@ -57,8 +57,7 @@ dependencies:
   image_picker: ^0.8.1+1
 
   # esewa payment
-  #  esewa_pnp: 1.0.4
-  esewa_pnp: 1.0.7
+  #  esewa_pnp: 1.0.7
 
   #PayPal / Venmo / 3D Secure payment
   flutter_braintree: 2.0.0
@@ -69,6 +68,7 @@ dependencies:
 
   #rendering HTML and CSS as Flutter widgets
   flutter_html: ^2.1.0
+  webview_flutter: ^2.0.4
 
   #google sign in
   firebase_core:
@@ -104,6 +104,7 @@ flutter:
     - images/maths/
     - images/cart/
     - images/money/
+    - assets/epay_request.html
   #     - images/app_logo.jpg
   #     - images/a_dot_ham.jpeg
 

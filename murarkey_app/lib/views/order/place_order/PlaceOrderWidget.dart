@@ -7,6 +7,7 @@ import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/cart/CartModel.dart';
 import 'package:murarkey_app/repository/models/content/ContentCartModel.dart';
 import 'package:murarkey_app/repository/models/user/UserModel.dart';
+import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/utils/payments/EsewaPayment.dart';
@@ -197,18 +198,49 @@ class _PlaceOrderWidgetState
             "Are you sure you want to pay with ${paywith["data"][position]["name"]}",
         okText: "Continue",
         cancelText: "Cancel",
-        okCallback: () {
+        okCallback: () async {
           Navigator.pop(context);
           String type = paywith["data"][position]["name"].toLowerCase();
+
           if (type == "esewa") {
-            EsewaPayment().init(context, 0.0);
+            //EsewaPayment().init(context, 0.0);
+
+            int total = cartModel.total;
+            int subTotal = cartModel.subTotal;
+            int tax = cartModel.tax;
+            String pid = await _repository.userTokenPref.getUserSession();
+            print("pid--------------> ${pid}");
+
+            Map<String, dynamic> arguments = new Map();
+            arguments["pid"] = pid;
+            // UniqueKey().toString();
+
+            arguments["tAmt"] = total.toDouble();
+            arguments["amt"] = subTotal.toDouble();
+            arguments["txAmt"] = tax.toDouble();
+
+            arguments["psc"] = 0.0;
+            arguments["pdc"] = 0.0;
+
+            //"http://demo.murarkey.com/api/esewa-verify";
+            arguments["su"] = ApiUrls.ESEWA_SUCCESS_URL;
+            arguments["fu"] = ApiUrls.ESEWA_FAILURE_URL;
+
+            NavigateRoute.pushNamedWithArguments(
+                context, NavigateRoute.ESEWA_EPAY_PAYMENT, arguments);
+
+            //hidden
+
           } else if (type == "paypal") {
             PayPalPayment().payBalance(
-              repository: _repository,
-              amount: cartModel.total.toString(),
-              displayName: GlobalData.userModel.name,
-              currencyCode: PayPalPayment.USA_CODE,
-            );
+                repository: _repository,
+                amount: cartModel.total.toString(),
+                displayName: GlobalData.userModel.name,
+                currencyCode: PayPalPayment.USA_CODE,
+                onCallback: (bool value) {
+                  Commons.toastMessage(
+                      context, value ? "Payment Successful" : "Payment Failed");
+                });
           }
         },
         cancleCallback: () {

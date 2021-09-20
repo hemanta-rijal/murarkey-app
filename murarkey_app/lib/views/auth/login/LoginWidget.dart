@@ -311,10 +311,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                             onTap: () async {
                               // final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                               // provider.googleLogin();
-                              GoogleSignInProvider google = new GoogleSignInProvider();
-                              UserCredential user = await google.googleLogin();
-
-
+                              GoogleSignInProvider google =
+                                  new GoogleSignInProvider();
+                              await google.googleLoginFromUrl();
                             },
                           ),
                           SizedBox(

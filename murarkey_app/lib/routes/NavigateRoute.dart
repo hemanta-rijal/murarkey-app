@@ -1,5 +1,6 @@
 import 'package:murarkey_app/custom_views/loader/Loader2Widget.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/utils/payments/EsewaEpayPayment.dart';
 import 'package:murarkey_app/views/MainScreenWidget.dart';
 import 'package:murarkey_app/views/address/EditAddressWidget.dart';
 import 'package:murarkey_app/views/address/widgets/EditBillingAddressWidget.dart';
@@ -40,6 +41,7 @@ class NavigateRoute {
   static const String OUR_SERVICES_ITEM_DETAIL = "ServiceCardItemDetailWidget";
   static const String RECENT_ORDER = "RecentOrderWidget";
   static const String MY_ORDER_DETAIL = "MyOrderDetailWidget";
+  static const String ESEWA_EPAY_PAYMENT = "EsewaEpayPayment";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -71,8 +73,7 @@ class NavigateRoute {
             slugType: arguments["slugType"],
             slug: arguments["slug"],
             categoryModel: arguments["categoryModel"],
-            brandModel: arguments["brandModel"]
-        ));
+            brandModel: arguments["brandModel"]));
       case PRODUCT_DETAIL:
         Map<String, dynamic> arguments = args as Map;
         return _MaterialPageRoute(
@@ -97,7 +98,21 @@ class NavigateRoute {
         return _MaterialPageRoute(RecentOrderWidget());
       case MY_ORDER_DETAIL:
         Map<String, dynamic> arguments = args as Map;
-        return _MaterialPageRoute(MyOrderDetailWidget(myOrderModel: arguments["myOrderModel"],));
+        return _MaterialPageRoute(MyOrderDetailWidget(
+          myOrderModel: arguments["myOrderModel"],
+        ));
+      case ESEWA_EPAY_PAYMENT:
+        Map<String, dynamic> arguments = args as Map;
+        return _MaterialPageRoute(EsewaEpayPayment(
+          pid: arguments["pid"],
+          tAmt: arguments["tAmt"],
+          amt: arguments["amt"],
+          txAmt: arguments["txAmt"],
+          psc: arguments["psc"],
+          pdc: arguments["pdc"],
+          su: arguments["su"],
+          fu: arguments["fu"],
+        ));
       default:
         LoginWidget();
       //   return _errorRoute();

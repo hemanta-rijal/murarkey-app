@@ -58,6 +58,7 @@ abstract class ApiRequest extends Api {
       print(response.body);
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;
+      var jsonHeader = response.headers;
       print(url);
       print(jsonResponse);
       if (jsonResponse.containsKey("success")) {
@@ -65,29 +66,30 @@ abstract class ApiRequest extends Api {
           return jsonResponse;
         }
       }
-      await _saveUserToken(jsonResponse, url);
+      await _saveUserToken(jsonResponse, jsonHeader, url);
       return jsonResponse;
     } else {
       print('Request failed with status: ${response.statusCode}.');
     }
   }
 
-  _saveUserToken(Map<String, dynamic> jsonResponse, String url) async {
+  _saveUserToken(Map<String, dynamic> jsonResponse,
+      Map<String, dynamic> jsonHeader, String url) async {
     if (url == ApiUrls.LOGIN_URL) {
       await _sharePref.setTokenType(jsonResponse["token_type"]);
       await _sharePref.setUserToken(jsonResponse["access_token"]);
+      await _sharePref.setUserSession(jsonHeader["x-app-session"]);
 
-      await _sharePref
-          .getUserToken()
-          .then((value) => {print("useToken ${value}")});
     } else if (url == ApiUrls.LOGOUT_URL) {
       await _sharePref.setTokenType("");
       await _sharePref.setUserToken("");
+      await _sharePref.setUserSession("");
 
-      await _sharePref
-          .getUserToken()
-          .then((value) => {print("useToken ${value}")});
     }
+
+    await _sharePref
+        .getUserToken()
+        .then((value) => {print("useToken ${value}")});
   }
 
   //TODO GET

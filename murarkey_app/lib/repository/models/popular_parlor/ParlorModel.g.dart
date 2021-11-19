@@ -26,6 +26,10 @@ ParlorModel _$ParlorModelFromJson(Map<String, dynamic> json) {
     twitter: json['twitter'] as String,
     youtube: json['youtube'] as String,
     deleted_at: json['deleted_at'] as String,
+    services: (json['services'] as List)
+        .map((e) =>
+            ServicesCategoryListsModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -49,4 +53,5 @@ Map<String, dynamic> _$ParlorModelToJson(ParlorModel instance) =>
       'twitter': instance.twitter,
       'youtube': instance.youtube,
       'deleted_at': instance.deleted_at,
+      'services': instance.services,
     };

@@ -118,8 +118,8 @@ class _HomeFragmentWidgetState
                       onCallBack: (ParlorModel parlorModel) {
                         Map<String, dynamic> arguments = new Map();
                         arguments["parlorModel"] = parlorModel;
-                        // NavigateRoute.pushNamedWithArguments(
-                        //     context, NavigateRoute.PRODUCT_DETAIL, arguments);
+                        NavigateRoute.pushNamedWithArguments(
+                            context, NavigateRoute.POPULAR_PARLOUR_DETAIL, arguments);
                       },
                     )
                   : Container(),

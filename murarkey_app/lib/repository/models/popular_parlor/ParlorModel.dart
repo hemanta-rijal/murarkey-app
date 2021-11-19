@@ -1,4 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
+
+import 'ParlorServicesModel.dart';
 
 part 'ParlorModel.g.dart';
 
@@ -31,6 +34,8 @@ class ParlorModel {
 
   final String deleted_at;
 
+  final List<ServicesCategoryListsModel> services;
+
   ParlorModel({
     this.id,
     this.name,
@@ -50,6 +55,7 @@ class ParlorModel {
     this.twitter,
     this.youtube,
     this.deleted_at,
+    this.services,
   });
 
   factory ParlorModel.fromJson(Map<String, dynamic> json) =>
@@ -57,3 +63,5 @@ class ParlorModel {
 
   Map<String, dynamic> toJson() => _$ParlorModelToJson(this);
 }
+
+

@@ -271,7 +271,7 @@ class _ProductDetailWidgetState
 
                 SizedBox(height: 24),
                 ProductToCardWidget(
-                  title: "Add to Cart",
+                  title: "Add to Card",
                   viewModel: viewModel,
                   price: productDetailModel != null
                       ? productDetailModel.price_after_discount

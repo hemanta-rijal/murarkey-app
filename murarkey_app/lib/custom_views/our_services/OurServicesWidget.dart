@@ -19,9 +19,9 @@ class OurServicesWidget extends StatefulWidget {
 class _OurServicesWidgetState extends State<OurServicesWidget> {
   @override
   Widget build(BuildContext context) {
-    var _crossAxisCount = 3;
+    var _crossAxisCount = 4;
     var _aspectRatio = 0.68;
-    var _cardSize = 73.0;
+    var _cardSize = 52.0;
     var _itemCount = widget.modelList.length;
 
     Widget loadImage(String imgUrl) {

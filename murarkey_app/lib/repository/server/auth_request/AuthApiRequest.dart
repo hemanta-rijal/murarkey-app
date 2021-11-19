@@ -22,7 +22,7 @@ class AuthApiRequest extends ApiRequest {
       print(value);
       if (value.containsKey("success")) {
         if (value["success"] == false) {
-          Commons.toastMessage(context, value["message"]);
+          Commons.toastMessage(context, value["error"]);
           return null;
         }
       } else {

@@ -12,6 +12,7 @@ import 'package:murarkey_app/views/order/my_order/MyOrderDetailWidget.dart';
 import 'package:murarkey_app/views/order/my_order/RecentOrderWidget.dart';
 import 'package:murarkey_app/views/order/place_order/PlaceOrderWidget.dart';
 import 'package:murarkey_app/views/our_services/OurServicesItemWidget.dart';
+import 'package:murarkey_app/views/poplar_parlors/PopularParloursDetailWidget.dart';
 import '../views/our_services/widget/card_items/ServiceCardItemDetailWidget.dart';
 import 'package:murarkey_app/views/product/ProductDetailWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
@@ -42,6 +43,7 @@ class NavigateRoute {
   static const String RECENT_ORDER = "RecentOrderWidget";
   static const String MY_ORDER_DETAIL = "MyOrderDetailWidget";
   static const String ESEWA_EPAY_PAYMENT = "EsewaEpayPayment";
+  static const String POPULAR_PARLOUR_DETAIL = "PopularParloursDetailWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -100,6 +102,11 @@ class NavigateRoute {
         Map<String, dynamic> arguments = args as Map;
         return _MaterialPageRoute(MyOrderDetailWidget(
           myOrderModel: arguments["myOrderModel"],
+        ));
+      case POPULAR_PARLOUR_DETAIL:
+        Map<String, dynamic> arguments = args as Map;
+        return _MaterialPageRoute(PopularParloursDetailWidget(
+          parlorModel: arguments["parlorModel"],
         ));
       case ESEWA_EPAY_PAYMENT:
         Map<String, dynamic> arguments = args as Map;

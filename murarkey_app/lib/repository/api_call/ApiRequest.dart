@@ -79,12 +79,13 @@ abstract class ApiRequest extends Api {
       await _sharePref.setTokenType(jsonResponse["token_type"]);
       await _sharePref.setUserToken(jsonResponse["access_token"]);
       await _sharePref.setUserSession(jsonHeader["x-app-session"]);
+      await _sharePref.setSessionExpireTime(jsonHeader["x-token-expires"]);
 
     } else if (url == ApiUrls.LOGOUT_URL) {
       await _sharePref.setTokenType("");
       await _sharePref.setUserToken("");
       await _sharePref.setUserSession("");
-
+      //await _sharePref.setUserSessionTime("");
     }
 
     await _sharePref

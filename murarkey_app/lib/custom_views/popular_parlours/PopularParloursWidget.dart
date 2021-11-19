@@ -19,12 +19,12 @@ class PopularParloursWidget extends StatefulWidget {
 }
 
 class _PopularParloursWidgetState extends State<PopularParloursWidget> {
-  double _imageHeight = 100.0;
-  double _containerHeight = 140.0;
-  double _containerWidth = 120.0;
-
   @override
   Widget build(BuildContext context) {
+    double _imageHeight = 100.0;
+    double _containerHeight = 180.0;
+    double _containerWidth = 120.0;
+
     final Size screenSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
 
@@ -55,7 +55,7 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
                   style: TextStyle(
                     color: AppConstants.appColor.greyColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: SizeConfig.textMultiplier * 1.2,
+                    fontSize: SizeConfig.textMultiplier * 1.6,
                   ),
                 ),
                 SizedBox(height: 2),
@@ -64,7 +64,7 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
                   style: TextStyle(
                     color: AppConstants.appColor.textColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: SizeConfig.textMultiplier * 1.4,
+                    fontSize: SizeConfig.textMultiplier * 1.8,
                   ),
                 )
               ],
@@ -78,17 +78,25 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
     }
 
     Widget horizontalList1 = new Container(
-        margin: EdgeInsets.symmetric(vertical: 4.0),
-        height: _containerHeight,
-        child: new ListView(
-            scrollDirection: Axis.horizontal, children: buildItems()));
+      margin: EdgeInsets.symmetric(vertical: 4.0),
+      height: _containerHeight,
+      child: new ListView(
+        scrollDirection: Axis.horizontal,
+        children: buildItems(),
+      ),
+    );
 
     return Container(
-      margin: EdgeInsets.only(top: 24, left: 8, right: 8),
+      color: Colors.white,
+      margin: EdgeInsets.only(top: 12),
+      padding: EdgeInsets.only(top: 16, bottom: 4, left: 8, right: 8),
+      //margin: EdgeInsets.only(top: 24, left: 8, right: 8),
       child: Column(
         children: [
           UnderlinedTextViewWidget(
-              title: AppConstants.constants.Popular_Parlours),
+            title: AppConstants.constants.Popular_Parlours,
+            fontSize: 2.2,
+          ),
           SizedBox(height: 12),
           horizontalList1,
           SizedBox(height: 2),

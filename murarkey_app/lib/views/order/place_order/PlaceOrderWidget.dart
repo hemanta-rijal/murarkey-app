@@ -38,6 +38,9 @@ class _PlaceOrderWidgetState
   var _cardSize = 100.0;
   var appBarHeight = 50.0;
 
+  //transaction id for only esewa
+  var transactionId = 0;
+
   _PlaceOrderWidgetState() {
     paywith = GlobalData.paywith;
     loadData();
@@ -59,10 +62,20 @@ class _PlaceOrderWidgetState
       if (cartModel.getContent().length > 0) {
         //viewModel.loadProductTextLists(cartModel.getContent());
         isTheirContentData = true;
+        //calculateTransactionFromTimeStamp();
       } else {
         isTheirContentData = false;
       }
     }
+  }
+
+  calculateTransactionFromTimeStamp() {
+    List<ContentCartModel> m = cartModel.getContent();
+    for (int i = 0; i < m.length; i++) {
+      transactionId += m[i].options["timestamp"];
+    }
+
+    print("transactionId= ${transactionId}");
   }
 
   @override
@@ -208,7 +221,8 @@ class _PlaceOrderWidgetState
             int total = cartModel.total;
             int subTotal = cartModel.subTotal;
             int tax = cartModel.tax;
-            String pid = await _repository.userTokenPref.getUserSession();
+            String pid = await _repository.esewaApi.getEsewaPID(url: ApiUrls.ESEWA_PID_URL);
+            //await _repository.userTokenPref.getUserSession();
             print("pid--------------> ${pid}");
 
             Map<String, dynamic> arguments = new Map();

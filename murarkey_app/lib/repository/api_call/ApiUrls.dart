@@ -29,6 +29,9 @@ class ApiUrls {
   static final String PARLOR_URL = ROOT_API_URL + "/featured-parlours";
   static final String BRAND_URL = ROOT_API_URL + "/featured-brands";
 
+  //For Parlor
+  static final String PARLOR_DETAIL_URL = ROOT_API_URL + "/parlours/";
+
   //For Product
   static final String PRODUCT_DETAIL = ROOT_API_URL + "/products/";
   static final String PRODUCT_SEARCH = ROOT_API_URL + "/product/search";
@@ -73,7 +76,8 @@ class ApiUrls {
   static final String PAYPAL_TRANSACTION = ROOT_API_URL + "/paypal_transaction";
 
   //For Esewa
-  //http://demo.murarkey.com/api/esewa-verify
-  static final String ESEWA_SUCCESS_URL = ROOT_API_URL + "/esewa-verify";
-  static final String ESEWA_FAILURE_URL = ROOT_API_URL + "/esewa-verify";
+  //http://demo.murarkey.com/api/esewa-verify?q=su
+  static final String ESEWA_SUCCESS_URL = BASE_URL + ROOT_API_URL + "/auth/esewa-verify?q=su";
+  static final String ESEWA_FAILURE_URL = BASE_URL + ROOT_API_URL + "/auth/esewa-verify?q=fu";
+  static final String ESEWA_PID_URL = ROOT_API_URL + "/auth/esewa-pid";
 }

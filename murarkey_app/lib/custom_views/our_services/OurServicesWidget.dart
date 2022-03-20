@@ -24,6 +24,15 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
     var _cardSize = 52.0;
     var _itemCount = widget.modelList.length;
 
+    /*24 is for notification bar on Android*/
+    var size = MediaQuery.of(context).size;
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 3;
+    final double itemWidth = size.width / 2;
+    final double _childAspectRatio = itemWidth / itemHeight;
+
+    print(
+        "_childAspectRatio---> ${_childAspectRatio} \n itemHeight = ${itemHeight} itemWidth = ${itemWidth}");
+
     Widget loadImage(String imgUrl) {
       return Image.network(
         imgUrl,
@@ -34,7 +43,7 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
 
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.only(top: 12),
+      //margin: EdgeInsets.only(top: 12),
       padding: EdgeInsets.only(top: 16, bottom: 4, left: 8, right: 8),
       child: Column(
         children: [
@@ -51,6 +60,7 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: _crossAxisCount,
               //childAspectRatio: _aspectRatio,
+              childAspectRatio: _childAspectRatio,
             ),
 
             itemBuilder: (context, position) {
@@ -100,26 +110,3 @@ class _OurServicesWidgetState extends State<OurServicesWidget> {
     );
   }
 }
-
-//    //print("_aspectRatio= " + _aspectRatio.toString());
-//
-//     loadAssetImage(String imgUri) {
-//       return Container(
-//           color: AppConstants.appColor.primaryColor,
-//           padding: EdgeInsets.all(13),
-//           child: Image.asset(imgUri,
-//               color: AppConstants.appColor.whiteColor, fit: BoxFit.cover));
-//     }
-//
-//     loagSvgImage(imgUrl) {
-//       return Container(
-//           color: AppConstants.appColor.primaryColor,
-//           padding: EdgeInsets.all(13),
-//           child: SvgPicture.network(
-//             imgUrl,
-//             color: AppConstants.appColor.whiteColor,
-//             placeholderBuilder: (BuildContext context) => Container(
-//                 padding: const EdgeInsets.all(30.0),
-//                 child: const CircularProgressIndicator()),
-//           ));
-//     }

@@ -44,16 +44,16 @@ class SearchWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SearchWidgetState createState() => _SearchWidgetState(widget: this);
+  SearchWidgetState createState() => SearchWidgetState(widget: this);
 }
 
-class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
-  Repository _repository = new Repository();
+class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
   final SearchWidget widget;
-  SearchViewModel viewModel = new SearchViewModel();
-  List<ProductDetailModel> productDetailList = new List<ProductDetailModel>();
+  SearchViewModel viewModel;
 
-  _SearchWidgetState({this.widget}) {
+  SearchWidgetState({this.widget}) {
+    viewModel = new SearchViewModel(this);
+
     if (widget.slugType != null && widget.slug != null) {
       viewModel.slugType = widget.slugType;
       viewModel.slug = widget.slug;
@@ -66,17 +66,26 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
       }
     }
 
-    _search();
+    viewModel.search();
+    viewModel.callSearchApi();
   }
 
   @override
   void initState() {
+    viewModel.scrollController.addListener(() {
+      if (viewModel.scrollController.position.pixels >=
+          viewModel.scrollController.position.maxScrollExtent) {
+        viewModel.callNextPage();
+      }
+    });
     viewModel.formMin.addListener(() {
-      _search();
+      viewModel.search();
+      viewModel.callSearchApi();
       setState(() {});
     });
     viewModel.formMax.addListener(() {
-      _search();
+      viewModel.search();
+      viewModel.callSearchApi();
       setState(() {});
     });
     super.initState();
@@ -86,40 +95,36 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
   void dispose() {
     viewModel.formMin.dispose();
     viewModel.formMax.dispose();
+    viewModel.scrollController.dispose();
     super.dispose();
   }
 
-  _search() {
-    Map<String, dynamic> queryParams = new Map();
-    if (viewModel.formSearch != null && viewModel.formSearch != "") {
-      queryParams["search"] = viewModel.formSearch;
-      //print("lower_price = " + viewModel.formMin.text);
-    }
-    if (viewModel.brandValue != null) {
-      queryParams["brand"] = viewModel.brandValue.slug;
-    }
-    if (viewModel.categoryValue != null) {
-      queryParams["category"] = viewModel.categoryValue.slug;
-    }
-
-    if (viewModel.formMin.text != null && viewModel.formMin.text != "") {
-      queryParams["lower_price"] = viewModel.formMin.text;
-      //print("lower_price = " + viewModel.formMin.text);
-    }
-    if (viewModel.formMax.text != null && viewModel.formMax.text != "") {
-      queryParams["upper_price"] = viewModel.formMax.text;
-      //print("lower_price = " + viewModel.formMin.text);
-    }
-    queryParams["per_page"] = "15";
-    //TODO Need to work on pagenation ask to dada
-
-    _repository.productRequestApi
-        .getProductList(url: ApiUrls.PRODUCT_SEARCH, queryParams: queryParams)
-        .then((value) => {
-              productDetailList = value,
-              this.setState(() {}),
-            });
-  }
+  // _search() {
+  //   if (viewModel.formSearch != null && viewModel.formSearch != "") {
+  //     viewModel.queryParams["search"] = viewModel.formSearch;
+  //     //print("lower_price = " + viewModel.formMin.text);
+  //   }
+  //   if (viewModel.brandValue != null) {
+  //     viewModel.queryParams["brand"] = viewModel.brandValue.slug;
+  //   }
+  //   if (viewModel.categoryValue != null) {
+  //     viewModel.queryParams["category"] = viewModel.categoryValue.slug;
+  //   }
+  //
+  //   if (viewModel.formMin.text != null && viewModel.formMin.text != "") {
+  //     viewModel.queryParams["lower_price"] = viewModel.formMin.text;
+  //     //print("lower_price = " + viewModel.formMin.text);
+  //   }
+  //   if (viewModel.formMax.text != null && viewModel.formMax.text != "") {
+  //     viewModel.queryParams["upper_price"] = viewModel.formMax.text;
+  //     //print("lower_price = " + viewModel.formMin.text);
+  //   }
+  //   viewModel.queryParams["per_page"] = viewModel.perPageItems.toString();
+  //   //TODO Need to work on pagenation ask to dada
+  //   viewModel.queryParams["page"] = viewModel.pageNo.toString();
+  //
+  //   viewModel.callSearchApi();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +140,8 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
                 onTextChange: (value) {
                   print(value);
                   viewModel.formSearch = value;
-                  _search();
+                  viewModel.search();
+                  viewModel.callSearchApi();
                 }),
             SizedBox(
               height: 4,
@@ -168,7 +174,8 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
                                     viewModel.brandValue = widget
                                             .brandModelList[
                                         widget.brandModelList.indexOf(value)];
-                                    _search();
+                                    viewModel.search();
+                                    viewModel.callSearchApi();
                                   });
                                 }),
                           ],
@@ -197,6 +204,9 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
                                         widget.categoryModelList[widget
                                             .categoryModelList
                                             .indexOf(value)];
+
+                                    viewModel.search();
+                                    viewModel.callSearchApi();
                                   });
                                 }),
                           ],
@@ -237,15 +247,16 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
                 ],
               ),
             ),
-            productDetailList != null
+            viewModel.productDetailList != null
                 ? SearchItemWidget(
-                    modelList: productDetailList,
+                    modelList: viewModel.productDetailList,
                     onCallback: (ProductDetailModel productDetailModel) {
                       Map<String, dynamic> arguments = new Map();
                       arguments["productDetailModel"] = productDetailModel;
                       NavigateRoute.pushNamedWithArguments(
                           context, NavigateRoute.PRODUCT_DETAIL, arguments);
                     },
+                    onScrollBottomCallback: (int listSize) {},
                   )
                 : Container(),
           ],
@@ -257,6 +268,7 @@ class _SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
       appBarText: "Search Product",
       bodybackgroundColor: AppConstants.appColor.backgroundColor2,
       childWidget: buildWidget(),
+      scrollController: viewModel.scrollController,
     );
   }
 }

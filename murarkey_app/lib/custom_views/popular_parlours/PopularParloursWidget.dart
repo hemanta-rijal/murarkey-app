@@ -53,18 +53,18 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
                 Text(
                   model.name,
                   style: TextStyle(
-                    color: AppConstants.appColor.greyColor,
+                    color: AppConstants.appColor.textColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: SizeConfig.textMultiplier * 1.6,
+                    fontSize: SizeConfig.textMultiplier * 1.8,
                   ),
                 ),
                 SizedBox(height: 2),
                 Text(
                   model.address,
                   style: TextStyle(
-                    color: AppConstants.appColor.textColor,
+                    color: AppConstants.appColor.greyColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: SizeConfig.textMultiplier * 1.8,
+                    fontSize: SizeConfig.textMultiplier * 1.6,
                   ),
                 )
               ],

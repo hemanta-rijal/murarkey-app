@@ -2,7 +2,10 @@ import 'package:flutter/rendering.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/SearchBarWidget.dart';
+import 'package:murarkey_app/custom_views/best_product_for_you/BestProductForYouWidget.dart';
 import 'package:murarkey_app/custom_views/book_an_appointment/BookAnAppointmentWidget.dart';
+import 'package:murarkey_app/custom_views/dialogs/AlertDialogWidget.dart';
+import 'package:murarkey_app/custom_views/dialogs/ProgressDialogLoader.dart';
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
 import 'package:murarkey_app/custom_views/our_services/OurServicesWidget.dart';
 import 'package:murarkey_app/custom_views/popular_parlours/PopularParloursWidget.dart';
@@ -41,6 +44,38 @@ class _HomeFragmentWidgetState
     // GlobalData.ourServicesModelList.forEach((e) {
     //   ourServicesModelList.add(e);
     // });
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //         (_) => _showStartDialog()
+    // );
+    // var p = ProgressDialogLoader(context: context);
+    // p.show();
+    // Future.delayed(Duration(seconds: 20), (){
+    //   if(p.isShowing()){
+    //     p.hide();
+    //   }
+    // });
+  }
+
+  _showStartDialog() {
+    AlertDialogWidget.showAlertDialog(
+      context: context,
+      title: "Pay with ",
+      message: "Are you sure you want to pay with",
+      okText: "Continue",
+      cancelText: "Cancel",
+      okCallback: () async {
+        Navigator.pop(context);
+      },
+      cancleCallback: () {
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    //ProgressDialogLoader(context: context).show();
+    super.didChangeDependencies();
   }
 
   @override
@@ -72,7 +107,10 @@ class _HomeFragmentWidgetState
                     arguments["categoryModelList"] = categoryModelList;
                     arguments["brandModelList"] = brandModelList;
                     NavigateRoute.pushNamedWithArguments(
-                        context, NavigateRoute.SEARCH, arguments);
+                      context,
+                      NavigateRoute.SEARCH,
+                      arguments,
+                    );
                   },
                   onTextChange: (value) {
                     print(value);
@@ -82,7 +120,12 @@ class _HomeFragmentWidgetState
 
               //Image Slider
               bannerModelList != null
-                  ? ImageSliderWidget(bannerModelList: bannerModelList)
+                  ? ImageSliderWidget(
+                      bannerModelList: bannerModelList,
+                      backgroundColor: AppConstants.appColor.backgroundColor2,
+                      bannerHeight: screenSize.height / 6.5,
+                      imageFit: BoxFit.fill,
+                    )
                   : Container(),
 
               //Our Services
@@ -105,7 +148,10 @@ class _HomeFragmentWidgetState
                         arguments["slug"] = categoryModel.slug;
                         arguments["categoryModel"] = categoryModel;
                         NavigateRoute.pushNamedWithArguments(
-                            context, NavigateRoute.SEARCH, arguments);
+                          context,
+                          NavigateRoute.SEARCH,
+                          arguments,
+                        );
                       },
                     )
                   : Container(),
@@ -119,7 +165,10 @@ class _HomeFragmentWidgetState
                         Map<String, dynamic> arguments = new Map();
                         arguments["parlorModel"] = parlorModel;
                         NavigateRoute.pushNamedWithArguments(
-                            context, NavigateRoute.POPULAR_PARLOUR_DETAIL, arguments);
+                          context,
+                          NavigateRoute.POPULAR_PARLOUR_DETAIL,
+                          arguments,
+                        );
                       },
                     )
                   : Container(),
@@ -141,10 +190,23 @@ class _HomeFragmentWidgetState
                         arguments["slug"] = brandModel.slug;
                         arguments["brandModel"] = brandModel;
                         NavigateRoute.pushNamedWithArguments(
-                            context, NavigateRoute.SEARCH, arguments);
+                          context,
+                          NavigateRoute.SEARCH,
+                          arguments,
+                        );
                       },
                     )
                   : Container(),
+
+              //Best Product For You
+              BestProductForYouWidget(
+                callback: () {
+                  NavigateRoute.pushNamed(
+                    context,
+                    NavigateRoute.SKIN_TONE,
+                  );
+                },
+              ),
 
               BookAnAppointmentWidget(callback: (value) {}),
 

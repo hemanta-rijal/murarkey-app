@@ -66,6 +66,8 @@ class _Constants {
 
   String get SHOP_BY_BRANDS => "Shop by Brands";
 
+  String get BEST_PRODUCT_FOR_YOU => "Find the Best Product for you, According to your skin type";
+
   String get BUTTON_SCHEDULE => "Schedule";
 
   String get BUTTON_SUBMIT => "Submit";

@@ -15,10 +15,13 @@ class ProductDetailModel {
   final String slug;
   final String details;
   final String unit_type;
+  var brand_name;
   final int price;
   final int price_after_discount;
   final List<HomepageBannerModel> images;
   final int sku;
+  var tags_array;
+  var sub_category_array;
   final CategoryModel category;
 
   //final List<dynamic> tags;
@@ -30,13 +33,14 @@ class ProductDetailModel {
     this.slug,
     this.details,
     this.unit_type,
+    this.brand_name,
     this.price,
     this.price_after_discount,
     this.images,
     this.sku,
-    this.category
-    //this.tags,
-    //this.sub_category
+    this.category,
+    this.tags_array,
+    this.sub_category_array
   });
 
   factory ProductDetailModel.fromJson(Map<String, dynamic> json) =>

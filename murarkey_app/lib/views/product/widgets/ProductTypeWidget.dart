@@ -7,9 +7,21 @@ import 'package:murarkey_app/utils/Imports.dart';
 class ProductTypeWidget extends StatefulWidget {
   final String title;
   final String body;
+  double titleFontSize;
+  double bodyFontSize;
 
-  ProductTypeWidget({Key key, @required this.title, @required this.body})
-      : super(key: key);
+  ProductTypeWidget(
+      {Key key,
+      @required this.title,
+      @required this.body,
+      double titleFontSize,
+      double bodyFontSize})
+      : super(key: key) {
+    this.titleFontSize =
+        titleFontSize == null ? SizeConfig.textMultiplier * 2.0 : titleFontSize;
+    this.bodyFontSize =
+        bodyFontSize == null ? SizeConfig.textMultiplier * 1.8 : bodyFontSize;
+  }
 
   @override
   _ProductTypeWidgetState createState() => _ProductTypeWidgetState();
@@ -18,23 +30,38 @@ class ProductTypeWidget extends StatefulWidget {
 class _ProductTypeWidgetState extends State<ProductTypeWidget> {
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        text: widget.title,
-        style: TextStyle(
-            color: AppConstants.appColor.primaryDarkColor,
-            fontSize: SizeConfig.textMultiplier * 1.6,
-            fontWeight: FontWeight.bold),
-        children: <TextSpan>[
-          TextSpan(
-              text: widget.body,
-              style: TextStyle(
-                color: AppConstants.appColor.textColor3,
-                fontSize: SizeConfig.textMultiplier * 1.55,
-              )),
+    return Container(
+      child: Row(
+        //mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: RichText(
+              text: TextSpan(
+                text: widget.title,
+                style: TextStyle(
+                    color: AppConstants.appColor.primaryDarkColor,
+                    fontSize: widget.titleFontSize,
+                    fontWeight: FontWeight.bold),
+              ),
+              textAlign: TextAlign.justify,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: RichText(
+              text: TextSpan(
+                  text: widget.body,
+                  style: TextStyle(
+                    color: AppConstants.appColor.blackColor,
+                    fontSize: widget.bodyFontSize,
+                  )),
+              textAlign: TextAlign.justify,
+            ),
+          ),
         ],
       ),
-      textAlign: TextAlign.justify,
     );
   }
 }

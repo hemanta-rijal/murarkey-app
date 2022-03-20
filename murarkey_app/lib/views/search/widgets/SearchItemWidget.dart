@@ -10,8 +10,13 @@ import 'package:murarkey_app/utils/Imports.dart';
 class SearchItemWidget extends StatefulWidget {
   final List<ProductDetailModel> modelList;
   final Function(ProductDetailModel) onCallback;
+  final Function(int) onScrollBottomCallback;
 
-  SearchItemWidget({Key key, @required this.modelList, this.onCallback})
+  SearchItemWidget(
+      {Key key,
+      @required this.modelList,
+      this.onCallback,
+      this.onScrollBottomCallback})
       : super(key: key);
 
   @override
@@ -78,40 +83,39 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Expanded(
-                child: Container(
-                  width: double.infinity,
-                  height: 40,
-                  alignment: Alignment.center,
-                  color: Colors.green[500],
-                  padding: EdgeInsets.only(top: 8, bottom: 8),
-                  child: RichText(
-                    text: TextSpan(
-                      text: "NRP. " + model.price_after_discount.toString(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppConstants.appColor.whiteColor,
-                        fontSize: SizeConfig.textMultiplier * 1.8,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(text: " "),
-                        TextSpan(
-                          text: "NRP. " + model.price.toString(),
-                          style: TextStyle(
-                            color: AppConstants.appColor.blackColor,
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            decoration: TextDecoration.lineThrough,
-                            decorationThickness: 1.2,
-                            decorationColor: AppConstants.appColor.redColor,
-                          ),
-                        ),
-                      ],
+              child: Container(
+                width: double.infinity,
+                height: 40,
+                alignment: Alignment.center,
+                color: AppConstants.appColor.buttonColor3,
+                //Colors.green[500],
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: RichText(
+                  text: TextSpan(
+                    text: "NRP. ${model.price_after_discount.toString()} ",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppConstants.appColor.whiteColor,
+                      fontSize: SizeConfig.textMultiplier * 1.8,
                     ),
-                    textAlign: TextAlign.justify,
+                    children: <TextSpan>[
+                      TextSpan(text: " "),
+                      TextSpan(
+                        text: "NRP. ${model.price.toString()}  ",
+                        style: TextStyle(
+                          color: AppConstants.appColor.accentColor,
+                          fontSize: SizeConfig.textMultiplier * 1.8,
+                          decoration: TextDecoration.lineThrough,
+                          decorationThickness: 3,
+                          decorationColor: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
+                  textAlign: TextAlign.justify,
                 ),
               ),
-            )
+            ),
           ],
         ),
       );

@@ -5,8 +5,15 @@ import 'package:murarkey_app/utils/Imports.dart';
  * Created by Suman Prasad Neupane on 5/20/2021.
  */
 
-textView1(
-    {String title, margin, double textSize, FontWeight fontWeight, color, textAlign, fontStyle}) {
+textView1({
+  String title,
+  margin,
+  double textSize,
+  FontWeight fontWeight,
+  color,
+  textAlign,
+  fontStyle,
+}) {
   textSize = textSize == null ? 2.0 : textSize;
   fontWeight = fontWeight ?? FontWeight.normal;
   color = color ?? AppConstants.appColor.textColor;
@@ -14,7 +21,7 @@ textView1(
   fontStyle = fontStyle ?? FontStyle.normal;
 
   return Container(
-    margin: margin ?? null,//EdgeInses.zerot,
+    margin: margin ?? null, //EdgeInses.zerot,
     child: Text(
       title,
       textAlign: textAlign,
@@ -28,15 +35,21 @@ textView1(
   );
 }
 
-textView2(
-    {String title, margin, double textSize, FontWeight fontWeight, color, textAlign}) {
+textView2({
+  String title,
+  margin,
+  double textSize,
+  FontWeight fontWeight,
+  color,
+  textAlign,
+}) {
   textSize = textSize == null ? 2.0 : textSize;
   fontWeight = fontWeight ?? FontWeight.normal;
   color = color ?? AppConstants.appColor.textColor;
   textAlign = textAlign ?? TextAlign.left;
 
   return Container(
-    margin: margin ?? null,//EdgeInses.zerot,
+    margin: margin ?? null, //EdgeInses.zerot,
     child: Text(
       title,
       textAlign: textAlign,
@@ -52,7 +65,13 @@ textView2(
 }
 
 textViewEllipsis(
-    {String title, margin, double textSize, FontWeight fontWeight, color, textAlign, fontStyle}) {
+    {String title,
+    margin,
+    double textSize,
+    FontWeight fontWeight,
+    color,
+    textAlign,
+    fontStyle}) {
   textSize = textSize == null ? 2.0 : textSize;
   fontWeight = fontWeight ?? FontWeight.normal;
   color = color ?? AppConstants.appColor.textColor;
@@ -60,7 +79,7 @@ textViewEllipsis(
   fontStyle = fontStyle ?? FontStyle.normal;
 
   return Container(
-    margin: margin ?? null,//EdgeInses.zerot,
+    margin: margin ?? null, //EdgeInses.zerot,
     child: Text(
       title,
       textAlign: textAlign,

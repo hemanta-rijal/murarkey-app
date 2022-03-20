@@ -20,6 +20,7 @@ class _UnderlinedTextViewWidgetState extends State<UnderlinedTextViewWidget> {
       children: [
         Text(
           widget.title,
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: AppConstants.appColor.textColor,
             fontSize: SizeConfig.textMultiplier * widget.fontSize,

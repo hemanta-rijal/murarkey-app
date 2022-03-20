@@ -7,6 +7,9 @@ import 'package:murarkey_app/views/address/widgets/EditBillingAddressWidget.dart
 import 'package:murarkey_app/views/address/widgets/EditShippingAddressWidget.dart';
 import 'package:murarkey_app/views/app_loader/AppLoaderWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
+import 'package:murarkey_app/views/best_product_for_you/product_type/ProductTypeWidget.dart';
+import 'package:murarkey_app/views/best_product_for_you/skin_concerns/SkinConcernsWidget.dart';
+import 'package:murarkey_app/views/best_product_for_you/skin_tone/SkinToneWidget.dart';
 import 'package:murarkey_app/views/book_appoinment/widget/BookAppontmentWidget.dart';
 import 'package:murarkey_app/views/order/my_order/MyOrderDetailWidget.dart';
 import 'package:murarkey_app/views/order/my_order/RecentOrderWidget.dart';
@@ -44,6 +47,9 @@ class NavigateRoute {
   static const String MY_ORDER_DETAIL = "MyOrderDetailWidget";
   static const String ESEWA_EPAY_PAYMENT = "EsewaEpayPayment";
   static const String POPULAR_PARLOUR_DETAIL = "PopularParloursDetailWidget";
+  static const String SKIN_TONE = "SkinToneWidget";
+  static const String SKIN_CONCERN = "SkinConcernsWidget";
+  static const String SKIN_PRODUCT_TYPE = "ProductTypeWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -120,6 +126,13 @@ class NavigateRoute {
           su: arguments["su"],
           fu: arguments["fu"],
         ));
+      case SKIN_TONE:
+        return _MaterialPageRoute(SkinToneWidget());
+      case SKIN_CONCERN:
+        return _MaterialPageRoute(SkinConcernsWidget());
+      case SKIN_PRODUCT_TYPE:
+        return _MaterialPageRoute(ProductTypeWidget());
+
       default:
         LoginWidget();
       //   return _errorRoute();

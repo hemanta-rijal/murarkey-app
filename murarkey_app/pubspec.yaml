@@ -78,6 +78,8 @@ dependencies:
   #state management
   provider: 6.0.0
 
+  progress_dialog: 1.2.4
+
   # todo end of dependencies
 
 dev_dependencies:

@@ -39,4 +39,8 @@ class AppColor {
 
   final Color greenColor = new Color(0x21a179).withOpacity(1.0);
   final Color greenLightColor = new Color(0x56b799).withOpacity(1.0);
+
+  final Color purpleColor = Colors.blueAccent;
+  final Color greenColor2 = Colors.green;
+  final Color orangeColor = Colors.orange;
 }

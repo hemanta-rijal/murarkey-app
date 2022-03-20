@@ -62,23 +62,6 @@ class _ProductDetailWidgetState
             });
   }
 
-  String getTagToString(){
-    if(productDetailModel != null) {
-      if (productDetailModel.tags_array != null) {
-        return productDetailModel.tags_array.join(", ");
-      }
-    }
-    return "";
-  }
-
-  String getCategoryToString(){
-    if(productDetailModel != null) {
-      if (productDetailModel.sub_category_array != null) {
-        return productDetailModel.sub_category_array.join(", ");
-      }
-    }
-    return "";  }
-
   addToCartToServer() async {
     //Add product
     Map<String, dynamic> params = new Map();
@@ -159,17 +142,16 @@ class _ProductDetailWidgetState
 
     Widget productName() {
       return Container(
-        margin: EdgeInsets.only(top: 4, bottom: 8, left: 4, right: 4),
+        margin: EdgeInsets.only(top: 12, bottom: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Product Category
             RichText(
               text: TextSpan(
-                text: productDetailModel != null ? productDetailModel.brand_name["name"] : "",
-                // productDetailModel != null
-                //     ? productDetailModel.category.name.toUpperCase()
-                //     : "",
+                text: productDetailModel != null
+                    ? productDetailModel.category.name.toUpperCase()
+                    : "",
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: AppConstants.appColor.blackColor,
@@ -179,15 +161,15 @@ class _ProductDetailWidgetState
               textAlign: TextAlign.justify,
             ),
 
-            SizedBox(height: 2),
-
             //Product Name
             RichText(
               text: TextSpan(
-                text: productDetailModel != null ? productDetailModel.name : "",
+                text: productDetailModel != null
+                    ? productDetailModel.name
+                    : "",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppConstants.appColor.buttonColor3,
+                  fontWeight: FontWeight.w500,
+                  color: AppConstants.appColor.greyColor,
                   fontSize: SizeConfig.textMultiplier * 2.6,
                 ),
               ),
@@ -198,90 +180,38 @@ class _ProductDetailWidgetState
       );
     }
 
-    Widget productPrice() {
-      return Container(
-        child: Row(
-          //mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: RichText(
-                text: TextSpan(
-                  text: "Price: ",
-                  style: TextStyle(
-                      color: AppConstants.appColor.primaryDarkColor,
-                      fontSize: SizeConfig.textMultiplier * 2.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                textAlign: TextAlign.justify,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: RichText(
-                text: TextSpan(
-                  text: productDetailModel != null
-                      ? "Rs " +
-                          productDetailModel.price_after_discount.toString()
-                      : "Rs 0",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: AppConstants.appColor.buttonColor3,
-                    fontSize: SizeConfig.textMultiplier * 2.4,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(text: " "),
-                    TextSpan(
-                        text: productDetailModel != null
-                            ? "Rs " + productDetailModel.price.toString()
-                            : "Rs 0",
-                        style: TextStyle(
-                          color: AppConstants.appColor.greyColor,
-                          fontSize: SizeConfig.textMultiplier * 2.4,
-                          decoration: TextDecoration.lineThrough,
-                          decorationThickness: 1.2,
-                          decorationColor: AppConstants.appColor.redColor,
-                        )),
-                  ],
-                ),
-                textAlign: TextAlign.justify,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+    buildView() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Product Banner
+          productDetailModel != null
+              ? ImageSliderWidget(
+                  bannerModelList: productDetailModel.images,
+                  bannerHeight: 200,
+                )
+              : Container(),
 
-    Widget categoryAndTags() {
-      return Container(
-        width: double.infinity,
-        child: Card(
-          elevation: 4.0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          child: Container(
+          //Product Name and Address
+          Container(
             margin: EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 productName(),
-
-                SizedBox(height: 12),
                 divider(),
-                SizedBox(height: 28),
-
                 //Product Categories
+                SizedBox(height: 16),
                 ProductTypeWidget(
                   title: "CATEGORY: ",
-                  body: getCategoryToString(),
+                  body: "More Accessories, Wallets & Cases",
                 ),
 
                 //Product Categories
                 SizedBox(height: 4),
                 ProductTypeWidget(
                   title: "TAGS: ",
-                  body: getTagToString(),
+                  body: "Clothing, T-shirt, Woman",
                 ),
 
                 //Product Sku
@@ -295,15 +225,53 @@ class _ProductDetailWidgetState
 
                 //Product Sku
                 SizedBox(height: 4),
-                productPrice(),
-
-                SizedBox(height: 24),
-
-                divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: "Price: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppConstants.appColor.primaryDarkColor,
+                          fontSize: SizeConfig.textMultiplier * 1.6,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: productDetailModel != null
+                                ? "Rs " +
+                                    productDetailModel.price_after_discount
+                                        .toString()
+                                : "Rs 0",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.appColor.primaryLightColor,
+                              fontSize: SizeConfig.textMultiplier * 1.55,
+                            ),
+                          ),
+                          TextSpan(text: " "),
+                          TextSpan(
+                              text: productDetailModel != null
+                                  ? "Rs " + productDetailModel.price.toString()
+                                  : "Rs 0",
+                              style: TextStyle(
+                                color: AppConstants.appColor.greyColor,
+                                fontSize: SizeConfig.textMultiplier * 1.55,
+                                decoration: TextDecoration.lineThrough,
+                                decorationThickness: 1.2,
+                                decorationColor: AppConstants.appColor.redColor,
+                              )),
+                        ],
+                      ),
+                      textAlign: TextAlign.justify,
+                    )
+                  ],
+                ),
 
                 SizedBox(height: 24),
                 ProductToCardWidget(
-                  title: "Add to Cart",
+                  title: "Add to Card",
                   viewModel: viewModel,
                   price: productDetailModel != null
                       ? productDetailModel.price_after_discount
@@ -316,54 +284,22 @@ class _ProductDetailWidgetState
                   },
                 ),
 
-                SizedBox(height: 16),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
-    buildView() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //Product Banner
-          productDetailModel != null
-              ? Container(
-                  margin: EdgeInsets.only(left: 12, right: 12, top: 8),
-                  child: ImageSliderWidget(
-                    bannerModelList: productDetailModel.images,
-                    bannerHeight: 200,
-                    imageFit: BoxFit.contain,
-                    backgroundColor: AppConstants.appColor.whiteColor,
-                    //bannerWidth: 200,
-                  ),
-                )
-              : Container(),
-
-          //Product Name and Address
-          Container(
-            margin: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                categoryAndTags(),
-
-                SizedBox(height: 32),
+                //Product Description
+                SizedBox(height: 24),
                 ProductDescriptionWidget(
                     title: "Introduction",
                     body: productDetailModel != null
                         ? productDetailModel.details
                         : ""),
-                SizedBox(height: 16),
               ],
             ),
           ),
         ],
       );
     }
+
+    // return renderWithAppBar(
+    //     appBarText: "Product Details", childWidget: buildView());
 
     return renderWithAppBar(
       appBarText: "Product Details",

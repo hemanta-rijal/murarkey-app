@@ -81,7 +81,7 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
 
     return Container(
       padding: EdgeInsets.only(
-          top: position == 0 ? 16 : 16,
+          top: 4,
           left: 8,
           right: 8,
           bottom: 16), //position == servicesCategoryList.length - 1 ? 16 : 16),

@@ -11,6 +11,8 @@ class ProductRequestApi extends ApiRequest {
   Future<List<ProductDetailModel>> getProductList(
       {String url, Map<String, dynamic> queryParams}) async {
     List<ProductDetailModel> result = new List<ProductDetailModel>();
+    var links;
+    var meta;
 
     await this
         .getData(url: url, queryParams: queryParams)

@@ -16,28 +16,36 @@ class ProductTypeWidget extends StatefulWidget {
   _ProductTypeWidgetState createState() => _ProductTypeWidgetState();
 }
 
-class _ProductTypeWidgetState extends CustomStatefulWidgetState<ProductTypeWidget> {
+class _ProductTypeWidgetState
+    extends CustomStatefulWidgetState<ProductTypeWidget> {
+  // List<String> lists = [
+  //   "Cleanser",
+  //   "Toner",
+  //   "Serum",
+  //   "Moisturizer",
+  //   "Sunscreen",
+  //   "All Products",
+  // ];
 
-  List<String> lists = [
-    "Cleanser",
-    "Toner",
-    "Serum",
-    "Moisturizer",
-    "Sunscreen",
-    "All Products",
-  ];
+  var skinVarient = GlobalData.skinVarientModelList[2];
 
-  void next(){
+  void next({int index = -1}) {
+    if (index > -1) {
+      GlobalData.skinVarientModelValue["${skinVarient.slug}"] =
+          "${skinVarient.data[index].slug}";
+    }
     Map<String, dynamic> arguments = new Map();
-    arguments["categoryModelList"] =  GlobalData.categoryModelList;
-    arguments["brandModelList"] =  GlobalData.brandModelList;
+    arguments["categoryModelList"] = GlobalData.categoryModelList;
+    arguments["brandModelList"] = GlobalData.brandModelList;
+    arguments["skinVarientModelMap"] = GlobalData.skinVarientModelValue;
+    print("skinVarientModelMap----------> ${GlobalData.skinVarientModelValue}");
+    GlobalData.skinVarientModelValue = {};
     NavigateRoute.pushNamedWithArguments(
       context,
       NavigateRoute.SEARCH,
       arguments,
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +57,14 @@ class _ProductTypeWidgetState extends CustomStatefulWidgetState<ProductTypeWidge
             children: [
               SizedBox(height: 100),
               HearderWidget(
-                title: "Product Type",
-                desc: "What are your product?",
+                title: skinVarient.title,
+                desc: skinVarient.detail,
               ),
               SizedBox(height: 32),
               BodyWidget(
-                lists: lists,
+                lists: skinVarient.data,
                 onTapList: (int index) {
-                  next();
+                  next(index: index);
                 },
               ),
             ],

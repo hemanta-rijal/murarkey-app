@@ -17,16 +17,21 @@ class SkinToneWidget extends StatefulWidget {
 }
 
 class _SkinToneWidgetState extends CustomStatefulWidgetState<SkinToneWidget> {
-  List<String> lists = [
-    "Normal skin",
-    "Dry skin",
-    "Mature skin",
-    "Oily skin",
-    "Combination skin",
-    "All skin type",
-  ];
+  // List<String> lists = [
+  //   "Normal skin",
+  //   "Dry skin",
+  //   "Mature skin",
+  //   "Oily skin",
+  //   "Combination skin",
+  //   "All skin type",
+  // ];
+  var skinVarient = GlobalData.skinVarientModelList[0];
 
-  void next() {
+  void next({int index = -1}) {
+    if (index > -1) {
+      GlobalData.skinVarientModelValue["${skinVarient.slug}"] =
+          "${skinVarient.data[index].slug}";
+    }
     NavigateRoute.pushNamed(
       context,
       NavigateRoute.SKIN_CONCERN,
@@ -44,14 +49,14 @@ class _SkinToneWidgetState extends CustomStatefulWidgetState<SkinToneWidget> {
             children: [
               SizedBox(height: 100),
               HearderWidget(
-                title: "Skin tone",
-                desc: "How does your skin react to the sun?",
+                title: skinVarient.title,
+                desc: skinVarient.detail,
               ),
               SizedBox(height: 32),
               BodyWidget(
-                lists: lists,
+                lists: skinVarient.data,
                 onTapList: (int index) {
-                  next();
+                  next(index: index);
                 },
               ),
             ],

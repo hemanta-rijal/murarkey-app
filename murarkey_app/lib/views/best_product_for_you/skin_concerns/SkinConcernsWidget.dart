@@ -18,18 +18,22 @@ class SkinConcernsWidget extends StatefulWidget {
 
 class _SkinConcernsWidgetState
     extends CustomStatefulWidgetState<SkinConcernsWidget> {
+  // List<String> lists = [
+  //   "Acne and Blemishes",
+  //   "Signs of Aging",
+  //   "Pores",
+  //   "Uneven Skin Tone and Roughness",
+  //   "Dark Circles and Puffiness",
+  //   "Sensitive Skin",
+  //   "Very Dry Skin",
+  // ];
+  var skinVarient = GlobalData.skinVarientModelList[1];
 
-  List<String> lists = [
-    "Acne and Blemishes",
-    "Signs of Aging",
-    "Pores",
-    "Uneven Skin Tone and Roughness",
-    "Dark Circles and Puffiness",
-    "Sensitive Skin",
-    "Very Dry Skin",
-  ];
-
-  void next(){
+  void next({int index = -1}) {
+    if (index > -1) {
+      GlobalData.skinVarientModelValue["${skinVarient.slug}"] =
+          "${skinVarient.data[index].slug}";
+    }
     NavigateRoute.pushNamed(
       context,
       NavigateRoute.SKIN_PRODUCT_TYPE,
@@ -46,14 +50,14 @@ class _SkinConcernsWidgetState
             children: [
               SizedBox(height: 100),
               HearderWidget(
-                title: "Skin Concerns",
-                desc: "What are your main skin problems?",
+                title: skinVarient.title,
+                desc: skinVarient.detail,
               ),
               SizedBox(height: 32),
               BodyWidget(
-                lists: lists,
+                lists: skinVarient.data,
                 onTapList: (int index) {
-                 next();
+                  next(index: index);
                 },
               ),
             ],

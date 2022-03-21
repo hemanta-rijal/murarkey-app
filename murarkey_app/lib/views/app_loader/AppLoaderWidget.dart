@@ -29,101 +29,104 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
     //apiRequestCount++;
     _repository.userApiRequest
         .getMyDetails(url: ApiUrls.ABOUT_ME)
-        .then((value) =>
-    {
-      if (value != null)
-        {
-          GlobalData.userModel = value,
-          //print(GlobalData.userModel.name),
-        },
-      //--apiRequestCount,
-      this.setState(() {}),
-    });
+        .then((value) => {
+              if (value != null)
+                {
+                  GlobalData.userModel = value,
+                  //print(GlobalData.userModel.name),
+                },
+              //--apiRequestCount,
+              this.setState(() {}),
+            });
 
     // Get home page banners list
     apiRequestCount++;
     _repository.homeApiRequest
         .getBanner(url: ApiUrls.HOME_PAGE_BANNER_URL)
-        .then((value) =>
-    {
-      GlobalData.bannerModelList = value,
-      --apiRequestCount,
-      this.setState(() {}),
-    });
+        .then((value) => {
+              GlobalData.bannerModelList = value,
+              --apiRequestCount,
+              this.setState(() {}),
+            });
 
     // Get our services list
     apiRequestCount++;
     _repository.servicesApiRequest
         .getOurServicesList(url: ApiUrls.OUR_SERVICES_CATEGORIES)
-        .then((value) =>
-    {
-      GlobalData.ourServicesModelList = value,
-      --apiRequestCount,
-      this.setState(() {}),
-    });
+        .then((value) => {
+              GlobalData.ourServicesModelList = value,
+              --apiRequestCount,
+              this.setState(() {}),
+            });
 
     // Get category list
     apiRequestCount++;
     _repository.homeApiRequest
         .getCategory(url: ApiUrls.CATEGORY_URL)
-        .then((value) =>
-    {
-      GlobalData.categoryModelList = value,
-      --apiRequestCount,
-      this.setState(() {}),
-    });
+        .then((value) => {
+              GlobalData.categoryModelList = value,
+              --apiRequestCount,
+              this.setState(() {}),
+            });
 
     // Get parlor list
     apiRequestCount++;
     _repository.homeApiRequest
         .getParlor(url: ApiUrls.PARLOR_URL)
-        .then((value) =>
-    {
-      GlobalData.parlorModelList = value,
-      --apiRequestCount,
-      this.setState(() {}),
-    });
+        .then((value) => {
+              GlobalData.parlorModelList = value,
+              --apiRequestCount,
+              this.setState(() {}),
+            });
 
     // Get Brand list
     apiRequestCount++;
     _repository.homeApiRequest
         .getBrand(url: ApiUrls.BRAND_URL)
-        .then((value) =>
-    {
-      GlobalData.brandModelList = value,
-      --apiRequestCount,
-      this.setState(() {}),
-    });
+        .then((value) => {
+              GlobalData.brandModelList = value,
+              --apiRequestCount,
+              this.setState(() {}),
+            });
 
     apiRequestCount++;
     _repository.addressApi
         .getCountryList(url: ApiUrls.COUNTRY_LIST)
-        .then((value) =>
-    {
-      if (value != null)
-        {
-          GlobalData.countryListModel = value,
-        },
-      --apiRequestCount,
-      this.setState(() {}),
-    });
+        .then((value) => {
+              if (value != null)
+                {
+                  GlobalData.countryListModel = value,
+                },
+              --apiRequestCount,
+              this.setState(() {}),
+            });
 
     apiRequestCount++;
     _repository.paymentWithApi
         .getPaymentList(url: ApiUrls.PAYMENT_METHODS)
-        .then((value) =>
-    {
-      if (value != null)
-        {
-          if (value["status"] == 200)
-            {
-              GlobalData.paywith = value,
-              print("getPaymentList"),
-              print(GlobalData.paywith),
-            },
-        },
-      --apiRequestCount,
-      this.setState(() {}),
+        .then((value) => {
+              if (value != null)
+                {
+                  if (value["status"] == 200)
+                    {
+                      GlobalData.paywith = value,
+                      print("getPaymentList"),
+                      print(GlobalData.paywith),
+                    },
+                },
+              --apiRequestCount,
+              this.setState(() {}),
+            });
+
+    // Get Skin varient list
+    apiRequestCount++;
+    _repository.bestProductForYouApi
+        .getSkinVarient(url: ApiUrls.PRODUCT_VARIENT)
+        .then((value) {
+      GlobalData.skinVarientModelList = value;
+      print("skinVarientModelList--------> ${GlobalData.skinVarientModelList.length}");
+      --apiRequestCount;
+      this.setState(() {});
     });
   }
 
@@ -142,7 +145,7 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
     return Material(
       child: Scaffold(
         body: SafeArea(
-          child:  Center(
+          child: Center(
             child: Loader2Widget(radius: 30, dotRadius: 5.0),
           ),
         ),

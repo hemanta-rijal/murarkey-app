@@ -75,13 +75,17 @@ class NavigateRoute {
         return _MaterialPageRoute(BookAppontmentWidget());
       case SEARCH:
         Map<String, dynamic> arguments = args as Map;
-        return _MaterialPageRoute(SearchWidget(
+        return _MaterialPageRoute(
+          SearchWidget(
             categoryModelList: arguments["categoryModelList"],
             brandModelList: arguments["brandModelList"],
+            skinVarientModelMap: arguments["skinVarientModelMap"],
             slugType: arguments["slugType"],
             slug: arguments["slug"],
             categoryModel: arguments["categoryModel"],
-            brandModel: arguments["brandModel"]));
+            brandModel: arguments["brandModel"],
+          ),
+        );
       case PRODUCT_DETAIL:
         Map<String, dynamic> arguments = args as Map;
         return _MaterialPageRoute(

@@ -26,6 +26,7 @@ class SearchWidget extends StatefulWidget {
   final List<BrandModel> brandModelList;
   final CategoryModel categoryModel;
   final BrandModel brandModel;
+  final Map<String, dynamic> skinVarientModelMap;
 
   final String slugType;
   final String slug;
@@ -33,15 +34,16 @@ class SearchWidget extends StatefulWidget {
   static final String TYPE_CATEGORY_SLUG = "category";
   static final String TYPE_BRAND_SLUG = "brand";
 
-  SearchWidget(
-      {Key key,
-      @required this.categoryModelList,
-      @required this.brandModelList,
-      this.categoryModel,
-      this.brandModel,
-      this.slug,
-      this.slugType})
-      : super(key: key);
+  SearchWidget({
+    Key key,
+    @required this.categoryModelList,
+    @required this.brandModelList,
+    this.categoryModel,
+    this.brandModel,
+    this.skinVarientModelMap,
+    this.slug,
+    this.slugType,
+  }) : super(key: key);
 
   @override
   SearchWidgetState createState() => SearchWidgetState(widget: this);
@@ -64,6 +66,10 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
       if (viewModel.slug != SearchWidget.TYPE_BRAND_SLUG) {
         viewModel.brandValue = widget.brandModel;
       }
+    }
+
+    if(widget.skinVarientModelMap != null){
+      viewModel.skinVarientModelMap = widget.skinVarientModelMap;
     }
 
     viewModel.search();

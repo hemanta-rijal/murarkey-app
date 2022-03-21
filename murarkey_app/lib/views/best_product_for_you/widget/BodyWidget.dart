@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
+import 'package:murarkey_app/repository/models/best_product_for_you/SkinVarientModel.dart';
 import 'package:murarkey_app/utils/AppConstants.dart';
 import 'package:murarkey_app/utils/SizeConfig.dart';
 
@@ -8,7 +9,7 @@ import 'package:murarkey_app/utils/SizeConfig.dart';
  * Created by Suman Prasad Neupane on 3/20/2022.
  */
 class BodyWidget extends StatefulWidget {
-  final List<String> lists;
+  final List<SkinVarientData> lists;
   final Function(int index) onTapList;
 
   BodyWidget({
@@ -57,7 +58,7 @@ class _BodyWidgetState extends State<BodyWidget> {
         itemCount: widget.lists.length,
         itemBuilder: (context, index) {
           return buttonName(
-            widget.lists[index],
+            widget.lists[index].title,
             index,
           );
         },

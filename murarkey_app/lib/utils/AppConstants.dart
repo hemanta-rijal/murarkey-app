@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:murarkey_app/repository/models/best_product_for_you/SkinVarientModel.dart';
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/country_list/CountryModel.dart';
@@ -25,6 +26,8 @@ class GlobalData {
   static List<ParlorModel> parlorModelList;
   static List<BrandModel> brandModelList;
   static List<OurServicesModel> ourServicesModelList;
+  static List<SkinVarientModel> skinVarientModelList;
+  static Map<String, dynamic> skinVarientModelValue = {};
 
   static UserModel userModel = new UserModel();
   static List<CountryModel> countryListModel = new List();

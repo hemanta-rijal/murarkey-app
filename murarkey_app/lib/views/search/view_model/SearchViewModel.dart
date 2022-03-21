@@ -23,6 +23,7 @@ class SearchViewModel {
   CategoryModel categoryValue = null;
   String slugType = null;
   String slug = null;
+  Map<String, dynamic> skinVarientModelMap;
 
   int perPageItems = 15;
   int pageNo = 1;
@@ -54,6 +55,13 @@ class SearchViewModel {
       queryParams["upper_price"] = formMax.text;
       //print("lower_price = " + viewModel.formMin.text);
     }
+
+    if (skinVarientModelMap != null) {
+      skinVarientModelMap.forEach((key, value) {
+        queryParams["${key}"] = value;
+      });
+    }
+
     queryParams["per_page"] = perPageItems.toString();
 
     //TODO Need to work on pagenation ask to dada
@@ -62,8 +70,10 @@ class SearchViewModel {
   }
 
   callSearchApi() async {
-    List list = await _repository.productRequestApi
-        .getProductList(url: ApiUrls.PRODUCT_SEARCH, queryParams: queryParams);
+    List list = await _repository.productRequestApi.getProductList(
+      url: ApiUrls.PRODUCT_SEARCH,
+      queryParams: queryParams,
+    );
     if (productDetailList.length == 0) {
       productDetailList = list;
     } else {

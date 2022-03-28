@@ -9,13 +9,12 @@ class CustomStatefulWidgetState<T> extends State {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: AppConstants.appColor.primaryDarkColor));
-    screenSize = MediaQuery
-        .of(context)
-        .size;
+    screenSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
   }
 
-  Widget renderWithAppBar({@required String appBarText,
+  Widget renderWithAppBar({
+    @required String appBarText,
     @required Widget childWidget,
     Widget floatingActionButton,
     Color backgroundColor,
@@ -29,7 +28,9 @@ class CustomStatefulWidgetState<T> extends State {
     double appBarHeight,
     Widget floatingWidget,
     MainAxisAlignment appBarTextAlignment,
-    ScrollController scrollController}) {
+    ScrollController scrollController,
+    Function onBackPress,
+  }) {
     if (widget == null) {
       widget = Container();
     }
@@ -64,6 +65,7 @@ class CustomStatefulWidgetState<T> extends State {
                           titleSize: titleSize,
                           widget: widget,
                           height: appBarHeight,
+                          onBackPress: onBackPress,
                         ),
                         childWidget,
                         // Container(
@@ -76,11 +78,11 @@ class CustomStatefulWidgetState<T> extends State {
                 ),
                 floatingWidget != null
                     ? new Positioned(
-                  child: new Align(
-                    alignment: FractionalOffset.bottomCenter,
-                    child: floatingWidget,
-                  ),
-                )
+                        child: new Align(
+                          alignment: FractionalOffset.bottomCenter,
+                          child: floatingWidget,
+                        ),
+                      )
                     : Container(),
               ],
             );
@@ -90,11 +92,12 @@ class CustomStatefulWidgetState<T> extends State {
     );
   }
 
-  Widget renderWithBotomView({@required String appBarText,
-    @required Widget childWidget,
-    Widget floatingActionButton,
-    bool showBackbutton,
-    MainAxisAlignment appBarTextAlignment}) {
+  Widget renderWithBotomView(
+      {@required String appBarText,
+      @required Widget childWidget,
+      Widget floatingActionButton,
+      bool showBackbutton,
+      MainAxisAlignment appBarTextAlignment}) {
     return Material(
         color: AppConstants.appColor.backgroundColor,
         child: Scaffold(
@@ -131,17 +134,17 @@ class CustomStatefulWidgetState<T> extends State {
                   child: Container(
                     child: childWidget,
                   )
-                //IntrinsicHeight(
-                //  child:
-                //   Column(
-                //     //mainAxisSize: MainAxisSize.min,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       childWidget,
-                //     ],
-                //   ),
-                //),
-              ),
+                  //IntrinsicHeight(
+                  //  child:
+                  //   Column(
+                  //     //mainAxisSize: MainAxisSize.min,
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       childWidget,
+                  //     ],
+                  //   ),
+                  //),
+                  ),
             );
           }),
         ),
@@ -149,9 +152,10 @@ class CustomStatefulWidgetState<T> extends State {
     );
   }
 
-  Widget render({@required Widget childWidget,
-    Color bodybackgroundColor,
-    Widget floatingActionButton}) {
+  Widget render(
+      {@required Widget childWidget,
+      Color bodybackgroundColor,
+      Widget floatingActionButton}) {
     bodybackgroundColor = bodybackgroundColor == null
         ? AppConstants.appColor.backgroundColor
         : bodybackgroundColor;

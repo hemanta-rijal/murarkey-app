@@ -27,6 +27,7 @@ class SearchWidget extends StatefulWidget {
   final CategoryModel categoryModel;
   final BrandModel brandModel;
   final Map<String, dynamic> skinVarientModelMap;
+  final String attribute;
 
   final String slugType;
   final String slug;
@@ -43,6 +44,7 @@ class SearchWidget extends StatefulWidget {
     this.skinVarientModelMap,
     this.slug,
     this.slugType,
+    this.attribute,
   }) : super(key: key);
 
   @override
@@ -68,8 +70,12 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
       }
     }
 
-    if(widget.skinVarientModelMap != null){
+    if (widget.skinVarientModelMap != null) {
       viewModel.skinVarientModelMap = widget.skinVarientModelMap;
+    }
+
+    if (widget.attribute != null) {
+      viewModel.attribute = widget.attribute;
     }
 
     viewModel.search();
@@ -270,11 +276,28 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
       );
     }
 
-    return renderWithAppBar(
-      appBarText: "Search Product",
-      bodybackgroundColor: AppConstants.appColor.backgroundColor2,
-      childWidget: buildWidget(),
-      scrollController: viewModel.scrollController,
+    onBackPress() {
+      if (viewModel.skinVarientModelMap != null) {
+        NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);
+        // NavigateRoute.pop(context);
+        // NavigateRoute.pop(context);
+      }
+    }
+
+    return WillPopScope(
+      onWillPop: () async {
+        onBackPress();
+        return true;
+      },
+      child: renderWithAppBar(
+        appBarText: "Search Product",
+        bodybackgroundColor: AppConstants.appColor.backgroundColor2,
+        scrollController: viewModel.scrollController,
+        onBackPress: () {
+          onBackPress();
+        },
+        childWidget: buildWidget(),
+      ),
     );
   }
 }

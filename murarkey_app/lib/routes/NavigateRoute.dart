@@ -84,6 +84,7 @@ class NavigateRoute {
             slug: arguments["slug"],
             categoryModel: arguments["categoryModel"],
             brandModel: arguments["brandModel"],
+            attribute: arguments["attribute"],
           ),
         );
       case PRODUCT_DETAIL:

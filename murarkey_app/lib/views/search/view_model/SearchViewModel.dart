@@ -24,6 +24,7 @@ class SearchViewModel {
   String slugType = null;
   String slug = null;
   Map<String, dynamic> skinVarientModelMap;
+  String attribute = null;
 
   int perPageItems = 15;
   int pageNo = 1;
@@ -31,7 +32,7 @@ class SearchViewModel {
 
   List<ProductDetailModel> productDetailList = new List<ProductDetailModel>();
 
-  SearchViewModel(this.state);
+  SearchViewModel(this.state) {}
 
   Map<String, dynamic> search() {
     productDetailList = new List<ProductDetailModel>();
@@ -60,6 +61,10 @@ class SearchViewModel {
       skinVarientModelMap.forEach((key, value) {
         queryParams["${key}"] = value;
       });
+    }
+
+    if (attribute != null) {
+      queryParams["attribute"] = attribute;
     }
 
     queryParams["per_page"] = perPageItems.toString();

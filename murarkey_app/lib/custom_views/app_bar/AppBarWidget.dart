@@ -17,6 +17,7 @@ class AppBarWidget extends StatefulWidget {
   double titleSize;
   bool setElevation;
   Widget widget;
+  Function onBackPress;
 
   AppBarWidget({
     this.title,
@@ -30,6 +31,7 @@ class AppBarWidget extends StatefulWidget {
     double titleSize,
     bool setElevation,
     this.widget,
+    this.onBackPress,
   }) {
     this.height = height; //== null ? 46 : height;
     this.showBackbutton = showBackbutton == null ? true : showBackbutton;
@@ -80,6 +82,9 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         ),
         onTap: () {
           NavigateRoute.pop(context);
+          if(widget.onBackPress != null){
+            widget.onBackPress();
+          }
         },
       ),
     );

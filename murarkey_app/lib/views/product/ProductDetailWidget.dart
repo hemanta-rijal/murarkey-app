@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
@@ -9,13 +10,16 @@ import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
+import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/utils/SlugManager.dart';
 import 'package:murarkey_app/views/product/view_model/ProductDetailViewModel.dart';
 import 'package:murarkey_app/views/product/widgets/ProductBannerWidget.dart';
 import 'package:murarkey_app/views/product/widgets/ProductDescriptionWidget.dart';
 import 'package:murarkey_app/views/product/widgets/ProductToCardWidget.dart';
 import 'package:murarkey_app/views/product/widgets/ProductTypeWidget.dart';
+import 'package:murarkey_app/views/search/SearchWidget.dart';
 
 /**
  * Created by Suman Prasad Neupane on 6/15/2021.
@@ -55,29 +59,33 @@ class _ProductDetailWidgetState
     // Get home page banners list
     await _repository.productRequestApi
         .getProductDetail(
-            url: ApiUrls.PRODUCT_DETAIL + productModel.id.toString())
+          //url: ApiUrls.PRODUCT_DETAIL + productModel.id.toString(),
+          url: ApiUrls.PRODUCT_DETAIL + "1278",
+        )
         .then((value) => {
               productDetailModel = value,
               this.setState(() {}),
             });
   }
 
-  String getTagToString(){
-    if(productDetailModel != null) {
+  List<dynamic> getTagToString() {
+    if (productDetailModel != null) {
       if (productDetailModel.tags_array != null) {
-        return productDetailModel.tags_array.join(", ");
+        //return productDetailModel.tags_array.join(", ");
+        return productDetailModel.tags_array;
       }
     }
-    return "";
+    return [];
   }
 
-  String getCategoryToString(){
-    if(productDetailModel != null) {
+  String getCategoryToString() {
+    if (productDetailModel != null) {
       if (productDetailModel.sub_category_array != null) {
         return productDetailModel.sub_category_array.join(", ");
       }
     }
-    return "";  }
+    return "";
+  }
 
   addToCartToServer() async {
     //Add product
@@ -140,6 +148,180 @@ class _ProductDetailWidgetState
   Widget build(BuildContext context) {
     super.build(context);
 
+    Widget tagWidget() {
+      if (productDetailModel != null) {
+        if (productDetailModel.tags_array != null) {
+          return ProductTypeWidget(
+            title: "TAGS: ",
+            body: "",
+            bodyList: getTagToString(),
+            onTabSlugItem: (String slug) {},
+          );
+        }
+      }
+      return Container();
+    }
+
+    Widget brandWidget() {
+      if (productDetailModel != null) {
+        if (productDetailModel.brand != null) {
+          return ProductTypeWidget(
+            title: "BRAND: ",
+            body: "",
+            bodyList: ["${productDetailModel.brand.name}"],
+            onTabSlugItem: (String slug) {
+              NavigateRoute.pop(context);
+              NavigateRoute.pop(context);
+
+              print(
+                  "productDetailModel.brand-------------> ${productDetailModel.brand}");
+
+              Map<String, dynamic> arguments = new Map();
+              arguments["categoryModelList"] = GlobalData.categoryModelList;
+              arguments["brandModelList"] = GlobalData.brandModelList;
+              arguments["slugType"] = SearchWidget.TYPE_BRAND_SLUG;
+              arguments["slug"] = productDetailModel.brand.slug;
+              arguments["brandModel"] = productDetailModel.brand;
+
+              NavigateRoute.pushNamedWithArguments(
+                context,
+                NavigateRoute.SEARCH,
+                arguments,
+              );
+            },
+          );
+        }
+      }
+      return Container();
+    }
+
+    Widget categoryWidget() {
+      if (productDetailModel != null) {
+        if (productDetailModel.category != null) {
+          return Column(
+            children: [
+              SizedBox(height: 4),
+              ProductTypeWidget(
+                title: "CATEGORY: ",
+                body: "",
+                bodyList: ["${productDetailModel.category.name}"],
+                onTabSlugItem: (String slug) {
+                  NavigateRoute.pop(context);
+                  NavigateRoute.pop(context);
+
+                  print(
+                      "productDetailModel.category-------------> ${productDetailModel.category.toJson()}");
+
+                  Map<String, dynamic> arguments = new Map();
+                  arguments["categoryModelList"] = GlobalData.categoryModelList;
+                  arguments["brandModelList"] = GlobalData.brandModelList;
+                  arguments["slugType"] = SearchWidget.TYPE_CATEGORY_SLUG;
+                  arguments["slug"] = productDetailModel.category.slug;
+                  arguments["categoryModel"] = productDetailModel.category;
+
+                  // arguments["categoryModelList"] = categoryModelList;
+                  // arguments["brandModelList"] = brandModelList;
+                  // arguments["slugType"] = SearchWidget.TYPE_CATEGORY_SLUG;
+                  // arguments["slug"] = categoryModel.slug;
+                  // arguments["categoryModel"] = categoryModel;
+
+                  NavigateRoute.pushNamedWithArguments(
+                    context,
+                    NavigateRoute.SEARCH,
+                    arguments,
+                  );
+                },
+              ),
+            ],
+          );
+        }
+      }
+      return Container();
+    }
+
+    Widget attributeWidget() {
+      if (productDetailModel != null) {
+        if (productDetailModel.attribute != null &&
+            productDetailModel.attribute.length > 0) {
+          List<Widget> productTypeWidget = [];
+
+          productDetailModel.attribute.forEach((key, value) {
+            productTypeWidget.add(
+              SizedBox(height: 4),
+            );
+            productTypeWidget.add(
+              ProductTypeWidget(
+                title: "${key.toUpperCase()}:",
+                body: "",
+                bodyList: value,
+                onTabSlugItem: (String slug) {
+                  NavigateRoute.pop(context);
+                  NavigateRoute.pop(context);
+
+                  Map<String, dynamic> arguments = new Map();
+                  arguments["categoryModelList"] = GlobalData.categoryModelList;
+                  arguments["brandModelList"] = GlobalData.brandModelList;
+                  arguments["attribute"] = "${slug}";
+
+                  NavigateRoute.pushNamedWithArguments(
+                    context,
+                    NavigateRoute.SEARCH,
+                    arguments,
+                  );
+                },
+              ),
+            );
+          });
+
+          return Column(
+            children: productTypeWidget,
+          );
+        }
+      }
+      return Container();
+    }
+
+    Widget skinVarientWidget({
+      String title,
+      String varient,
+    }) {
+      if (productDetailModel != null) {
+        if (productDetailModel.getKeyTag(varient) != null &&
+            productDetailModel.getKeyTag(varient).length > 0) {
+          return Column(
+            children: [
+              SizedBox(height: 4),
+              ProductTypeWidget(
+                title: "${title}",
+                body: "",
+                bodyList: productDetailModel.getKeyTag(varient),
+                onTabSlugItem: (String slug) {
+                  NavigateRoute.pop(context);
+                  NavigateRoute.pop(context);
+
+                  Map<String, dynamic> skinVarientModelValue = {
+                    "${varient}": "${slug}",
+                  };
+
+                  Map<String, dynamic> arguments = new Map();
+                  arguments["categoryModelList"] = GlobalData.categoryModelList;
+                  arguments["brandModelList"] = GlobalData.brandModelList;
+                  arguments["skinVarientModelMap"] = skinVarientModelValue;
+
+                  NavigateRoute.pushNamedWithArguments(
+                    context,
+                    NavigateRoute.SEARCH,
+                    arguments,
+                  );
+                },
+              ),
+            ],
+          );
+        }
+      }
+      return Container();
+    }
+
     _addToCard() {
       if (viewModel.count > 0) {
         addToCartToServer();
@@ -166,7 +348,9 @@ class _ProductDetailWidgetState
             //Product Category
             RichText(
               text: TextSpan(
-                text: productDetailModel != null ? productDetailModel.brand_name["name"] : "",
+                text: productDetailModel != null
+                    ? productDetailModel.brand.name
+                    : "",
                 // productDetailModel != null
                 //     ? productDetailModel.category.name.toUpperCase()
                 //     : "",
@@ -199,6 +383,12 @@ class _ProductDetailWidgetState
     }
 
     Widget productPrice() {
+      if (productDetailModel == null) {
+        return Container();
+      } else if (productDetailModel.price_after_discount == null) {
+        return Container();
+      }
+
       return Container(
         child: Row(
           //mainAxisAlignment: MainAxisAlignment.start,
@@ -232,17 +422,20 @@ class _ProductDetailWidgetState
                   ),
                   children: <TextSpan>[
                     TextSpan(text: " "),
-                    TextSpan(
-                        text: productDetailModel != null
-                            ? "Rs " + productDetailModel.price.toString()
-                            : "Rs 0",
-                        style: TextStyle(
-                          color: AppConstants.appColor.greyColor,
-                          fontSize: SizeConfig.textMultiplier * 2.4,
-                          decoration: TextDecoration.lineThrough,
-                          decorationThickness: 1.2,
-                          decorationColor: AppConstants.appColor.redColor,
-                        )),
+                    productDetailModel.price_after_discount !=
+                            productDetailModel.price
+                        ? TextSpan(
+                            text: productDetailModel != null
+                                ? "Rs " + productDetailModel.price.toString()
+                                : "Rs 0",
+                            style: TextStyle(
+                              color: AppConstants.appColor.greyColor,
+                              fontSize: SizeConfig.textMultiplier * 2.4,
+                              decoration: TextDecoration.lineThrough,
+                              decorationThickness: 1.2,
+                              decorationColor: AppConstants.appColor.redColor,
+                            ))
+                        : TextSpan(text: ""),
                   ],
                 ),
                 textAlign: TextAlign.justify,
@@ -264,25 +457,38 @@ class _ProductDetailWidgetState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 productName(),
 
                 SizedBox(height: 12),
                 divider(),
                 SizedBox(height: 28),
 
+                //Product Brand
+                brandWidget(),
+
                 //Product Categories
-                ProductTypeWidget(
-                  title: "CATEGORY: ",
-                  body: getCategoryToString(),
+                categoryWidget(),
+
+                skinVarientWidget(
+                  title: "SKIN TYPE: ",
+                  varient: "skin_type",
                 ),
+
+                skinVarientWidget(
+                  title: "SKIN CONCERN: ",
+                  varient: "skin_concern",
+                ),
+
+                skinVarientWidget(
+                  title: "PRODUCT TYPE: ",
+                  varient: "product_type",
+                ),
+
+                attributeWidget(),
 
                 //Product Categories
                 SizedBox(height: 4),
-                ProductTypeWidget(
-                  title: "TAGS: ",
-                  body: getTagToString(),
-                ),
+                tagWidget(),
 
                 //Product Sku
                 SizedBox(height: 4),
@@ -291,6 +497,7 @@ class _ProductDetailWidgetState
                   body: productDetailModel != null
                       ? productDetailModel.sku.toString()
                       : "",
+                  onTabSlugItem: (String slug) {},
                 ),
 
                 //Product Sku
@@ -348,9 +555,7 @@ class _ProductDetailWidgetState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 categoryAndTags(),
-
                 SizedBox(height: 32),
                 ProductDescriptionWidget(
                     title: "Introduction",

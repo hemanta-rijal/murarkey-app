@@ -1,3 +1,4 @@
+import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
@@ -19,6 +20,22 @@ class ProductDescriptionWidget extends StatefulWidget {
 
 class _ProductDescriptionWidgetState extends State<ProductDescriptionWidget> {
   @override
+  Widget shortDecription(short_description) {
+    return Container(
+      child: Html(
+        shrinkWrap: true,
+        data: "${short_description}",
+        style: {
+          "body": Style(
+            padding: EdgeInsets.all(0),
+            margin: EdgeInsets.all(0),
+          ),
+        },
+        //tagsList: Html.tags..remove(Platform.isAndroid ? "iframe" : "video"));
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -38,12 +55,15 @@ class _ProductDescriptionWidgetState extends State<ProductDescriptionWidget> {
                   textSize: 2.2,
                   fontWeight: FontWeight.bold),
               SizedBox(height: 18),
-              textView1(
-                  title: widget.body,
-                  textAlign: TextAlign.start,
-                  color: AppConstants.appColor.blackColor,
-                  textSize: 1.8,
-                  fontWeight: FontWeight.normal),
+              shortDecription(
+                widget.body,
+              ),
+              // textView1(
+              //     title: widget.body,
+              //     textAlign: TextAlign.start,
+              //     color: AppConstants.appColor.blackColor,
+              //     textSize: 1.8,
+              //     fontWeight: FontWeight.normal),
             ],
           ),
         ),

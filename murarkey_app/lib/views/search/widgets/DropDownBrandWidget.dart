@@ -10,6 +10,15 @@ Widget dropDownBrand(
       @required value,
       margin,
       @required Function(dynamic) onChange}) {
+
+  if (value != null) {
+    List<BrandModel> c =
+    modelList.where((element) => element.slug == value.slug).toList();
+    if (c != null && c.length > 0) {
+      value = c.first;
+    }
+  }
+
   return Container(
       height: 35,
       margin: margin ?? EdgeInsets.zero,

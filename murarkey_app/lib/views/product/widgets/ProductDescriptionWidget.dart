@@ -49,11 +49,12 @@ class _ProductDescriptionWidgetState extends State<ProductDescriptionWidget> {
             children: [
               //Product Title
               textView1(
-                  title: widget.title,
-                  textAlign: TextAlign.start,
-                  color: AppConstants.appColor.blackColor,
-                  textSize: 2.2,
-                  fontWeight: FontWeight.bold),
+                title: widget.title,
+                textAlign: TextAlign.start,
+                color: AppConstants.appColor.blackColor,
+                textSize: 2.2,
+                fontWeight: FontWeight.bold,
+              ),
               SizedBox(height: 18),
               shortDecription(
                 widget.body,

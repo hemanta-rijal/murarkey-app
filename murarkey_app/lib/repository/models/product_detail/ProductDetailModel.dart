@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
+import 'package:murarkey_app/repository/models/review/ReviewModel.dart';
 
 part 'ProductDetailModel.g.dart';
 
@@ -28,6 +29,8 @@ class ProductDetailModel {
   List<String> skin_concern;
   List<String> product_type;
   Map<String, dynamic> attribute;
+  bool reviewable;
+  List<ReviewModel> reviews;
 
   //final List<dynamic> tags;
   //final List<dynamic> sub_category;
@@ -50,14 +53,16 @@ class ProductDetailModel {
     this.skin_concern,
     this.product_type,
     this.attribute,
+    this.reviewable,
+    this.reviews,
   });
 
-  dynamic getKeyTag(String key){
-    if(key == "skin_type"){
+  dynamic getKeyTag(String key) {
+    if (key == "skin_type") {
       return skin_type;
-    } else if(key == "skin_concern"){
+    } else if (key == "skin_concern") {
       return skin_concern;
-    }else if(key == "product_type"){
+    } else if (key == "product_type") {
       return product_type;
     }
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
+import 'package:murarkey_app/custom_views/review/ReviewWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
@@ -10,6 +11,7 @@ import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
+import 'package:murarkey_app/repository/models/review/ReviewModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -59,8 +61,8 @@ class _ProductDetailWidgetState
     // Get home page banners list
     await _repository.productRequestApi
         .getProductDetail(
-          //url: ApiUrls.PRODUCT_DETAIL + productModel.id.toString(),
-          url: ApiUrls.PRODUCT_DETAIL + "1278",
+          url: ApiUrls.PRODUCT_DETAIL + productModel.id.toString(),
+          //url: ApiUrls.PRODUCT_DETAIL + "1250",
         )
         .then((value) => {
               productDetailModel = value,
@@ -446,6 +448,23 @@ class _ProductDetailWidgetState
       );
     }
 
+    Widget reviews() {
+      if (productDetailModel == null) {
+        return Container();
+      } else if (productDetailModel.reviews == null) {
+        return Container();
+      } else if (productDetailModel.reviews.length < 1) {
+        return Container();
+      }
+
+      print("reviews---------> ${productDetailModel.reviews}");
+      return ReviewWidget(
+        reviewable: productDetailModel.reviewable,
+        model: productDetailModel.reviews,
+        callback: () {},
+      );
+    }
+
     Widget categoryAndTags() {
       return Container(
         width: double.infinity,
@@ -534,6 +553,7 @@ class _ProductDetailWidgetState
     buildView() {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        //mainAxisSize: MainAxisSize.min,
         children: [
           //Product Banner
           productDetailModel != null
@@ -562,8 +582,20 @@ class _ProductDetailWidgetState
                     body: productDetailModel != null
                         ? productDetailModel.details
                         : ""),
-                SizedBox(height: 16),
+                //SizedBox(height: 16),
               ],
+            ),
+          ),
+
+          Container(
+            margin: EdgeInsets.all(16.0),
+            width: double.infinity,
+            child: Card(
+              elevation: 4.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: reviews(),
             ),
           ),
         ],

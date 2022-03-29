@@ -35,6 +35,11 @@ ProductDetailModel _$ProductDetailModelFromJson(Map<String, dynamic> json) {
     product_type:
         (json['product_type'] as List)?.map((e) => e as String)?.toList(),
     attribute: json['attribute'] as Map<String, dynamic>,
+    reviewable: json['reviewable'] as bool,
+    reviews: (json['reviews'] as List)
+        ?.map((e) =>
+            e == null ? null : ReviewModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
@@ -57,4 +62,6 @@ Map<String, dynamic> _$ProductDetailModelToJson(ProductDetailModel instance) =>
       'skin_concern': instance.skin_concern,
       'product_type': instance.product_type,
       'attribute': instance.attribute,
+      'reviewable': instance.reviewable,
+      'reviews': instance.reviews,
     };

@@ -104,6 +104,62 @@ class _CardDeatilDescriptionWidgetState
     );
   }
 
+  Widget productPrice() {
+    if (widget.model == null) {
+      return Container();
+    } else if (widget.model.price_after_discount == null) {
+      return Container();
+    }
+
+    return Container(
+      margin: EdgeInsets.only(left: 8),
+      child: RichText(
+        text: TextSpan(
+          text: widget.model != null
+              ? "Rs " + widget.model.price_after_discount.toString()
+              : "Rs 0",
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: AppConstants.appColor.blackColor,
+            fontSize: SizeConfig.textMultiplier * 2.6,
+          ),
+          children: <TextSpan>[
+            TextSpan(text: " "),
+            widget.model.price_after_discount != widget.model.price
+                ? TextSpan(
+              text: widget.model != null
+                  ? "Rs " + widget.model.price.toString()
+                  : "Rs 0",
+              style: TextStyle(
+                color: AppConstants.appColor.greyColor,
+                fontSize: SizeConfig.textMultiplier * 2.6,
+                decoration: TextDecoration.lineThrough,
+                decorationThickness: 1.2,
+                decorationColor: AppConstants.appColor.redColor,
+              ),
+            )
+                : TextSpan(text: ""),
+            TextSpan(text: " "),
+            widget.model.price_after_discount != widget.model.price
+                ? TextSpan(
+              text: widget.model != null &&
+                  widget.model.discount_rates != null
+                  ? "${widget.model.discount_rates.toString()}%"
+                  : "",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: AppConstants.appColor.redColor,
+                fontSize: SizeConfig.textMultiplier * 2.6,
+              ),
+            )
+                : TextSpan(text: ""),
+          ],
+        ),
+        //textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
   Widget loadDuration() {
     return Container(
         margin: EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
@@ -139,20 +195,7 @@ class _CardDeatilDescriptionWidgetState
               ],
             ),
             SizedBox(height: 4),
-            Container(
-              margin: EdgeInsets.only(left: 8),
-              child: RichText(
-                text: TextSpan(
-                  text: "Rs. ${widget.model.service_charge}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: AppConstants.appColor.blackColor,
-                    fontSize: SizeConfig.textMultiplier * 2.6,
-                  ),
-                ),
-                textAlign: TextAlign.justify,
-              ),
-            ),
+            productPrice(),
           ],
         ));
   }
@@ -190,11 +233,63 @@ class _CardDeatilDescriptionWidgetState
     );
   }
 
+  Widget labels() {
+    List<Widget> lableLists = [];
+    if (widget.model.labels != null) {
+      widget.model.labels.forEach((key, value) {
+        lableLists.add(
+          Container(
+            margin: EdgeInsets.only(left: 16, top: 16, bottom: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: "${key}".toUpperCase(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[700],
+                      fontSize: SizeConfig.textMultiplier * 2.6,
+                    ),
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+                SizedBox(height: 12),
+                Html(
+                  data: value,
+                  style: {
+                    "body": Style(
+                      padding: EdgeInsets.all(0),
+                      margin: EdgeInsets.all(0),
+                    ),
+                  },
+                  //tagsList: Html.tags..remove(Platform.isAndroid ? "iframe" : "video"));
+                )
+              ],
+            ),
+          ),
+        );
+
+        lableLists.add(
+          divider(),
+        );
+      });
+
+      return Container(
+        child: Column(
+          children: lableLists,
+        ),
+      );
+    }
+
+    return Container();
+  }
+
   Widget columnDurationAndCart() {
     return Row(
       children: [
         Expanded(
-          flex: 2,
+          flex: 3,
           child: loadDuration(),
         ),
         Expanded(
@@ -233,6 +328,8 @@ class _CardDeatilDescriptionWidgetState
             columnDurationAndCart(),
             divider(),
             description(),
+            divider(),
+            labels(),
             SizedBox(
               height: 24,
             )

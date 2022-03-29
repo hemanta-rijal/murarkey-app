@@ -139,7 +139,7 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
                       SizedBox(height: 8),
                       RichText(
                         text: TextSpan(
-                          text: "Rs. ${model.service_charge}",
+                          text: "Rs. ${model.price_after_discount}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppConstants.appColor.blackColor,

@@ -9,7 +9,7 @@ part 'ServicesCategoryListsModel.g.dart';
  */
 
 @JsonSerializable(nullable: false)
-class ServicesCategoryListsModel{
+class ServicesCategoryListsModel {
   var id;
   var title;
   var slug;
@@ -18,8 +18,11 @@ class ServicesCategoryListsModel{
   var featured_image;
   var short_description;
   var description;
-  var service_charge;
-
+  var price;
+  var discount_rates;
+  var discount_type;
+  var price_after_discount;
+  Map<String, dynamic> labels;
 
   ServicesCategoryListsModel({
     this.id,
@@ -30,7 +33,11 @@ class ServicesCategoryListsModel{
     this.featured_image,
     this.short_description,
     this.description,
-    this.service_charge,
+    this.price,
+    this.discount_rates,
+    this.discount_type,
+    this.price_after_discount,
+    this.labels,
   });
 
   factory ServicesCategoryListsModel.fromJson(Map<String, dynamic> json) =>

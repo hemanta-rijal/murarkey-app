@@ -17,7 +17,11 @@ ServicesCategoryListsModel _$ServicesCategoryListsModelFromJson(
     featured_image: json['featured_image'],
     short_description: json['short_description'],
     description: json['description'],
-    service_charge: json['service_charge'],
+    price: json['price'],
+    discount_rates: json['discount_rates'],
+    discount_type: json['discount_type'],
+    price_after_discount: json['price_after_discount'],
+    labels: json['labels'] as Map<String, dynamic>,
   );
 }
 
@@ -32,5 +36,9 @@ Map<String, dynamic> _$ServicesCategoryListsModelToJson(
       'featured_image': instance.featured_image,
       'short_description': instance.short_description,
       'description': instance.description,
-      'service_charge': instance.service_charge,
+      'price': instance.price,
+      'discount_rates': instance.discount_rates,
+      'discount_type': instance.discount_type,
+      'price_after_discount': instance.price_after_discount,
+      'labels': instance.labels,
     };

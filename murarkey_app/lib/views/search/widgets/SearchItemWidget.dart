@@ -89,10 +89,15 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
                 alignment: Alignment.center,
                 color: AppConstants.appColor.buttonColor3,
                 //Colors.green[500],
-                padding: EdgeInsets.only(top: 8, bottom: 8),
+                padding: EdgeInsets.only(
+                  top: 8,
+                  bottom: 8,
+                  left: 4,
+                  right: 4,
+                ),
                 child: RichText(
                   text: TextSpan(
-                    text: "NRP. ${model.price_after_discount.toString()} ",
+                    text: "Rs. ${model.price_after_discount.toString()} ",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: AppConstants.appColor.whiteColor,
@@ -100,16 +105,33 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
                     ),
                     children: <TextSpan>[
                       TextSpan(text: " "),
-                      TextSpan(
-                        text: "NRP. ${model.price.toString()}  ",
-                        style: TextStyle(
-                          color: AppConstants.appColor.accentColor,
-                          fontSize: SizeConfig.textMultiplier * 1.8,
-                          decoration: TextDecoration.lineThrough,
-                          decorationThickness: 3,
-                          decorationColor: Colors.black,
-                        ),
-                      ),
+                      model.price_after_discount != model.price
+                          ? TextSpan(
+                              text: "Rs. ${model.price.toString()}  ",
+                              style: TextStyle(
+                                color: AppConstants.appColor.accentColor,
+                                fontSize: SizeConfig.textMultiplier * 1.8,
+                                decoration: TextDecoration.lineThrough,
+                                decorationThickness: 3,
+                                decorationColor: Colors.black,
+                              ),
+                            )
+                          : TextSpan(text: " "),
+                      model.price_after_discount != model.price
+                          ? TextSpan(
+                              text: model != null &&
+                                      model.discount_rate != null
+                                  ? "${model.discount_rate.toString()}%"
+                                  : "",
+                              style: TextStyle(
+                                color: AppConstants.appColor.accentColor,
+                                fontSize: SizeConfig.textMultiplier * 1.8,
+                                decoration: TextDecoration.lineThrough,
+                                decorationThickness: 3,
+                                decorationColor: Colors.black,
+                              ),
+                            )
+                          : TextSpan(text: ""),
                     ],
                   ),
                   textAlign: TextAlign.justify,

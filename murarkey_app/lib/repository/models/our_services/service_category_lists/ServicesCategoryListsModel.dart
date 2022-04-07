@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
+import 'package:murarkey_app/repository/models/review/ReviewModel.dart';
 
 part 'ServicesCategoryListsModel.g.dart';
 
@@ -23,6 +25,9 @@ class ServicesCategoryListsModel {
   var discount_type;
   var price_after_discount;
   Map<String, dynamic> labels;
+  bool reviewable;
+  List<ReviewModel> reviews;
+  List<HomepageBannerModel> images;
 
   ServicesCategoryListsModel({
     this.id,
@@ -38,6 +43,9 @@ class ServicesCategoryListsModel {
     this.discount_type,
     this.price_after_discount,
     this.labels,
+    this.reviewable,
+    this.reviews,
+    this.images,
   });
 
   factory ServicesCategoryListsModel.fromJson(Map<String, dynamic> json) =>

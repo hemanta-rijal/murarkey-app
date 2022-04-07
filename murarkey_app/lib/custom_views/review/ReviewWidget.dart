@@ -139,7 +139,9 @@ class _ReviewWidgetState extends State<ReviewWidget> {
   }
 
   Widget reviewProduct() {
-    if (widget.reviewable) {
+    if (widget.reviewable == null) {
+      return Container();
+    } else if (widget.reviewable) {
       return Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

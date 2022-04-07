@@ -83,17 +83,17 @@ class OrderItemTotalWidget extends StatelessWidget {
           ),
           loadEachAmount(
             title: "Sub Total: ",
-            body: "NRP ${subTotal}",
+            body: "Rs ${subTotal}",
             margin: EdgeInsets.all(4),
           ),
           loadEachAmount(
             title: "Tax: ",
-            body: "NRP ${tax}",
+            body: "Rs ${tax}",
             margin: EdgeInsets.all(4),
           ),
           loadEachAmount(
             title: "Shipping: ",
-            body: "NRP ${shippingCharge}",
+            body: "Rs ${shippingCharge}",
             margin: EdgeInsets.all(4),
           ),
           Row(
@@ -123,7 +123,7 @@ class OrderItemTotalWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: textView1(
-                      title: "NRP ${total}",
+                      title: "Rs ${total}",
                       textSize: 2.3,
                       fontWeight: FontWeight.bold,
                       textAlign: TextAlign.start),

@@ -262,7 +262,7 @@ class _CartFragmentWidgetState
                             fontWeight: FontWeight.normal),
                         SizedBox(height: 2),
                         textView1(
-                            title: "NRP ${content.price.toString()} per item",
+                            title: "Rs ${content.price.toString()} per item",
                             textAlign: TextAlign.start,
                             color: AppConstants.appColor.greyColor,
                             textSize: 2.0,
@@ -273,7 +273,7 @@ class _CartFragmentWidgetState
                           children: [
                             Expanded(
                               child: textView1(
-                                  title: "NRP ${content.subtotal.toString()}",
+                                  title: "Rs ${content.subtotal.toString()}",
                                   textAlign: TextAlign.left,
                                   color:
                                       AppConstants.appColor.primaryLightColor,
@@ -332,7 +332,7 @@ class _CartFragmentWidgetState
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           textView1(
-                              title: "Tax: NRP. " +
+                              title: "Tax: Rs. " +
                                   (isTheirContentData == true
                                       ? "${cartModel.tax}"
                                       : "0.0"),
@@ -348,7 +348,7 @@ class _CartFragmentWidgetState
                               ),
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: "NRP. " +
+                                  text: "Rs. " +
                                       (isTheirContentData == true
                                           ? "${cartModel.total}"
                                           : "0.0"),

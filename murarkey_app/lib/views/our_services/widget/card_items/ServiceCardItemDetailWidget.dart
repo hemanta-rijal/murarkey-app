@@ -55,8 +55,11 @@ class _ServiceCardItemDetailWidgetState
   void _onChange(int pageNum) {
     setState(() {
       _selectedPage = pageNum;
-      _pageController.animateToPage(pageNum,
-          duration: Duration(milliseconds: 500), curve: Curves.ease);
+      _pageController.animateToPage(
+        pageNum,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
     });
   }
 
@@ -98,8 +101,7 @@ class _ServiceCardItemDetailWidgetState
           Expanded(
             flex: 1,
             child: InkResponse(
-              onTap: () {
-              },
+              onTap: () {},
               child: Container(
                 margin: EdgeInsets.only(right: 20),
                 alignment: Alignment.centerRight,

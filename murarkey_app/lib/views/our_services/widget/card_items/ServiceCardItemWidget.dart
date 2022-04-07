@@ -11,6 +11,7 @@ import 'package:murarkey_app/repository/models/our_services/OurServicesSubSubMod
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/views/our_services/widget/price/ProductPriceWidget.dart';
 import '../../error/ServiceNotAvailableWidget.dart';
 
 /**
@@ -36,7 +37,10 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
   void initState() {
     _repository.servicesApiRequest
         .getServicesListFromCategory(
-            url: ApiUrls.SERVICES_CATEGORY_LIST(widget.model.id.toString()))
+      url: ApiUrls.SERVICES_CATEGORY_LIST(
+        widget.model.id.toString(),
+      ),
+    )
         .then((value) {
       servicesCategoryList = value;
       this.setState(() {});
@@ -51,7 +55,10 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
     params["qty"] = 1.toString();
 
     params["type"] = "service";
-    params["options"] = {"image": model.featured_image, "product_type": "service"};
+    params["options"] = {
+      "image": model.featured_image,
+      "product_type": "service"
+    };
 
     print(params);
 
@@ -105,19 +112,19 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
                       height: GlobalData.size.width * 0.35,
                       fit: BoxFit.cover,
                     ),
-                    FlatButton3(
-                      text: "SELL",
-                      fontSize: SizeConfig.textMultiplier * 1.8,
-                      textColor: AppConstants.appColor.whiteColor,
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      backgroundColor: Colors.green,
-                      buttonHeight: 30,
-                      buttonWidth: GlobalData.size.width * 0.3,
-                      buttonCurve: 1.2,
-                      fontWeight: FontWeight.w800,
-                      boderColor: Colors.green,
-                      onPressedCallback: () {},
-                    ),
+                    // FlatButton3(
+                    //   text: "SELL",
+                    //   fontSize: SizeConfig.textMultiplier * 1.8,
+                    //   textColor: AppConstants.appColor.whiteColor,
+                    //   padding: EdgeInsets.only(left: 16, right: 16),
+                    //   backgroundColor: Colors.green,
+                    //   buttonHeight: 30,
+                    //   buttonWidth: GlobalData.size.width * 0.3,
+                    //   buttonCurve: 1.2,
+                    //   fontWeight: FontWeight.w800,
+                    //   boderColor: Colors.green,
+                    //   onPressedCallback: () {},
+                    // ),
                   ],
                 ),
                 Container(
@@ -140,16 +147,23 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
                         textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 8),
-                      RichText(
-                        text: TextSpan(
-                          text: "Rs. ${model.price_after_discount}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppConstants.appColor.blackColor,
-                            fontSize: SizeConfig.textMultiplier * 2.1,
-                          ),
-                        ),
-                        textAlign: TextAlign.justify,
+                      // RichText(
+                      //   text: TextSpan(
+                      //     text: "Rs. ${model.price_after_discount}",
+                      //     style: TextStyle(
+                      //       fontWeight: FontWeight.bold,
+                      //       color: AppConstants.appColor.blackColor,
+                      //       fontSize: SizeConfig.textMultiplier * 2.1,
+                      //     ),
+                      //   ),
+                      //   textAlign: TextAlign.justify,
+                      // ),
+                      ProductPriceWidget(
+                        model: model,
+                        width: MediaQuery.of(context).size.width * 1/2.7,
+                        actualFontSize: SizeConfig.textMultiplier * 2.0,
+                        discountFontSize: SizeConfig.textMultiplier * 2.0,
+                        percentageFontSize: SizeConfig.textMultiplier * 2.0,
                       ),
                       SizedBox(height: 8),
                       Row(

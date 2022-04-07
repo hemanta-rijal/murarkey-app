@@ -350,8 +350,9 @@ class _ProductDetailWidgetState
             //Product Category
             RichText(
               text: TextSpan(
-                text: productDetailModel != null
-                    ? productDetailModel.brand.name
+                text: productDetailModel != null &&
+                        productDetailModel.brand != null
+                    ? "${productDetailModel.brand.name}"
                     : "",
                 // productDetailModel != null
                 //     ? productDetailModel.category.name.toUpperCase()
@@ -370,7 +371,9 @@ class _ProductDetailWidgetState
             //Product Name
             RichText(
               text: TextSpan(
-                text: productDetailModel != null ? productDetailModel.name : "",
+                text: productDetailModel != null
+                    ? "${productDetailModel.name}"
+                    : "",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: AppConstants.appColor.buttonColor3,
@@ -436,7 +439,24 @@ class _ProductDetailWidgetState
                               decoration: TextDecoration.lineThrough,
                               decorationThickness: 1.2,
                               decorationColor: AppConstants.appColor.redColor,
-                            ))
+                            ),
+                          )
+                        : TextSpan(text: ""),
+                    productDetailModel.price_after_discount !=
+                            productDetailModel.price
+                        ? TextSpan(
+                            text: productDetailModel != null &&
+                                    productDetailModel.discount_rate != null
+                                ? "${productDetailModel.discount_rate.toString()}%"
+                                : "",
+                            style: TextStyle(
+                              color: AppConstants.appColor.accentColor,
+                              fontSize: SizeConfig.textMultiplier * 2.4,
+                              decoration: TextDecoration.lineThrough,
+                              decorationThickness: 3,
+                              decorationColor: Colors.black,
+                            ),
+                          )
                         : TextSpan(text: ""),
                   ],
                 ),

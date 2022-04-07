@@ -15,6 +15,7 @@ import 'package:murarkey_app/repository/models/popular_parlor/ParlorServicesMode
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/our_services/error/ServiceNotAvailableWidget.dart';
+import 'package:murarkey_app/views/our_services/widget/price/ProductPriceWidget.dart';
 import 'package:murarkey_app/views/product/view_model/ProductDetailViewModel.dart';
 import 'package:murarkey_app/views/product/widgets/ProductToCardWidget.dart';
 
@@ -102,19 +103,19 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
                       height: GlobalData.size.width * 0.35,
                       fit: BoxFit.cover,
                     ),
-                    FlatButton3(
-                      text: "SELL",
-                      fontSize: SizeConfig.textMultiplier * 1.8,
-                      textColor: AppConstants.appColor.whiteColor,
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      backgroundColor: Colors.green,
-                      buttonHeight: 30,
-                      buttonWidth: GlobalData.size.width * 0.3,
-                      buttonCurve: 1.2,
-                      fontWeight: FontWeight.w800,
-                      boderColor: Colors.green,
-                      onPressedCallback: () {},
-                    ),
+                    // FlatButton3(
+                    //   text: "SELL",
+                    //   fontSize: SizeConfig.textMultiplier * 1.8,
+                    //   textColor: AppConstants.appColor.whiteColor,
+                    //   padding: EdgeInsets.only(left: 16, right: 16),
+                    //   backgroundColor: Colors.green,
+                    //   buttonHeight: 30,
+                    //   buttonWidth: GlobalData.size.width * 0.3,
+                    //   buttonCurve: 1.2,
+                    //   fontWeight: FontWeight.w800,
+                    //   boderColor: Colors.green,
+                    //   onPressedCallback: () {},
+                    // ),
                   ],
                 ),
                 Container(
@@ -137,16 +138,23 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
                         textAlign: TextAlign.justify,
                       ),
                       SizedBox(height: 8),
-                      RichText(
-                        text: TextSpan(
-                          text: "Rs. ${model.price_after_discount}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppConstants.appColor.blackColor,
-                            fontSize: SizeConfig.textMultiplier * 2.1,
-                          ),
-                        ),
-                        textAlign: TextAlign.justify,
+                      // RichText(
+                      //   text: TextSpan(
+                      //     text: "Rs. ${model.price_after_discount}",
+                      //     style: TextStyle(
+                      //       fontWeight: FontWeight.bold,
+                      //       color: AppConstants.appColor.blackColor,
+                      //       fontSize: SizeConfig.textMultiplier * 2.1,
+                      //     ),
+                      //   ),
+                      //   textAlign: TextAlign.justify,
+                      // ),
+                      ProductPriceWidget(
+                        model: model,
+                        width: MediaQuery.of(context).size.width * 1/2.7,
+                        actualFontSize: SizeConfig.textMultiplier * 2.0,
+                        discountFontSize: SizeConfig.textMultiplier * 2.0,
+                        percentageFontSize: SizeConfig.textMultiplier * 2.0,
                       ),
                       SizedBox(height: 8),
                       Row(

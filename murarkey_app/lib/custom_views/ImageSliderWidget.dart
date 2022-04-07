@@ -14,15 +14,15 @@ class ImageSliderWidget extends StatefulWidget {
   EdgeInsets twoImageMargin;
   Color backgroundColor;
 
-  ImageSliderWidget(
-      {Key key,
-      @required this.bannerModelList,
-      double bannerHeight,
-      double bannerWidth,
-      BoxFit imageFit,
-      double twoImageMargin,
-      Color backgroundColor})
-      : super(key: key) {
+  ImageSliderWidget({
+    Key key,
+    @required this.bannerModelList,
+    double bannerHeight,
+    double bannerWidth,
+    BoxFit imageFit,
+    double twoImageMargin,
+    Color backgroundColor,
+  }) : super(key: key) {
     this.bannerHeight = bannerHeight == null ? 140.0 : bannerHeight;
     this.bannerWidth = bannerWidth;
     this.imageFit = imageFit == null ? BoxFit.fill : imageFit;
@@ -93,7 +93,8 @@ class ImageSliderWidgetState extends State<ImageSliderWidget> {
     }
 
     return Padding(
-        padding: EdgeInsets.all(0),//EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
+        padding: EdgeInsets.all(0),
+        //EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
         child: Column(
           children: [
             Container(

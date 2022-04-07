@@ -22,6 +22,13 @@ ServicesCategoryListsModel _$ServicesCategoryListsModelFromJson(
     discount_type: json['discount_type'],
     price_after_discount: json['price_after_discount'],
     labels: json['labels'] as Map<String, dynamic>,
+    reviewable: json['reviewable'] as bool,
+    reviews: (json['reviews'] as List)
+        .map((e) => ReviewModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    images: (json['images'] as List)
+        .map((e) => HomepageBannerModel.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -41,4 +48,7 @@ Map<String, dynamic> _$ServicesCategoryListsModelToJson(
       'discount_type': instance.discount_type,
       'price_after_discount': instance.price_after_discount,
       'labels': instance.labels,
+      'reviewable': instance.reviewable,
+      'reviews': instance.reviews,
+      'images': instance.images,
     };

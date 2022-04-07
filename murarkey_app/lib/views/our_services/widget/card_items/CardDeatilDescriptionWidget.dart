@@ -1,10 +1,13 @@
 import 'package:flutter_html/flutter_html.dart';
+import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/review/ReviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
+import 'package:murarkey_app/views/our_services/widget/price/ProductPriceWidget.dart';
 
 /**
  * Created by Suman Prasad Neupane on 7/17/2021.
@@ -55,11 +58,30 @@ class _CardDeatilDescriptionWidgetState
   }
 
   Widget loadBannerImage() {
-    return Image.network(
-      widget.model.featured_image,
-      height: 230,
-      fit: BoxFit.cover,
-      width: double.infinity,
+    // return Image.network(
+    //   widget.model.featured_image,
+    //   height: 230,
+    //   fit: BoxFit.cover,
+    //   width: double.infinity,
+    // );
+
+    if (widget.model == null) {
+      return Container();
+    } else if (widget.model.images == null) {
+      return Container();
+    } else if (widget.model.images.length < 0) {
+      return Container();
+    }
+
+    return Container(
+      color: AppConstants.appColor.whiteColor,
+      child: ImageSliderWidget(
+        bannerModelList: widget.model.images,
+        bannerHeight: 230,
+        imageFit: BoxFit.contain,
+        backgroundColor: AppConstants.appColor.whiteColor,
+        //bannerWidth: 200,
+      ),
     );
   }
 
@@ -127,31 +149,31 @@ class _CardDeatilDescriptionWidgetState
             TextSpan(text: " "),
             widget.model.price_after_discount != widget.model.price
                 ? TextSpan(
-              text: widget.model != null
-                  ? "Rs " + widget.model.price.toString()
-                  : "Rs 0",
-              style: TextStyle(
-                color: AppConstants.appColor.greyColor,
-                fontSize: SizeConfig.textMultiplier * 2.6,
-                decoration: TextDecoration.lineThrough,
-                decorationThickness: 1.2,
-                decorationColor: AppConstants.appColor.redColor,
-              ),
-            )
+                    text: widget.model != null
+                        ? "Rs " + widget.model.price.toString()
+                        : "Rs 0",
+                    style: TextStyle(
+                      color: AppConstants.appColor.greyColor,
+                      fontSize: SizeConfig.textMultiplier * 2.6,
+                      decoration: TextDecoration.lineThrough,
+                      decorationThickness: 1.2,
+                      decorationColor: AppConstants.appColor.redColor,
+                    ),
+                  )
                 : TextSpan(text: ""),
             TextSpan(text: " "),
             widget.model.price_after_discount != widget.model.price
                 ? TextSpan(
-              text: widget.model != null &&
-                  widget.model.discount_rates != null
-                  ? "${widget.model.discount_rates.toString()}%"
-                  : "",
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: AppConstants.appColor.redColor,
-                fontSize: SizeConfig.textMultiplier * 2.6,
-              ),
-            )
+                    text: widget.model != null &&
+                            widget.model.discount_rates != null
+                        ? "${widget.model.discount_rates.toString()}%"
+                        : "",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: AppConstants.appColor.redColor,
+                      fontSize: SizeConfig.textMultiplier * 2.6,
+                    ),
+                  )
                 : TextSpan(text: ""),
           ],
         ),
@@ -162,42 +184,49 @@ class _CardDeatilDescriptionWidgetState
 
   Widget loadDuration() {
     return Container(
-        margin: EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppConstants.appColor.backgroundColor3,
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  child: Icon(
-                    Icons.watch_later_outlined,
+      margin: EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: AppConstants.appColor.backgroundColor3,
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: Icon(
+                  Icons.watch_later_outlined,
+                  color: Colors.orange[700],
+                  size: 30,
+                ),
+              ),
+              SizedBox(width: 8),
+              RichText(
+                text: TextSpan(
+                  text: "${widget.model.duration}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                     color: Colors.orange[700],
-                    size: 30,
+                    fontSize: SizeConfig.textMultiplier * 2.0,
                   ),
                 ),
-                SizedBox(width: 8),
-                RichText(
-                  text: TextSpan(
-                    text: "${widget.model.duration}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.orange[700],
-                      fontSize: SizeConfig.textMultiplier * 2.0,
-                    ),
-                  ),
-                  textAlign: TextAlign.justify,
-                ),
-              ],
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
+          SizedBox(height: 4),
+          //productPrice(),
+          Container(
+            margin: EdgeInsets.only(left: 8),
+            child: ProductPriceWidget(
+              model: widget.model,
             ),
-            SizedBox(height: 4),
-            productPrice(),
-          ],
-        ));
+          )
+        ],
+      ),
+    );
   }
 
   Widget description() {
@@ -285,6 +314,23 @@ class _CardDeatilDescriptionWidgetState
     return Container();
   }
 
+  Widget reviews() {
+    if (widget.model == null) {
+      return Container();
+    } else if (widget.model.reviews == null) {
+      return Container();
+    } else if (widget.model.reviews.length < 1) {
+      return Container();
+    }
+
+    print("reviews---------> ${widget.model.reviews}");
+    return ReviewWidget(
+      reviewable: widget.model.reviewable,
+      model: widget.model.reviews,
+      callback: () {},
+    );
+  }
+
   Widget columnDurationAndCart() {
     return Row(
       children: [
@@ -330,6 +376,7 @@ class _CardDeatilDescriptionWidgetState
             description(),
             divider(),
             labels(),
+            reviews(),
             SizedBox(
               height: 24,
             )

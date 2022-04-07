@@ -20,6 +20,7 @@ class ProductDetailModel {
   BrandModel brand;
   final int price;
   final int price_after_discount;
+  var discount_rate;
   final List<HomepageBannerModel> images;
   final String sku;
   var tags_array;
@@ -44,6 +45,7 @@ class ProductDetailModel {
     this.brand,
     this.price,
     this.price_after_discount,
+    this.discount_rate,
     this.images,
     this.sku,
     this.category,

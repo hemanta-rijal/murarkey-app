@@ -18,6 +18,7 @@ ProductDetailModel _$ProductDetailModelFromJson(Map<String, dynamic> json) {
         : BrandModel.fromJson(json['brand'] as Map<String, dynamic>),
     price: json['price'] as int,
     price_after_discount: json['price_after_discount'] as int,
+    discount_rate: json['discount_rate'],
     images: (json['images'] as List)
         ?.map((e) => e == null
             ? null
@@ -53,6 +54,7 @@ Map<String, dynamic> _$ProductDetailModelToJson(ProductDetailModel instance) =>
       'brand': instance.brand,
       'price': instance.price,
       'price_after_discount': instance.price_after_discount,
+      'discount_rate': instance.discount_rate,
       'images': instance.images,
       'sku': instance.sku,
       'tags_array': instance.tags_array,

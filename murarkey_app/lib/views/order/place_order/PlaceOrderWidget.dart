@@ -135,7 +135,7 @@ class _PlaceOrderWidgetState
                             fontWeight: FontWeight.normal),
                         SizedBox(height: 2),
                         textView1(
-                            title: "NRP. ${content.price.toString()} per item",
+                            title: "Rs. ${content.price.toString()} per item",
                             textAlign: TextAlign.start,
                             color: AppConstants.appColor.greyColor,
                             textSize: 2.0,

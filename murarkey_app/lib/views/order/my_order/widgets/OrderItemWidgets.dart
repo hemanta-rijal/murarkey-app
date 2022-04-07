@@ -65,7 +65,7 @@ class _OrderItemWidgetsState extends State<OrderItemWidgets> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   textView1(
-                      title: "NRP ${model.price}",
+                      title: "Rs ${model.price}",
                       textSize: 2.0,
                       fontWeight: FontWeight.normal),
                 ],

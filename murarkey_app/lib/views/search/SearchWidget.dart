@@ -15,6 +15,7 @@ import 'package:murarkey_app/views/address/view_model/EditBillingAddressViewMode
 import 'package:murarkey_app/views/search/view_model/SearchViewModel.dart';
 import 'package:murarkey_app/views/search/widgets/DropDownBrandWidget.dart';
 import 'package:murarkey_app/views/search/widgets/DropDownCategoryWidget.dart';
+import 'package:murarkey_app/views/search/widgets/ProductFilterDilaog.dart';
 import 'package:murarkey_app/views/search/widgets/SearchItemWidget.dart';
 
 /**
@@ -54,9 +55,12 @@ class SearchWidget extends StatefulWidget {
 class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
   final SearchWidget widget;
   SearchViewModel viewModel;
+  double searchBarHeight = 48;
 
   SearchWidgetState({this.widget}) {
     viewModel = new SearchViewModel(this);
+    viewModel.categoryModelList = widget.categoryModelList;
+    viewModel.brandModelList = widget.brandModelList;
 
     if (widget.slugType != null && widget.slug != null) {
       viewModel.slugType = widget.slugType;
@@ -111,32 +115,32 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
     super.dispose();
   }
 
-  // _search() {
-  //   if (viewModel.formSearch != null && viewModel.formSearch != "") {
-  //     viewModel.queryParams["search"] = viewModel.formSearch;
-  //     //print("lower_price = " + viewModel.formMin.text);
-  //   }
-  //   if (viewModel.brandValue != null) {
-  //     viewModel.queryParams["brand"] = viewModel.brandValue.slug;
-  //   }
-  //   if (viewModel.categoryValue != null) {
-  //     viewModel.queryParams["category"] = viewModel.categoryValue.slug;
-  //   }
-  //
-  //   if (viewModel.formMin.text != null && viewModel.formMin.text != "") {
-  //     viewModel.queryParams["lower_price"] = viewModel.formMin.text;
-  //     //print("lower_price = " + viewModel.formMin.text);
-  //   }
-  //   if (viewModel.formMax.text != null && viewModel.formMax.text != "") {
-  //     viewModel.queryParams["upper_price"] = viewModel.formMax.text;
-  //     //print("lower_price = " + viewModel.formMin.text);
-  //   }
-  //   viewModel.queryParams["per_page"] = viewModel.perPageItems.toString();
-  //   //TODO Need to work on pagenation ask to dada
-  //   viewModel.queryParams["page"] = viewModel.pageNo.toString();
-  //
-  //   viewModel.callSearchApi();
-  // }
+  void openFilterDialog() {
+    ProductFilterDilaog(
+      context: context,
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width - 100,
+      viewModel: viewModel,
+    );
+  }
+
+  Widget filterIcon() {
+    return InkWell(
+      onTap: () {
+        openFilterDialog();
+      },
+      child: Container(
+        height: searchBarHeight,
+        color: AppConstants.appColor.primaryColor,
+        child: Center(
+          child: Icon(
+            Icons.filter_list_rounded,
+            color: AppConstants.appColor.whiteColor,
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,118 +151,137 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SearchBarWidget(
-                textHint: 'Search by Service or Product',
-                onTextChange: (value) {
-                  print(value);
-                  viewModel.formSearch = value;
-                  viewModel.search();
-                  viewModel.callSearchApi();
-                }),
+            Row(
+              children: [
+                Expanded(
+                  flex: 9,
+                  child: SearchBarWidget(
+                    textHint: 'Search by Service or Product',
+                    height: searchBarHeight,
+                    padding: EdgeInsets.only(
+                      left: 12.0,
+                      right: 4.0,
+                      top: 6.0,
+                      bottom: 6.0,
+                    ),
+                    onTextChange: (value) {
+                      print(value);
+                      viewModel.formSearch = value;
+                      viewModel.search();
+                      viewModel.callSearchApi();
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: filterIcon(),
+                ),
+              ],
+            ),
             SizedBox(
               height: 4,
             ),
-            Container(
-              margin: EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //Filter by Brands
-                            textView1(
-                                title: "Brands",
-                                textSize: 2.0,
-                                textAlign: TextAlign.start,
-                                color: AppConstants.appColor.blackColor,
-                                fontWeight: FontWeight.bold),
-                            dropDownBrand(
-                                margin: EdgeInsets.only(top: 4.0),
-                                modelList: widget.brandModelList,
-                                value: viewModel.brandValue,
-                                onChange: (value) {
-                                  setState(() {
-                                    viewModel.brandValue = widget
-                                            .brandModelList[
-                                        widget.brandModelList.indexOf(value)];
-                                    viewModel.search();
-                                    viewModel.callSearchApi();
-                                  });
-                                }),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //Filter by Category
-                            textView1(
-                                title: "Category",
-                                textSize: 2.0,
-                                textAlign: TextAlign.start,
-                                color: AppConstants.appColor.blackColor,
-                                fontWeight: FontWeight.bold),
-                            dropDownCategory(
-                                margin: EdgeInsets.only(top: 4.0),
-                                modelList: widget.categoryModelList,
-                                value: viewModel.categoryValue,
-                                onChange: (value) {
-                                  setState(() {
-                                    viewModel.categoryValue =
-                                        widget.categoryModelList[widget
-                                            .categoryModelList
-                                            .indexOf(value)];
-
-                                    viewModel.search();
-                                    viewModel.callSearchApi();
-                                  });
-                                }),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  //Price
-                  textView1(
-                      title: "Price",
-                      textSize: 2.0,
-                      textAlign: TextAlign.start,
-                      color: AppConstants.appColor.blackColor,
-                      fontWeight: FontWeight.bold),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: textField1(
-                            hint: "Min",
-                            controller: viewModel.formMin,
-                            margin: EdgeInsets.only(top: 4.0)),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        flex: 1,
-                        child: textField1(
-                            hint: "Max",
-                            controller: viewModel.formMax,
-                            margin: EdgeInsets.only(top: 4.0)),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
+            // Container(
+            //   margin: EdgeInsets.all(12.0),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Row(
+            //         children: [
+            //           Expanded(
+            //             flex: 1,
+            //             child: Column(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: [
+            //                 //Filter by Brands
+            //                 textView1(
+            //                     title: "Brands",
+            //                     textSize: 2.0,
+            //                     textAlign: TextAlign.start,
+            //                     color: AppConstants.appColor.blackColor,
+            //                     fontWeight: FontWeight.bold),
+            //                 dropDownBrand(
+            //                     margin: EdgeInsets.only(top: 4.0),
+            //                     modelList: widget.brandModelList,
+            //                     value: viewModel.brandValue,
+            //                     onChange: (value) {
+            //                       setState(() {
+            //                         viewModel.brandValue = widget
+            //                                 .brandModelList[
+            //                             widget.brandModelList.indexOf(value)];
+            //                         viewModel.search();
+            //                         viewModel.callSearchApi();
+            //                       });
+            //                     }),
+            //               ],
+            //             ),
+            //           ),
+            //           SizedBox(width: 16),
+            //           Expanded(
+            //             flex: 1,
+            //             child: Column(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: [
+            //                 //Filter by Category
+            //                 textView1(
+            //                     title: "Category",
+            //                     textSize: 2.0,
+            //                     textAlign: TextAlign.start,
+            //                     color: AppConstants.appColor.blackColor,
+            //                     fontWeight: FontWeight.bold),
+            //                 dropDownCategory(
+            //                     margin: EdgeInsets.only(top: 4.0),
+            //                     modelList: widget.categoryModelList,
+            //                     value: viewModel.categoryValue,
+            //                     onChange: (value) {
+            //                       setState(() {
+            //                         viewModel.categoryValue =
+            //                             widget.categoryModelList[widget
+            //                                 .categoryModelList
+            //                                 .indexOf(value)];
+            //
+            //                         viewModel.search();
+            //                         viewModel.callSearchApi();
+            //                       });
+            //                     }),
+            //               ],
+            //             ),
+            //           )
+            //         ],
+            //       ),
+            //       SizedBox(
+            //         height: 16,
+            //       ),
+            //       //Price
+            //       textView1(
+            //           title: "Price",
+            //           textSize: 2.0,
+            //           textAlign: TextAlign.start,
+            //           color: AppConstants.appColor.blackColor,
+            //           fontWeight: FontWeight.bold),
+            //       Row(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Expanded(
+            //             flex: 1,
+            //             child: textField1(
+            //                 hint: "Min",
+            //                 controller: viewModel.formMin,
+            //                 margin: EdgeInsets.only(top: 4.0)),
+            //           ),
+            //           SizedBox(width: 16),
+            //           Expanded(
+            //             flex: 1,
+            //             child: textField1(
+            //                 hint: "Max",
+            //                 controller: viewModel.formMax,
+            //                 margin: EdgeInsets.only(top: 4.0)),
+            //           )
+            //         ],
+            //       )
+            //     ],
+            //   ),
+            // ),
             viewModel.productDetailList != null
                 ? SearchItemWidget(
                     modelList: viewModel.productDetailList,

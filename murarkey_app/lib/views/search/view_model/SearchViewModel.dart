@@ -18,19 +18,22 @@ class SearchViewModel {
   final TextEditingController formMax = new TextEditingController();
   ScrollController scrollController = ScrollController();
 
+  List<ProductDetailModel> productDetailList = new List<ProductDetailModel>();
+  List<CategoryModel> categoryModelList = [];
+  List<BrandModel> brandModelList = [];
+
   String formSearch = "";
   BrandModel brandValue = null;
   CategoryModel categoryValue = null;
   String slugType = null;
   String slug = null;
-  Map<String, dynamic> skinVarientModelMap;
+  Map<String, dynamic> skinVarientModelMap = {};
   String attribute = null;
 
   int perPageItems = 15;
   int pageNo = 1;
   Map<String, dynamic> queryParams = new Map();
 
-  List<ProductDetailModel> productDetailList = new List<ProductDetailModel>();
 
   SearchViewModel(this.state) {}
 
@@ -72,6 +75,17 @@ class SearchViewModel {
     //TODO Need to work on pagenation ask to dada
     queryParams["page"] = pageNo.toString();
     return queryParams;
+  }
+
+  void resetAllParameters() {
+    slugType = null;
+    slug = null;
+    categoryValue = null;
+    brandValue = null;
+    skinVarientModelMap = {};
+    formMin.text = "";
+    formMax.text = "";
+    attribute = null;
   }
 
   callSearchApi() async {

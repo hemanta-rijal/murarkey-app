@@ -4,8 +4,21 @@ class SearchBarWidget extends StatelessWidget {
   final String textHint;
   final void Function(String) onTextChange;
   final void Function() onTap;
+  double height;
+  EdgeInsetsGeometry padding;
 
-  SearchBarWidget({this.textHint, this.onTextChange, this.onTap});
+  SearchBarWidget({
+    this.textHint,
+    this.onTextChange,
+    this.onTap,
+    double height,
+    EdgeInsetsGeometry padding,
+  }) {
+    this.height = height == null ? 48 : height;
+    this.padding = padding == null
+        ? EdgeInsets.only(left: 12.0, right: 12.0, top: 6.0, bottom: 6.0)
+        : padding;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +26,9 @@ class SearchBarWidget extends StatelessWidget {
     SizeConfig().init(context);
 
     return Container(
-      height: 48,
+      height: height,
       color: AppConstants.appColor.primaryColor,
-      padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 6.0, bottom: 6.0),
+      padding: padding,
       child: TextField(
           onChanged: onTextChange,
           onTap: onTap,

@@ -19,7 +19,7 @@ class ProductDetailModel {
   final String unit_type;
   BrandModel brand;
   final int price;
-  final int price_after_discount;
+  var price_after_discount;
   var discount_rate;
   final List<HomepageBannerModel> images;
   final String sku;

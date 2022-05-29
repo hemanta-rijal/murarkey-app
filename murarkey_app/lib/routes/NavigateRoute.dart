@@ -16,6 +16,7 @@ import 'package:murarkey_app/views/order/my_order/RecentOrderWidget.dart';
 import 'package:murarkey_app/views/order/place_order/PlaceOrderWidget.dart';
 import 'package:murarkey_app/views/our_services/OurServicesItemWidget.dart';
 import 'package:murarkey_app/views/poplar_parlors/PopularParloursDetailWidget.dart';
+import 'package:murarkey_app/views/search/pages/ServiceSearchWidget.dart';
 import '../views/our_services/widget/card_items/ServiceCardItemDetailWidget.dart';
 import 'package:murarkey_app/views/product/ProductDetailWidget.dart';
 import 'package:murarkey_app/views/profile/EditProfileWidget.dart';
@@ -37,6 +38,7 @@ class NavigateRoute {
   static const String ADDRESS_SHIPPING_Edit = "EditShippingAddressWidget";
   static const String BOOK_APPOINTMENT = "BookAppontmentWidget";
   static const String SEARCH = "SearchWidget";
+  static const String SERVICE_SEARCH = "ServiceSearchWidget";
   static const String PRODUCT_DETAIL = "ProductDetailWidget";
   static const String ORDER_PLACED_PRODUCTS = "PlaceOrderWidget";
   static const String MY_WALLET = "WalletWidget";
@@ -87,6 +89,8 @@ class NavigateRoute {
             attribute: arguments["attribute"],
           ),
         );
+      case SERVICE_SEARCH:
+        return _MaterialPageRoute(ServiceSearchWidget());
       case PRODUCT_DETAIL:
         Map<String, dynamic> arguments = args as Map;
         return _MaterialPageRoute(

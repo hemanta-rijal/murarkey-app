@@ -146,17 +146,69 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
   Widget build(BuildContext context) {
     super.build(context);
 
+    Widget tabViewText({
+      String title,
+      Color textColor,
+    }) {
+      return Container(
+        padding: EdgeInsets.all(8),
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.normal,
+            fontSize: SizeConfig.textMultiplier * 2.4,
+          ),
+        ),
+      );
+    }
+
     Widget buildWidget() {
       return Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              color: AppConstants.appColor.primaryColor,
+              height: 48,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: tabViewText(
+                      title: "Product",
+                      textColor: AppConstants.appColor.accentColor,
+                    ),
+                  ),
+                  Container(
+                    width: 0.5,
+                    color: AppConstants.appColor.greyColor,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: InkResponse(
+                      onTap: () {
+                        NavigateRoute.pushNamed(
+                          context,
+                          NavigateRoute.SERVICE_SEARCH,
+                        );
+                      },
+                      child: tabViewText(
+                        title: "Service",
+                        textColor: AppConstants.appColor.whiteColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Row(
               children: [
                 Expanded(
                   flex: 9,
                   child: SearchBarWidget(
-                    textHint: 'Search by Service or Product',
+                    textHint: 'Search by Product',
                     height: searchBarHeight,
                     padding: EdgeInsets.only(
                       left: 12.0,
@@ -181,107 +233,6 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
             SizedBox(
               height: 4,
             ),
-            // Container(
-            //   margin: EdgeInsets.all(12.0),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Row(
-            //         children: [
-            //           Expanded(
-            //             flex: 1,
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 //Filter by Brands
-            //                 textView1(
-            //                     title: "Brands",
-            //                     textSize: 2.0,
-            //                     textAlign: TextAlign.start,
-            //                     color: AppConstants.appColor.blackColor,
-            //                     fontWeight: FontWeight.bold),
-            //                 dropDownBrand(
-            //                     margin: EdgeInsets.only(top: 4.0),
-            //                     modelList: widget.brandModelList,
-            //                     value: viewModel.brandValue,
-            //                     onChange: (value) {
-            //                       setState(() {
-            //                         viewModel.brandValue = widget
-            //                                 .brandModelList[
-            //                             widget.brandModelList.indexOf(value)];
-            //                         viewModel.search();
-            //                         viewModel.callSearchApi();
-            //                       });
-            //                     }),
-            //               ],
-            //             ),
-            //           ),
-            //           SizedBox(width: 16),
-            //           Expanded(
-            //             flex: 1,
-            //             child: Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 //Filter by Category
-            //                 textView1(
-            //                     title: "Category",
-            //                     textSize: 2.0,
-            //                     textAlign: TextAlign.start,
-            //                     color: AppConstants.appColor.blackColor,
-            //                     fontWeight: FontWeight.bold),
-            //                 dropDownCategory(
-            //                     margin: EdgeInsets.only(top: 4.0),
-            //                     modelList: widget.categoryModelList,
-            //                     value: viewModel.categoryValue,
-            //                     onChange: (value) {
-            //                       setState(() {
-            //                         viewModel.categoryValue =
-            //                             widget.categoryModelList[widget
-            //                                 .categoryModelList
-            //                                 .indexOf(value)];
-            //
-            //                         viewModel.search();
-            //                         viewModel.callSearchApi();
-            //                       });
-            //                     }),
-            //               ],
-            //             ),
-            //           )
-            //         ],
-            //       ),
-            //       SizedBox(
-            //         height: 16,
-            //       ),
-            //       //Price
-            //       textView1(
-            //           title: "Price",
-            //           textSize: 2.0,
-            //           textAlign: TextAlign.start,
-            //           color: AppConstants.appColor.blackColor,
-            //           fontWeight: FontWeight.bold),
-            //       Row(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         children: [
-            //           Expanded(
-            //             flex: 1,
-            //             child: textField1(
-            //                 hint: "Min",
-            //                 controller: viewModel.formMin,
-            //                 margin: EdgeInsets.only(top: 4.0)),
-            //           ),
-            //           SizedBox(width: 16),
-            //           Expanded(
-            //             flex: 1,
-            //             child: textField1(
-            //                 hint: "Max",
-            //                 controller: viewModel.formMax,
-            //                 margin: EdgeInsets.only(top: 4.0)),
-            //           )
-            //         ],
-            //       )
-            //     ],
-            //   ),
-            // ),
             viewModel.productDetailList != null
                 ? SearchItemWidget(
                     modelList: viewModel.productDetailList,
@@ -313,7 +264,7 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
         return true;
       },
       child: renderWithAppBar(
-        appBarText: "Search Product",
+        appBarText: "Search",
         bodybackgroundColor: AppConstants.appColor.backgroundColor2,
         scrollController: viewModel.scrollController,
         onBackPress: () {

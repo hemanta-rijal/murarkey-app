@@ -6,6 +6,7 @@ import 'package:murarkey_app/repository/models/country_list/CountryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
 import 'package:murarkey_app/repository/models/our_services/OurServicesModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
+import 'package:murarkey_app/repository/models/service_category/ServiceCategoryModel.dart';
 import 'package:murarkey_app/repository/models/user/UserModel.dart';
 import 'package:murarkey_app/themes/AppTheme.dart';
 import 'package:murarkey_app/themes/colors/AppColor.dart';
@@ -23,6 +24,7 @@ class AppConstants {
 class GlobalData {
   static List<HomepageBannerModel> bannerModelList;
   static List<CategoryModel> categoryModelList;
+  static List<ServiceCategoryModel> serviceCategoryModelList;
   static List<ParlorModel> parlorModelList;
   static List<BrandModel> brandModelList;
   static List<OurServicesModel> ourServicesModelList;

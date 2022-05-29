@@ -24,3 +24,10 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+/**
+ * Created by Suman Prasad Neupane on 6/12/2021.
+ * https://stackoverflow.com/questions/53503644/map-a-json-string-into-an-item-model-in-flutter
+ * flutter clean && flutter pub get && flutter pub run build_runner build --delete-conflicting-outputs
+ * flutter clean; flutter pub get; flutter pub run build_runner build --delete-conflicting-outputs
+ */

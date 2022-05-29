@@ -147,7 +147,7 @@ class _CardDeatilDescriptionWidgetState
           ),
           children: <TextSpan>[
             TextSpan(text: " "),
-            widget.model.price_after_discount != widget.model.price
+            widget.model.price_after_discount != widget.model.price && widget.model.discount_type == "%"
                 ? TextSpan(
                     text: widget.model != null
                         ? "Rs " + widget.model.price.toString()
@@ -162,7 +162,7 @@ class _CardDeatilDescriptionWidgetState
                   )
                 : TextSpan(text: ""),
             TextSpan(text: " "),
-            widget.model.price_after_discount != widget.model.price
+            widget.model.price_after_discount != widget.model.price && widget.model.discount_type == "%"
                 ? TextSpan(
                     text: widget.model != null &&
                             widget.model.discount_rates != null

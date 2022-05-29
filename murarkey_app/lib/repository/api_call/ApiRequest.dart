@@ -107,6 +107,7 @@ abstract class ApiRequest extends Api {
       print("url= ");
       print(full_url);
 
+
       //
       print("headers");
       var header = await _headers(useToken);
@@ -117,7 +118,6 @@ abstract class ApiRequest extends Api {
       http.Response response = await http
           .get(full_url, headers: header)
           .timeout(const Duration(seconds: 60));
-      ;
       return _parseData(response, url);
     } catch (e) {
       print(e);

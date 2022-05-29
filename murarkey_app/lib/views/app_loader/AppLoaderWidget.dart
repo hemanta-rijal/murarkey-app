@@ -59,6 +59,16 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
               this.setState(() {}),
             });
 
+    // Get our services list
+    apiRequestCount++;
+    _repository.servicesApiRequest
+        .getServicesCategoryList(url: ApiUrls.OUR_SERVICES_CATEGORIES)
+        .then((value) {
+      GlobalData.serviceCategoryModelList = value;
+      --apiRequestCount;
+      this.setState(() {});
+    });
+
     // Get category list
     apiRequestCount++;
     _repository.homeApiRequest
@@ -124,7 +134,8 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
         .getSkinVarient(url: ApiUrls.PRODUCT_VARIENT)
         .then((value) {
       GlobalData.skinVarientModelList = value;
-      print("skinVarientModelList--------> ${GlobalData.skinVarientModelList.length}");
+      print(
+          "skinVarientModelList--------> ${GlobalData.skinVarientModelList.length}");
       --apiRequestCount;
       this.setState(() {});
     });

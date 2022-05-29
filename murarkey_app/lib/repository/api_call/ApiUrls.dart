@@ -44,6 +44,8 @@ class ApiUrls {
   static String SERVICES_CATEGORY_LIST(String id){
     return ROOT_API_URL + "/servicecategory/${id}/services";
   }
+  static final String SERVICES_CATEGORIES_LIST = ROOT_API_URL +"/servicecategory/toplevel";
+  static final String SERVICES_SEARCH = ROOT_API_URL +"/services/search";
 
   //For
   static final String JOIN_PARLOR_PROFESSION = ROOT_API_URL + "/join-parlour-profession";

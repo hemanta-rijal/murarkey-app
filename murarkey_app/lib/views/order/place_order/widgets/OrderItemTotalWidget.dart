@@ -10,10 +10,16 @@ class OrderItemTotalWidget extends StatelessWidget {
   final String tax;
   final String shippingCharge;
   final String total;
+  final Widget componentView;
 
-  const OrderItemTotalWidget(
-      {Key key, this.subTotal, this.tax, this.shippingCharge, this.total})
-      : super(key: key);
+  const OrderItemTotalWidget({
+    Key key,
+    this.subTotal,
+    this.tax,
+    this.shippingCharge,
+    this.total,
+    this.componentView,
+  }) : super(key: key);
 
   Widget loadEachAmount(
       {String title, String body, EdgeInsetsGeometry margin}) {
@@ -45,7 +51,7 @@ class OrderItemTotalWidget extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         color: Colors.white,
-       // borderRadius: BorderRadius.all(Radius.circular(8)),
+        // borderRadius: BorderRadius.all(Radius.circular(8)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
@@ -96,6 +102,17 @@ class OrderItemTotalWidget extends StatelessWidget {
             body: "Rs ${shippingCharge}",
             margin: EdgeInsets.all(4),
           ),
+          componentView != null
+              ? Container(
+                  child: componentView,
+                  margin: EdgeInsets.all(4),
+                )
+              : Container(),
+          componentView != null
+              ? Container(
+                  margin: EdgeInsets.only(bottom: 8),
+                )
+              : Container(),
           Row(
             children: [
               Expanded(
@@ -139,17 +156,8 @@ class OrderItemTotalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.only(
-      //   left: 16,
-      //   right: 16,
-      //   bottom: 24,
-      // ),
       child: Row(
-        children: [
-          //Expanded(flex: 4, child: Container()),
-          //Expanded(flex: 6, child: loadPriceBuilder())
-          Expanded(flex: 1, child: loadPriceBuilder())
-        ],
+        children: [Expanded(flex: 1, child: loadPriceBuilder())],
       ),
     );
   }

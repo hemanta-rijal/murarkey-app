@@ -1,6 +1,8 @@
 import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
+import 'package:murarkey_app/custom_views/date_time_picker/DateTimePickerWidget.dart';
 import 'package:murarkey_app/custom_views/dialogs/AlertDialogWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
@@ -40,6 +42,11 @@ class _PlaceOrderWidgetState
 
   //transaction id for only esewa
   var transactionId = 0;
+
+  bool useWalletAmount = false;
+  TextEditingController voucherTextController = TextEditingController();
+  DateTime deliveryDate;
+  TimeOfDay deliveryTime;
 
   _PlaceOrderWidgetState() {
     paywith = GlobalData.paywith;
@@ -267,6 +274,24 @@ class _PlaceOrderWidgetState
       );
     }
 
+    String deliveryDateTimeFormatter() {
+      if (deliveryDate == null) {
+        return "Pick Date and Time for delivery";
+      } else {
+        var date = deliveryDate.year.toString() +
+            "/" +
+            deliveryDate.month.toString() +
+            "/" +
+            deliveryDate.day.toString();
+        var hour = deliveryTime.hour.toString().padLeft(2, "0");
+        var minute = deliveryTime.minute.toString().padLeft(2, "0");
+        var period = deliveryTime.period == DayPeriod.am ? "AM" : "PM";
+        var dateTime = date + " " + hour + ":" + minute + " " + period;
+        var delivery = "Delivery Time: " + dateTime;
+        return delivery;
+      }
+    }
+
     buildView() {
       var u = GlobalData.userModel;
       var b = u.billing_details;
@@ -316,6 +341,133 @@ class _PlaceOrderWidgetState
                     shippingCharge: "${cartModel.shippingAmount}",
                     tax: "${cartModel.tax}",
                     total: "${cartModel.total}",
+                    componentView: Column(
+                      children: [
+                        SizedBox(height: 8),
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 20.0,
+                              width: 20.0,
+                              child: Checkbox(
+                                value: this.useWalletAmount,
+                                // materialTapTargetSize:
+                                //     MaterialTapTargetSize.shrinkWrap,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    this.useWalletAmount = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: textView1(
+                                title: "Use Wallet Amount (Rs 32.0)",
+                                textSize: 2.0,
+                                fontWeight: FontWeight.normal,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: textField1(
+                                hint: "Enter Voucher Code",
+                                controller: voucherTextController,
+                                //margin: EdgeInsets.only(top: 8.0),
+                              ),
+                              flex: 3,
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                    AppConstants.appColor.primaryLightColor3,
+                                    AppConstants.appColor.primaryColor
+                                  ]),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(0)),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    // if (isTheirContentData == true &&
+                                    //     cartModel != null) {
+                                    //   NavigateRoute.pushNamed(context,
+                                    //       NavigateRoute.ORDER_PLACED_PRODUCTS);
+                                    // } else {
+                                    //   Commons.toastMessage(
+                                    //       context, "Their is no order to shop");
+                                    // }
+                                  },
+                                  child: Text(
+                                    "Proceed To Pay",
+                                    style: TextStyle(
+                                      color: AppConstants.appColor.whiteColor,
+                                      fontSize: SizeConfig.textMultiplier * 2.0,
+                                      //fontWeight: setFontWeight(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                deliveryDateTimeFormatter(),
+                                style: TextStyle(
+                                  color: AppConstants.appColor.blackColor,
+                                  fontSize: SizeConfig.textMultiplier * 2.3,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              //flex: 3,
+                            ),
+                            SizedBox(width: 16),
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: InkResponse(
+                                onTap: () async {
+                                  final date =
+                                      await DateTimePickerWidget.pickDate(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                  );
+
+                                  final time =
+                                      await DateTimePickerWidget.pickTime(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                  );
+
+                                  if (date == null) return;
+                                  if (time == null) return;
+                                  setState(() {
+                                    deliveryDate = date;
+                                    deliveryTime = time;
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.calendar_today_outlined,
+                                  color: Colors.deepPurpleAccent[700],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 16),
+                      ],
+                    ),
                   ),
                 )
               : Container(),

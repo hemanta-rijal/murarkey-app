@@ -17,6 +17,9 @@ class GoogleSignInProvider {
     _user = googleUser;
 
     final googleAuth = await googleUser.authentication;
+    print(
+        "accessToken= ${googleAuth.accessToken}\nidToken= ${googleAuth.idToken}");
+
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
@@ -27,9 +30,20 @@ class GoogleSignInProvider {
     return userCredential;
   }
 
-  Future googleLoginFromUrl() async {
+  Future<String> googleLoginFromUrl() async {
     final googleUser = await googleSignIn.signIn();
-    if (googleUser == null) return;
+    if (googleUser == null) return "";
     _user = googleUser;
+
+    final googleAuth = await googleUser.authentication;
+    print(
+        "accessToken= ${googleAuth.accessToken}\nidToken= ${googleAuth.idToken}");
+    return googleAuth.accessToken;
+  }
+
+  Future googleLogout() async {
+    if (googleSignIn != null) {
+      final googleUser = await googleSignIn.signOut();
+    }
   }
 }

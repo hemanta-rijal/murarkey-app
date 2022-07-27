@@ -33,6 +33,7 @@ class AppColor {
   final Color blackColor = new Color(0x252525).withOpacity(1.0);
   final Color whiteColor = new Color(0xFFFFFF).withOpacity(1.0);
   final Color redColor = new Color(0xDE3C4C).withOpacity(1.0);
+  final Color redColor2 = Colors.red[700];
 
   final Color gradientColor1 = new Color(0x4d118b).withOpacity(1.0);
   final Color gradientColor2 = new Color(0x342879).withOpacity(1.0);

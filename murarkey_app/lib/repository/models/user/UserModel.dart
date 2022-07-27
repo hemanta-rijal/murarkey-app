@@ -9,17 +9,17 @@ part 'UserModel.g.dart';
 
 @JsonSerializable(nullable: false)
 class UserModel{
-  final int id;
-  final String name;
-  final String first_name;
-  final String last_name;
-  final String role;
-  final String email;
-  final String phone;
-  final String profileImage;
-  final String joined_on;
-  final PaymentCardAddresModel billing_details;
-  final PaymentCardAddresModel shipment_details;
+  int id;
+  String name;
+  String first_name;
+  String last_name;
+  String role;
+  String email;
+  String phone;
+  String profileImage;
+  String joined_on;
+  PaymentCardAddresModel billing_details;
+  PaymentCardAddresModel shipment_details;
   var emailVerification;
   var phoneVerification;
 

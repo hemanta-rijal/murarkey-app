@@ -1,3 +1,4 @@
+import 'package:murarkey_app/custom_views/ribbons/RibbonShapeWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/RichTextWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
@@ -21,7 +22,8 @@ class SearchServiceItemWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _SearchServiceItemWidgetState createState() => _SearchServiceItemWidgetState();
+  _SearchServiceItemWidgetState createState() =>
+      _SearchServiceItemWidgetState();
 }
 
 class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
@@ -46,6 +48,18 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
       );
     }
 
+    check(ServicesCategoryListsModel model) {
+      if (model.price_after_discount != model.price &&
+          model.discount_type == "percentage") {
+        return "%";
+      } else if (model.price_after_discount != model.price &&
+          model.discount_type == "flat_rate") {
+        return "off";
+      }
+
+      return "";
+    }
+
     buildItems(ServicesCategoryListsModel model) {
       return Container(
         child: Stack(
@@ -67,18 +81,6 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
                       fontSize: SizeConfig.textMultiplier * 1.8,
                     ),
                   ),
-                  // SizedBox(height: 2),
-                  // Text(
-                  //   model.short_description,
-                  //   textAlign: TextAlign.center,
-                  //   maxLines: 2,
-                  //   overflow: TextOverflow.ellipsis,
-                  //   style: TextStyle(
-                  //     color: AppConstants.appColor.blackColor,
-                  //     fontWeight: FontWeight.normal,
-                  //     fontSize: SizeConfig.textMultiplier * 1.6,
-                  //   ),
-                  // ),
                   SizedBox(
                     height: 8,
                   ),
@@ -109,7 +111,8 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
                     ),
                     children: <TextSpan>[
                       TextSpan(text: " "),
-                      model.price_after_discount != model.price && model.discount_type == "%"
+                      model.price_after_discount != model.price &&
+                              model.discount_type == "%"
                           ? TextSpan(
                               text: "Rs. ${model.price.toString()}  ",
                               style: TextStyle(
@@ -121,12 +124,13 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
                               ),
                             )
                           : TextSpan(text: " "),
-                      model.price_after_discount != model.price && model.discount_type == "%"
+                      model.price_after_discount != model.price &&
+                              model.discount_type == "%"
                           ? TextSpan(
-                              text: model != null &&
-                                      model.discount_rates != null
-                                  ? "${model.discount_rates.toString()}%"
-                                  : "",
+                              text:
+                                  model != null && model.discount_rates != null
+                                      ? "${model.discount_rates.toString()}%"
+                                      : "",
                               style: TextStyle(
                                 color: AppConstants.appColor.accentColor,
                                 fontSize: SizeConfig.textMultiplier * 1.8,
@@ -157,21 +161,42 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: _crossAxisCount, childAspectRatio: _aspectRatio),
         itemBuilder: (context, position) {
+          var model = widget.modelList[position];
+
           return Container(
             padding: EdgeInsets.all(4),
             margin: EdgeInsets.only(top: 2),
-            child: Card(
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              child: Container(
-                child: InkResponse(
-                  onTap: () {
-                    widget.onCallback(widget.modelList[position], position);
-                  },
-                  child: buildItems(widget.modelList[position]),
+            child: Stack(
+              children: [
+                Card(
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Container(
+                    child: InkResponse(
+                      onTap: () {
+                        widget.onCallback(widget.modelList[position], position);
+                      },
+                      child: buildItems(widget.modelList[position]),
+                    ),
+                  ),
                 ),
-              ),
+                model.price_after_discount != model.price &&
+                    (model.discount_type == "percentage" ||
+                        model.discount_type == "flat_rate")
+                    ? Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          margin: EdgeInsets.only(left: 2, top: 4),
+                          child: RibbonShapeWidget(
+                            text: model != null && model.discount_rates != null
+                                ? "${check(model) == "%" ? "${model.discount_rates.toString()}%" : "Rs.${model.discount_rates.toString()} off"}"
+                                : "",
+                          ),
+                        ),
+                      )
+                    : Container(),
+              ],
             ),
           );
         },

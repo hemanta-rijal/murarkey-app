@@ -7,6 +7,7 @@ import 'package:murarkey_app/views/address/widgets/EditBillingAddressWidget.dart
 import 'package:murarkey_app/views/address/widgets/EditShippingAddressWidget.dart';
 import 'package:murarkey_app/views/app_loader/AppLoaderWidget.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
+import 'package:murarkey_app/views/auth/reset_account/ResetAccountWidget.dart';
 import 'package:murarkey_app/views/best_product_for_you/product_type/ProductTypeWidget.dart';
 import 'package:murarkey_app/views/best_product_for_you/skin_concerns/SkinConcernsWidget.dart';
 import 'package:murarkey_app/views/best_product_for_you/skin_tone/SkinToneWidget.dart';
@@ -31,6 +32,7 @@ class NavigateRoute {
 
   static const String LOGIN = "LoginWidget";
   static const String REGISTER = "RegisterWidget";
+  static const String RESET_ACCOUNT = "ResetAccountWidget";
   static const String HOME = "MainScreenWidget";
   static const String PROFILE_Edit = "EditProfileWidget";
   static const String ADDRESS_Edit = "EditAddressWidget";
@@ -63,6 +65,8 @@ class NavigateRoute {
         return _MaterialPageRoute(AppLoaderWidget());
       case REGISTER:
         return _MaterialPageRoute(RegisterWidget());
+      case RESET_ACCOUNT:
+        return _MaterialPageRoute(ResetAccountWidget());
       case HOME:
         return _MaterialPageRoute(MainScreenWidget());
       case PROFILE_Edit:

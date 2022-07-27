@@ -11,6 +11,7 @@ import 'package:murarkey_app/utils/SizeConfig.dart';
  */
 class ReviewWidget extends StatefulWidget {
   final bool reviewable;
+  final int averageRate;
   final List<ReviewModel> model;
   final Function() callback;
 
@@ -19,6 +20,7 @@ class ReviewWidget extends StatefulWidget {
     @required this.model,
     @required this.callback,
     @required this.reviewable,
+    @required this.averageRate,
   }) : super(key: key);
 
   @override
@@ -67,7 +69,27 @@ class _ReviewWidgetState extends State<ReviewWidget> {
     );
   }
 
+  Widget noReview() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      child: Center(
+        child: Text(
+          "There is no review.",
+          style: TextStyle(
+            color: AppConstants.appColor.greyColor,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget showAllReviews() {
+    if (widget.model == null) {
+      return noReview();
+    } else if (widget.model.length < 1) {
+      return noReview();
+    }
+
     return ListView.separated(
       itemCount: widget.model.length,
       physics: NeverScrollableScrollPhysics(),
@@ -192,6 +214,28 @@ class _ReviewWidgetState extends State<ReviewWidget> {
     return Container();
   }
 
+  Widget averageRating() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Icon(
+          Icons.star_rate,
+          color: Colors.amber,
+          size: 24,
+        ),
+        SizedBox(width: 2),
+        textView1(
+          title: "${widget.averageRate}/5 ${widget.averageRate} Rating",
+          textAlign: TextAlign.start,
+          color: AppConstants.appColor.blackColor,
+          textSize: 2.2,
+          fontWeight: FontWeight.normal,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -202,12 +246,20 @@ class _ReviewWidgetState extends State<ReviewWidget> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             //Reviews Title
-            textView1(
-              title: "Ratings & Reviews",
-              textAlign: TextAlign.start,
-              color: AppConstants.appColor.blackColor,
-              textSize: 2.2,
-              fontWeight: FontWeight.bold,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                textView1(
+                  title: "Ratings & Reviews",
+                  textAlign: TextAlign.start,
+                  color: AppConstants.appColor.blackColor,
+                  textSize: 2.2,
+                  fontWeight: FontWeight.bold,
+                ),
+                Expanded(
+                  child: averageRating(),
+                ),
+              ],
             ),
             SizedBox(height: 24),
             reviewProduct(),

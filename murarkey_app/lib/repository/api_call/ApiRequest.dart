@@ -75,12 +75,11 @@ abstract class ApiRequest extends Api {
 
   _saveUserToken(Map<String, dynamic> jsonResponse,
       Map<String, dynamic> jsonHeader, String url) async {
-    if (url == ApiUrls.LOGIN_URL) {
+    if (url == ApiUrls.LOGIN_URL || url == ApiUrls.GOOGLE_LOGIN_URL) {
       await _sharePref.setTokenType(jsonResponse["token_type"]);
       await _sharePref.setUserToken(jsonResponse["access_token"]);
       await _sharePref.setUserSession(jsonHeader["x-app-session"]);
       await _sharePref.setSessionExpireTime(jsonHeader["x-token-expires"]);
-
     } else if (url == ApiUrls.LOGOUT_URL) {
       await _sharePref.setTokenType("");
       await _sharePref.setUserToken("");
@@ -107,7 +106,6 @@ abstract class ApiRequest extends Api {
       print("url= ");
       print(full_url);
 
-
       //
       print("headers");
       var header = await _headers(useToken);
@@ -127,11 +125,12 @@ abstract class ApiRequest extends Api {
 
   //TODO POST
   @override
-  Future<Map<String, dynamic>> postData(
-      {String url,
-      Map<String, dynamic> params,
-      List<String> arguments,
-      bool useToken}) async {
+  Future<Map<String, dynamic>> postData({
+    String url,
+    Map<String, dynamic> params,
+    List<String> arguments,
+    bool useToken,
+  }) async {
     super.postData();
     try {
       // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});

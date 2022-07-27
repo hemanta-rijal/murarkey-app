@@ -17,6 +17,10 @@ class ApiUrls {
   static final String LOGIN_URL = ROOT_API_URL + "/auth/login";
   static final String REGISTER_URL = ROOT_API_URL + "/auth/register";
   static final String LOGOUT_URL = ROOT_API_URL + "/auth/logout";
+  static final String RESET_PASSWORD_URL = ROOT_API_URL + "/auth/forget-password";
+
+  //For Login with Google
+  static final String GOOGLE_LOGIN_URL = ROOT_API_URL + "/auth/google-login";
 
   //For User
   static final String ABOUT_ME = ROOT_API_URL + "/me";

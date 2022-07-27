@@ -27,9 +27,9 @@ class ContentCartModel {
   final int id;
   final String name;
   var qty;
-  final int price;
+  var price;
   final double tax;
-  final int subtotal;
+  var subtotal;
   var doDiscount;
   var options;
 

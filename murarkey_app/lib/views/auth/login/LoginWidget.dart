@@ -5,6 +5,7 @@ import 'package:murarkey_app/custom_views/CheckBoxWidget.dart';
 import 'package:murarkey_app/custom_views/EditText.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/SocialMediaLoginCardWidget.dart';
+import 'package:murarkey_app/custom_views/dialogs/ErrorDialogWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/auth/LoginModel.dart';
@@ -86,16 +87,55 @@ class _LoginWidgetState extends State<LoginWidget> {
             .login(url: ApiUrls.LOGIN_URL, params: params, context: context)
             .then((LoginModel value) => {
                   this.setState(() {
-                    if (value != null) {
+                    if (value != null && !value.success) {
+                      ErrorDialogWidget.showAlertDialog(
+                        context: context,
+                        message: value.error,
+                        cancelText: "Done",
+                        cancleCallback: () {
+                          NavigateRoute.pop(context);
+                        },
+                      );
+                    } else if (value != null && value.success) {
                       Commons.toastMessage(context, "Successfully login");
                       NavigateRoute.popAndPushNamed(
-                          context, NavigateRoute.APP_LOADER);
+                        context,
+                        NavigateRoute.APP_LOADER,
+                      );
                     }
                   }),
                 });
       }
 
       //braintreeView();
+    }
+
+    Future loginWithGoogle({String accessToken, String name}) async {
+      Map<String, dynamic> params = new Map();
+      params["accessToken"] = "${accessToken}";
+      params["name"] = "${name}";
+
+      final LoginModel result = await _repository.authApiRequest
+          .loginWithGoogle(
+              url: ApiUrls.GOOGLE_LOGIN_URL, params: params, context: context);
+      this.setState(() {
+        if (result != null && !result.success) {
+          ErrorDialogWidget.showAlertDialog(
+            context: context,
+            message: result.error,
+            cancelText: "Done",
+            cancleCallback: () {
+              NavigateRoute.pop(context);
+            },
+          );
+        } else if (result != null && result.success) {
+          Commons.toastMessage(context, "Successfully login");
+          NavigateRoute.popAndPushNamed(
+            context,
+            NavigateRoute.APP_LOADER,
+          );
+        }
+      });
     }
 
     return Material(
@@ -172,12 +212,18 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ),
                           Expanded(
                             flex: 5,
-                            child: Text(
-                              AppConstants.constants.FORGET_PASSWORD,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: AppConstants.appColor.redColor,
-                                fontSize: SizeConfig.textMultiplier * 1.8,
+                            child: InkWell(
+                              onTap: () {
+                                NavigateRoute.pushNamed(
+                                    context, NavigateRoute.RESET_ACCOUNT);
+                              },
+                              child: Text(
+                                AppConstants.constants.FORGET_PASSWORD,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                  color: AppConstants.appColor.redColor,
+                                  fontSize: SizeConfig.textMultiplier * 1.8,
+                                ),
                               ),
                             ),
                           ),
@@ -313,7 +359,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                               // provider.googleLogin();
                               GoogleSignInProvider google =
                                   new GoogleSignInProvider();
-                              await google.googleLoginFromUrl();
+                              final accessToken =
+                                  await google.googleLoginFromUrl();
+                              var user = google.user;
+                              print("user----------->${user.id}");
+                              print(user.email);
+                              print(user.displayName);
+                              print(user.photoUrl);
+                              loginWithGoogle(
+                                  accessToken: accessToken,
+                                  name: user.displayName);
                             },
                           ),
                           SizedBox(

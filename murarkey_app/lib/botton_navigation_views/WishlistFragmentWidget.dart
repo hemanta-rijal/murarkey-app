@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:murarkey_app/botton_navigation_views/view_model/CardViewModel.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
+import 'package:murarkey_app/custom_views/UnauthorizedUserWidget.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatButton3.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/loader/LoaderDialog.dart';
@@ -35,12 +36,11 @@ class _WishlistFragmentWidgetState
   CartModel cartModel = new CartModel();
   bool isTheirContentData = false;
   double _imageHeight = 88.0;
-
   Size size;
   var _cardSize = 100.0;
   var appBarHeight = 50.0;
-
   UserModel userModel = GlobalData.userModel;
+  bool loginRequired;
 
   _WishlistFragmentWidgetState() {
     loadData();
@@ -50,14 +50,20 @@ class _WishlistFragmentWidgetState
   void didChangeDependencies() {
     if (mounted) {
       userModel = GlobalData.userModel;
-      setState(() {});
       if (userModel.name == null) {
         Future.delayed(const Duration(milliseconds: 500), () {
           setState(() {
             Commons.toastMessage(
                 context, "Please Login to seen your wishlist order placed.");
-            NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+            //NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+            setState(() {
+              loginRequired = true;
+            });
           });
+        });
+      } else {
+        setState(() {
+          loginRequired = false;
         });
       }
     }
@@ -282,7 +288,7 @@ class _WishlistFragmentWidgetState
                             Expanded(
                               flex: 2,
                               child: FlatButton3(
-                                text: "ADD TO CARD",
+                                text: "ADD TO CART",
                                 fontSize: SizeConfig.textMultiplier * 1.8,
                                 textColor: AppConstants.appColor.redColor,
                                 padding: EdgeInsets.only(left: 16, right: 16),
@@ -377,6 +383,12 @@ class _WishlistFragmentWidgetState
     }
 
     builder() {
+      if (loginRequired == null) {
+        return Container();
+      } else if (loginRequired) {
+        return UnauthorizedUserWidget();
+      }
+
       return isTheirContentData == true
           ? Column(
               children: [

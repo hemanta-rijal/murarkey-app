@@ -245,7 +245,7 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
                       // ),
                       // SizedBox(height: 4),
                       FlatButton3(
-                        text: "ADD TO CARD",
+                        text: "ADD TO CART",
                         fontSize: SizeConfig.textMultiplier * 1.8,
                         textColor: AppConstants.appColor.redColor,
                         padding: EdgeInsets.only(left: 16, right: 16),

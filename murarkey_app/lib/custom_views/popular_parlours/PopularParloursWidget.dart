@@ -52,6 +52,8 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
                 SizedBox(height: 4),
                 Text(
                   model.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: AppConstants.appColor.textColor,
                     fontWeight: FontWeight.bold,
@@ -61,6 +63,8 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
                 SizedBox(height: 2),
                 Text(
                   model.address,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: AppConstants.appColor.greyColor,
                     fontWeight: FontWeight.bold,

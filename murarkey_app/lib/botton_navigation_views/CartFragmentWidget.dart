@@ -1,7 +1,9 @@
 import 'package:murarkey_app/botton_navigation_views/view_model/CardViewModel.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
+import 'package:murarkey_app/custom_views/UnauthorizedUserWidget.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatStatefulButton2.dart';
+import 'package:murarkey_app/custom_views/dialogs/AlertDialogWidget.dart';
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/loader/LoaderDialog.dart';
@@ -33,6 +35,7 @@ class _CartFragmentWidgetState
   var appBarHeight = 50.0;
   LoaderDialog loaderDialog = new LoaderDialog();
   UserModel userModel = GlobalData.userModel;
+  bool loginRequired;
 
   _CartFragmentWidgetState() {
     loadData();
@@ -48,19 +51,26 @@ class _CartFragmentWidgetState
     // }
   }
 
+  void redirectToLoginPage() {}
+
   @override
   void didChangeDependencies() {
     if (mounted) {
       userModel = GlobalData.userModel;
-      setState(() {
-
-      });
       if (userModel.name == null) {
         Future.delayed(const Duration(milliseconds: 500), () {
           setState(() {
-            Commons.toastMessage(context, "Please Login to seen your order placed.");
-            NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+            Commons.toastMessage(
+                context, "Please Login to seen your order placed.");
+            //NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+            setState(() {
+              loginRequired = true;
+            });
           });
+        });
+      } else {
+        setState(() {
+          loginRequired = false;
         });
       }
     }
@@ -229,8 +239,7 @@ class _CartFragmentWidgetState
     Widget buildItems(ContentCartModel content, int index) {
       return Container(
         margin: EdgeInsets.only(left: 4),
-        padding:
-            EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 16.0),
+        padding: EdgeInsets.all(4.0),
         child: Column(
           children: [
             Row(
@@ -297,17 +306,17 @@ class _CartFragmentWidgetState
     }
 
     Widget horizontalList2 = ListView.builder(
-        padding: const EdgeInsets.all(8),
+        //padding: const EdgeInsets.all(4),
         itemCount: cartModel.getContent().length,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.only(top: 4, bottom: 4),
+            //margin: EdgeInsets.only(top: 2, bottom: 2),
             child: Card(
+              margin: EdgeInsets.all(2),
               elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(),
               child: buildItems(cartModel.getContent()[index], index),
             ),
           );
@@ -412,6 +421,13 @@ class _CartFragmentWidgetState
       if (isTheirContentData) {
         dismissLoader(context);
       }
+
+      if (loginRequired == null) {
+        return Container();
+      } else if (loginRequired) {
+        return UnauthorizedUserWidget();
+      }
+
       return isTheirContentData == true
           ? Column(
               children: [

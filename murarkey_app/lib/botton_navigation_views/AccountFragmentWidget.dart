@@ -1,4 +1,5 @@
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
+import 'package:murarkey_app/custom_views/UnauthorizedUserWidget.dart';
 import 'package:murarkey_app/custom_views/account_list/AcountListWidget.dart';
 import 'package:murarkey_app/custom_views/account_profile/AccountProfileWidget.dart';
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
@@ -19,18 +20,23 @@ class _AccountFragmentWidgetState
     extends CustomStatefulWidgetState<AccountFragmentWidget> {
   Repository _repository = new Repository();
   UserModel userModel = GlobalData.userModel;
+  bool loginRequired;
 
   @override
   void didChangeDependencies() {
     if (mounted) {
       userModel = GlobalData.userModel;
-      setState(() {});
       if (userModel.name == null) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          setState(() {
-            Commons.toastMessage(context, "Please Login to seen your account.");
-            NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-          });
+        // Future.delayed(const Duration(milliseconds: 500), () {
+        //   setState(() {
+        //     Commons.toastMessage(context, "Please Login to seen your account.");
+        //     NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+        //   });
+        // });
+        redirectToLogin();
+      } else {
+        setState(() {
+          loginRequired = false;
         });
       }
     }
@@ -38,11 +44,14 @@ class _AccountFragmentWidgetState
   }
 
   redirectToLogin() {
-    Future.delayed(const Duration(milliseconds: 100), () {
-      setState(() {
-        NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-      });
+    setState(() {
+      loginRequired = true;
     });
+    // Future.delayed(const Duration(milliseconds: 100), () {
+    //   setState(() {
+    //     NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+    //   });
+    // });
   }
 
   @override
@@ -64,11 +73,15 @@ class _AccountFragmentWidgetState
             .then((value) {
           if (value != null) {
             Commons.toastMessage(context, value["message"]);
-            redirectToLogin();
+            //redirectToLogin();
           } else {
             Commons.toastMessage(context, "Logout successfully");
-            redirectToLogin();
+            //redirectToLogin();
           }
+          NavigateRoute.popAndPushNamed(
+            context,
+            NavigateRoute.LOGIN,
+          );
         });
       }
     }
@@ -78,39 +91,50 @@ class _AccountFragmentWidgetState
     }
 
     builder() {
+      if (loginRequired == null) {
+        return Container();
+      } else if (loginRequired) {
+        return UnauthorizedUserWidget();
+      }
+
       return new LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(minHeight: viewportConstraints.maxHeight),
-            child: Stack(
-              children: [
-                Container(
-                  height: 88,
-                  color: AppConstants.appColor.primaryColor,
-                ),
-                //
-                Container(
-                  margin: EdgeInsets.only(left: 16, right: 16),
-                  child: Column(children: [
-                    AccountProfileWidget(
-                        model: userModel,
-                        onTapCallback: () {
-                          onTapEditProfile();
-                        }),
-                    AcountListWidget(
-                        modelList: AccountDatas.accountItemList,
-                        onTapGridItem: (model, index) {
-                          onTapGridItem(model, index);
-                        }),
-                  ]),
-                ),
-              ],
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: viewportConstraints.maxHeight),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 88,
+                    color: AppConstants.appColor.primaryColor,
+                  ),
+                  //
+                  Container(
+                    margin: EdgeInsets.only(left: 16, right: 16),
+                    child: Column(
+                      children: [
+                        AccountProfileWidget(
+                          model: userModel,
+                          onTapCallback: () {
+                            onTapEditProfile();
+                          },
+                        ),
+                        AcountListWidget(
+                          modelList: AccountDatas.accountItemList,
+                          onTapGridItem: (model, index) {
+                            onTapGridItem(model, index);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      });
+          );
+        },
+      );
     }
 
     return render(

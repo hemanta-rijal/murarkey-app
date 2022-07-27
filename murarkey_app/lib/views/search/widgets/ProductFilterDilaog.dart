@@ -5,6 +5,7 @@ import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/models/best_product_for_you/SkinVarientModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
+import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/AppConstants.dart';
 import 'package:murarkey_app/utils/SizeConfig.dart';
 import 'package:murarkey_app/views/search/view_model/SearchViewModel.dart';
@@ -191,6 +192,28 @@ class _ProductFilterWidgetState extends State<_ProductFilterWidget> {
     widget.viewModel.callSearchApi();
   }
 
+  Widget closeView() {
+    return Container(
+      //color: AppConstants.appColor.primaryColor,
+      padding: EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          InkWell(
+            child: Icon(
+              Icons.clear,
+              size: 24,
+              color: AppConstants.appColor.redColor,
+            ),
+            onTap: () {
+              NavigateRoute.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -200,6 +223,7 @@ class _ProductFilterWidgetState extends State<_ProductFilterWidget> {
       body: SafeArea(
         child: Column(
           children: [
+            closeView(),
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
@@ -322,6 +346,7 @@ class _ProductFilterWidgetState extends State<_ProductFilterWidget> {
                       //buttonWidth: 100,
                       onPressedCallback: () {
                         search();
+                        NavigateRoute.pop(context);
                       },
                     ),
                   ),

@@ -44,6 +44,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "540611889723-o0b51408iu1t18khb4g4mmhj0vpk0boq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.webroot.murarkeyapp",
+            "certificate_hash": "b012a22159580085bde31054dea21ad8f68eef3e"
+          }
+        },
+        {
+          "client_id": "540611889723-pb6uotp2qdb791bg4p13es81hkqjlv4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.webroot.murarkeyapp",
+            "certificate_hash": "972faa4f7ba5d43847278383a52c948e0180ec57"
+          }
+        },
+        {
           "client_id": "540611889723-425d9n613v3ejf7nt87p6ubv6k8e8vmb.apps.googleusercontent.com",
           "client_type": 3
         }

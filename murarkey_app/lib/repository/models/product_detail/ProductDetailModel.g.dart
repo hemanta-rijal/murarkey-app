@@ -37,6 +37,7 @@ ProductDetailModel _$ProductDetailModelFromJson(Map<String, dynamic> json) {
         (json['product_type'] as List)?.map((e) => e as String)?.toList(),
     attribute: json['attribute'] as Map<String, dynamic>,
     reviewable: json['reviewable'] as bool,
+    average_review: json['average_review'] as int,
     reviews: (json['reviews'] as List)
         ?.map((e) =>
             e == null ? null : ReviewModel.fromJson(e as Map<String, dynamic>))
@@ -65,5 +66,6 @@ Map<String, dynamic> _$ProductDetailModelToJson(ProductDetailModel instance) =>
       'product_type': instance.product_type,
       'attribute': instance.attribute,
       'reviewable': instance.reviewable,
+      'average_review': instance.average_review,
       'reviews': instance.reviews,
     };

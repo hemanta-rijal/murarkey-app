@@ -17,8 +17,8 @@ class PaymentWithWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var _crossAxisCount = 3;
-    double _crossAxisSpacing = 8, _mainAxisSpacing = 12, _aspectRatio = 1;
+    var _crossAxisCount = 4;
+    double _crossAxisSpacing = 30, _mainAxisSpacing = 20, _aspectRatio = 1;
     var width = (size.width - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
         _crossAxisCount;
     var height = width / _aspectRatio;
@@ -55,7 +55,7 @@ class PaymentWithWidget extends StatelessWidget {
             ),
             Row(
               children: [
-                Expanded(flex: 1, child: Container()),
+                //Expanded(flex: 1, child: Container()),
                 Expanded(
                     flex: 1,
                     child: GridView.builder(
@@ -64,10 +64,11 @@ class PaymentWithWidget extends StatelessWidget {
                       itemCount:
                           paywith["data"].length, //widget.iconLists.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: _crossAxisCount,
-                          crossAxisSpacing: _crossAxisSpacing,
-                          mainAxisSpacing: _mainAxisSpacing,
-                          childAspectRatio: _aspectRatio),
+                        crossAxisCount: _crossAxisCount,
+                        crossAxisSpacing: _crossAxisSpacing,
+                        mainAxisSpacing: _mainAxisSpacing,
+                        childAspectRatio: _aspectRatio,
+                      ),
                       itemBuilder: (context, position) {
                         return Container(
                           child: PaymentCardWidget(
@@ -90,7 +91,7 @@ class PaymentWithWidget extends StatelessWidget {
       return Container(
         width: size.width,
         color: AppConstants.appColor.whiteColor,
-        margin: EdgeInsets.only(top: 8),
+        margin: EdgeInsets.only(top: 4),
         padding: EdgeInsets.only(top: 8, bottom: 24, left: 8, right: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

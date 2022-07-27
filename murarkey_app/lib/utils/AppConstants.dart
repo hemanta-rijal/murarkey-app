@@ -52,7 +52,15 @@ class _Constants {
 
   String get REGISTER => 'REGISTER';
 
+  String get SEND_A_RESET_LINK => 'Send a Reset Link';
+
   String get FORGET_PASSWORD => "Lost your password?";
+
+  String get BACK_TO_LOGIN => "Back To Login";
+
+  String get FIND_YOUR_ACCOUNT => "Find Your Account";
+
+  String get ENTER_YOUR_EMAIL_ACCOUNT => "Please enter your email to search for your account.";
 
   String get REMEMBER_ME => "Remember me";
 

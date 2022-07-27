@@ -1,3 +1,4 @@
+import 'package:murarkey_app/custom_views/ribbons/RibbonShapeWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/RichTextWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
@@ -117,21 +118,20 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
                               ),
                             )
                           : TextSpan(text: " "),
-                      model.price_after_discount != model.price
-                          ? TextSpan(
-                              text: model != null &&
-                                      model.discount_rate != null
-                                  ? "${model.discount_rate.toString()}%"
-                                  : "",
-                              style: TextStyle(
-                                color: AppConstants.appColor.accentColor,
-                                fontSize: SizeConfig.textMultiplier * 1.8,
-                                decoration: TextDecoration.lineThrough,
-                                decorationThickness: 3,
-                                decorationColor: Colors.black,
-                              ),
-                            )
-                          : TextSpan(text: ""),
+                      // model.price_after_discount != model.price
+                      //     ? TextSpan(
+                      //         text: model != null && model.discount_rate != null
+                      //             ? "${model.discount_rate.toString()}%"
+                      //             : "",
+                      //         style: TextStyle(
+                      //           color: AppConstants.appColor.accentColor,
+                      //           fontSize: SizeConfig.textMultiplier * 1.8,
+                      //           decoration: TextDecoration.lineThrough,
+                      //           decorationThickness: 3,
+                      //           decorationColor: Colors.black,
+                      //         ),
+                      //       )
+                      //     : TextSpan(text: ""),
                     ],
                   ),
                   textAlign: TextAlign.justify,
@@ -153,21 +153,39 @@ class _SearchItemWidgetState extends State<SearchItemWidget> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: _crossAxisCount, childAspectRatio: _aspectRatio),
         itemBuilder: (context, position) {
+          var model = widget.modelList[position];
           return Container(
             padding: EdgeInsets.all(4),
             margin: EdgeInsets.only(top: 2),
-            child: Card(
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              child: Container(
-                child: InkResponse(
-                  onTap: () {
-                    widget.onCallback(widget.modelList[position]);
-                  },
-                  child: buildItems(widget.modelList[position]),
+            child: Stack(
+              children: [
+                Card(
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Container(
+                    child: InkResponse(
+                      onTap: () {
+                        widget.onCallback(widget.modelList[position]);
+                      },
+                      child: buildItems(widget.modelList[position]),
+                    ),
+                  ),
                 ),
-              ),
+                model.price_after_discount != model.price
+                    ? Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          margin: EdgeInsets.only(left: 2, top: 4),
+                          child: RibbonShapeWidget(
+                            text: model != null && model.discount_rate != null
+                                ? "${model.discount_rate.toString()}%"
+                                : "",
+                          ),
+                        ),
+                      )
+                    : Container(),
+              ],
             ),
           );
         },

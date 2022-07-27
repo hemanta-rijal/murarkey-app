@@ -102,8 +102,7 @@ class _PlaceOrderWidgetState
     Widget buildItems(ContentCartModel content, int index) {
       return Container(
         margin: EdgeInsets.only(left: 4),
-        padding:
-            EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 16.0),
+        padding: EdgeInsets.only(top: 4),
         child: Column(
           children: [
             Row(
@@ -166,13 +165,17 @@ class _PlaceOrderWidgetState
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            textView1(
-                                title:
-                                    "Total: Rs. ${content.subtotal.toString()}",
-                                textAlign: TextAlign.left,
-                                color: AppConstants.appColor.primaryLightColor,
-                                textSize: 2.3,
-                                fontWeight: FontWeight.bold),
+                            Expanded(
+                              child: textView1(
+                                  title:
+                                      "Total: Rs. ${content.subtotal.toString()}",
+                                  textAlign: TextAlign.right,
+                                  color:
+                                      AppConstants.appColor.primaryLightColor,
+                                  textSize: 2.3,
+                                  fontWeight: FontWeight.bold,
+                                  margin: EdgeInsets.only(right: 8)),
+                            ),
                           ],
                         )
                       ],
@@ -187,17 +190,17 @@ class _PlaceOrderWidgetState
     }
 
     Widget horizontalList2 = ListView.builder(
-        padding: const EdgeInsets.only(left: 8, right: 8),
+        //padding: const EdgeInsets.only(left: 4, right: 4),
         itemCount: cartModel.getContent().length,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.only(top: 4, bottom: 4),
+            //margin: EdgeInsets.only(top: 4, bottom: 4),
             child: Card(
               elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
+              margin: EdgeInsets.all(2),
+              shape: RoundedRectangleBorder(),
               child: buildItems(cartModel.getContent()[index], index),
             ),
           );
@@ -221,7 +224,8 @@ class _PlaceOrderWidgetState
             int total = cartModel.total;
             int subTotal = cartModel.subTotal;
             int tax = cartModel.tax;
-            String pid = await _repository.esewaApi.getEsewaPID(url: ApiUrls.ESEWA_PID_URL);
+            String pid = await _repository.esewaApi
+                .getEsewaPID(url: ApiUrls.ESEWA_PID_URL);
             //await _repository.userTokenPref.getUserSession();
             print("pid--------------> ${pid}");
 
@@ -272,11 +276,41 @@ class _PlaceOrderWidgetState
       String sAddress = "${s.city} ${s.state} ${s.zip}";
       return Column(
         children: [
+          Container(
+            //margin: EdgeInsets.only(top: 4),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.white,
+              //borderRadius: BorderRadius.all(Radius.circular(8)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 4,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                ShippingAndBillingWidget.get(
+                  title: "Billing and Shipping Address",
+                  address: bAddress,
+                  email: "${u.email}",
+                  phoneNo: "${u.phone}",
+                  size: size,
+                  context: context,
+                ),
+                SizedBox(height: 2),
+              ],
+            ),
+          ),
+          SizedBox(height: 2),
           //Shipping and Billing
           isTheirContentData == true ? horizontalList2 : Container(),
           isTheirContentData == true
               ? Container(
-                  margin: EdgeInsets.only(top: 16),
+                  margin: EdgeInsets.only(top: 2),
                   child: OrderItemTotalWidget(
                     subTotal: "${cartModel.subTotal}",
                     shippingCharge: "${cartModel.shippingAmount}",
@@ -285,31 +319,6 @@ class _PlaceOrderWidgetState
                   ),
                 )
               : Container(),
-          Container(
-            margin: EdgeInsets.only(top: 16, bottom: 8, left: 8, right: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: ShippingAndBillingWidget.get(
-                    title: "Billing\nAddress",
-                    address: bAddress,
-                    email: "${u.email}",
-                    phoneNo: "${u.phone}",
-                    size: size,
-                  ),
-                ),
-                Expanded(
-                  child: ShippingAndBillingWidget.get(
-                    title: "Shipping\nAddress",
-                    address: sAddress,
-                    email: "${u.email}",
-                    phoneNo: "${u.phone}",
-                    size: size,
-                  ),
-                ),
-              ],
-            ),
-          ),
           (paywith != null)
               ? PaymentWithWidget(
                   paywith: paywith,

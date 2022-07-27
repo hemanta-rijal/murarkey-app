@@ -348,22 +348,44 @@ class _ProductDetailWidgetState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Product Category
-            RichText(
-              text: TextSpan(
-                text: productDetailModel != null &&
-                        productDetailModel.brand != null
-                    ? "${productDetailModel.brand.name}"
-                    : "",
-                // productDetailModel != null
-                //     ? productDetailModel.category.name.toUpperCase()
-                //     : "",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppConstants.appColor.blackColor,
-                  fontSize: SizeConfig.textMultiplier * 2.8,
+            InkWell(
+              onTap: (){
+                NavigateRoute.pop(context);
+                NavigateRoute.pop(context);
+
+                print(
+                    "productDetailModel.brand-------------> ${productDetailModel.brand}");
+
+                Map<String, dynamic> arguments = new Map();
+                arguments["categoryModelList"] = GlobalData.categoryModelList;
+                arguments["brandModelList"] = GlobalData.brandModelList;
+                arguments["slugType"] = SearchWidget.TYPE_BRAND_SLUG;
+                arguments["slug"] = productDetailModel.brand.slug;
+                arguments["brandModel"] = productDetailModel.brand;
+
+                NavigateRoute.pushNamedWithArguments(
+                  context,
+                  NavigateRoute.SEARCH,
+                  arguments,
+                );
+              },
+              child: RichText(
+                text: TextSpan(
+                  text: productDetailModel != null &&
+                          productDetailModel.brand != null
+                      ? "${productDetailModel.brand.name}"
+                      : "",
+                  // productDetailModel != null
+                  //     ? productDetailModel.category.name.toUpperCase()
+                  //     : "",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: AppConstants.appColor.blackColor,
+                    fontSize: SizeConfig.textMultiplier * 2.8,
+                  ),
                 ),
+                textAlign: TextAlign.justify,
               ),
-              textAlign: TextAlign.justify,
             ),
 
             SizedBox(height: 2),
@@ -399,46 +421,54 @@ class _ProductDetailWidgetState
           //mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Expanded(
+            //   flex: 1,
+            //   child: RichText(
+            //     text: TextSpan(
+            //       text: "Price: ",
+            //       style: TextStyle(
+            //           color: AppConstants.appColor.primaryDarkColor,
+            //           fontSize: SizeConfig.textMultiplier * 2.0,
+            //           fontWeight: FontWeight.bold),
+            //     ),
+            //     textAlign: TextAlign.justify,
+            //   ),
+            // ),
             Expanded(
               flex: 1,
               child: RichText(
                 text: TextSpan(
-                  text: "Price: ",
-                  style: TextStyle(
-                      color: AppConstants.appColor.primaryDarkColor,
-                      fontSize: SizeConfig.textMultiplier * 2.0,
-                      fontWeight: FontWeight.bold),
-                ),
-                textAlign: TextAlign.justify,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: RichText(
-                text: TextSpan(
-                  text: productDetailModel != null
-                      ? "Rs " +
-                          productDetailModel.price_after_discount.toString()
-                      : "Rs 0",
+                  text: productDetailModel != null ? "Rs.  " : "",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: AppConstants.appColor.buttonColor3,
+                    color: AppConstants.appColor.blackColor,
                     fontSize: SizeConfig.textMultiplier * 2.4,
                   ),
                   children: <TextSpan>[
-                    TextSpan(text: " "),
+                    TextSpan(
+                      text: productDetailModel != null
+                          ? productDetailModel.price_after_discount.toString()
+                          : "",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppConstants.appColor.blackColor,
+                        fontSize: SizeConfig.textMultiplier * 3.5,
+                      ),
+                    ),
+                    TextSpan(text: "\t\t\t\t"),
                     productDetailModel.price_after_discount !=
                             productDetailModel.price
                         ? TextSpan(
                             text: productDetailModel != null
-                                ? "Rs " + productDetailModel.price.toString()
-                                : "Rs 0",
+                                ? "Rs. " + productDetailModel.price.toString()
+                                : "Rs. 0",
                             style: TextStyle(
                               color: AppConstants.appColor.greyColor,
                               fontSize: SizeConfig.textMultiplier * 2.4,
+                              fontWeight: FontWeight.normal,
                               decoration: TextDecoration.lineThrough,
                               decorationThickness: 1.2,
-                              decorationColor: AppConstants.appColor.redColor,
+                              decorationColor: AppConstants.appColor.greyColor,
                             ),
                           )
                         : TextSpan(text: ""),
@@ -447,14 +477,12 @@ class _ProductDetailWidgetState
                         ? TextSpan(
                             text: productDetailModel != null &&
                                     productDetailModel.discount_rate != null
-                                ? "${productDetailModel.discount_rate.toString()}%"
+                                ? "  -${productDetailModel.discount_rate.toString()}%"
                                 : "",
                             style: TextStyle(
-                              color: AppConstants.appColor.accentColor,
+                              color: AppConstants.appColor.blackColor,
                               fontSize: SizeConfig.textMultiplier * 2.4,
-                              decoration: TextDecoration.lineThrough,
-                              decorationThickness: 3,
-                              decorationColor: Colors.black,
+                              fontWeight: FontWeight.normal,
                             ),
                           )
                         : TextSpan(text: ""),
@@ -471,16 +499,19 @@ class _ProductDetailWidgetState
     Widget reviews() {
       if (productDetailModel == null) {
         return Container();
-      } else if (productDetailModel.reviews == null) {
-        return Container();
-      } else if (productDetailModel.reviews.length < 1) {
-        return Container();
       }
+      // else if (productDetailModel.reviews == null) {
+      //   return Container();
+      // }
+      // else if (productDetailModel.reviews.length < 1) {
+      //   return Container();
+      // }
 
       print("reviews---------> ${productDetailModel.reviews}");
       return ReviewWidget(
         reviewable: productDetailModel.reviewable,
         model: productDetailModel.reviews,
+        averageRate: productDetailModel.average_review,
         callback: () {},
       );
     }
@@ -500,7 +531,10 @@ class _ProductDetailWidgetState
 
                 SizedBox(height: 12),
                 divider(),
-                SizedBox(height: 28),
+                SizedBox(height: 20),
+
+                productPrice(),
+                SizedBox(height: 20),
 
                 //Product Brand
                 brandWidget(),
@@ -540,8 +574,8 @@ class _ProductDetailWidgetState
                 ),
 
                 //Product Sku
-                SizedBox(height: 4),
-                productPrice(),
+                // SizedBox(height: 4),
+                // productPrice(),
 
                 SizedBox(height: 24),
 
@@ -591,12 +625,12 @@ class _ProductDetailWidgetState
 
           //Product Name and Address
           Container(
-            margin: EdgeInsets.all(16.0),
+            margin: EdgeInsets.only(top: 16, left: 8, right: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 categoryAndTags(),
-                SizedBox(height: 32),
+                SizedBox(height: 8),
                 ProductDescriptionWidget(
                     title: "Introduction",
                     body: productDetailModel != null
@@ -608,7 +642,7 @@ class _ProductDetailWidgetState
           ),
 
           Container(
-            margin: EdgeInsets.all(16.0),
+            margin:  EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 16),
             width: double.infinity,
             child: Card(
               elevation: 4.0,

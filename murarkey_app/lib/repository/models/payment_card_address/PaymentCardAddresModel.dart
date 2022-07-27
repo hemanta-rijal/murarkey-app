@@ -22,8 +22,13 @@ class PaymentCardAddresModel{
     this.zip,
   });
 
-  factory PaymentCardAddresModel.fromJson(Map<String, dynamic> json) =>
-      _$PaymentCardAddresModelFromJson(json);
+  factory PaymentCardAddresModel.fromJson(Map<String, dynamic> json) {
+    if(json == null){
+      return null;
+    }
+    return _$PaymentCardAddresModelFromJson(json);
+  }
+
 
   Map<String, dynamic> toJson() => _$PaymentCardAddresModelToJson(this);
 }

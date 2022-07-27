@@ -12,13 +12,15 @@ part 'LoginModel.g.dart';
 class LoginModel{
   final bool success;
   final int status;
+  final String error;
   final String token_type;
   final String access_token;
-  final UserModel user;
+  UserModel user;
 
   LoginModel({
     this.success,
     this.status,
+    this.error = "",
     this.token_type,
     this.access_token,
     this.user

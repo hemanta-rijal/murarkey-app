@@ -31,6 +31,7 @@ class ProductDetailModel {
   List<String> product_type;
   Map<String, dynamic> attribute;
   bool reviewable;
+  int average_review;
   List<ReviewModel> reviews;
 
   //final List<dynamic> tags;
@@ -56,6 +57,7 @@ class ProductDetailModel {
     this.product_type,
     this.attribute,
     this.reviewable,
+    this.average_review,
     this.reviews,
   });
 

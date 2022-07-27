@@ -37,6 +37,17 @@ class ProductPriceWidget extends StatefulWidget {
 }
 
 class _ProductPriceWidgetState extends State<ProductPriceWidget> {
+  check() {
+    if (widget.model.price_after_discount != widget.model.price &&
+        widget.model.discount_type == "percentage") {
+      return "%";
+    } else if (widget.model.price_after_discount != widget.model.price &&
+        widget.model.discount_type == "flat_rate") {
+      return "off";
+    }
+    return "";
+  }
+
   Widget productPrice() {
     if (widget.model == null) {
       return Container();
@@ -63,7 +74,14 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
               ),
               children: <TextSpan>[
                 TextSpan(text: " "),
-                widget.model.price_after_discount != widget.model.price
+                // widget.model.price_after_discount != widget.model.price
+                //     ? TextSpan(
+                //         text: widget.model != null
+                //             ? "Rs " + widget.model.price.toString()
+                //             : "Rs 0",
+                widget.model.price_after_discount != widget.model.price &&
+                        (widget.model.discount_type == "percentage" ||
+                            widget.model.discount_type == "flat_rate")
                     ? TextSpan(
                         text: widget.model != null
                             ? "Rs " + widget.model.price.toString()
@@ -78,28 +96,21 @@ class _ProductPriceWidgetState extends State<ProductPriceWidget> {
                       )
                     : TextSpan(text: ""),
                 TextSpan(text: " "),
-                // widget.model.price_after_discount != widget.model.price
-                //     ? TextSpan(
-                //         text: widget.model != null &&
-                //                 widget.model.discount_rates != null
-                //             ? "${widget.model.discount_rates.toString()}%"
-                //             : "",
-                //         style: TextStyle(
-                //           fontWeight: FontWeight.w500,
-                //           color: AppConstants.appColor.redColor,
-                //           fontSize: widget.percentageFontSize,
-                //         ),
-                //       )
-                //     : TextSpan(text: ""),
               ],
             ),
           ),
           RichText(
-            text: widget.model.price_after_discount != widget.model.price
+            text: widget.model.price_after_discount != widget.model.price &&
+                    (widget.model.discount_type == "percentage" ||
+                        widget.model.discount_type == "flat_rate")
                 ? TextSpan(
+                    // text: widget.model != null &&
+                    //         widget.model.discount_rates != null
+                    //     ? "${widget.model.discount_rates.toString()}%"
+                    //     : "",
                     text: widget.model != null &&
                             widget.model.discount_rates != null
-                        ? "${widget.model.discount_rates.toString()}%"
+                        ? "${check() == "%" ? "${widget.model.discount_rates.toString()}%" : "Rs. ${widget.model.discount_rates.toString()} off"}"
                         : "",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,

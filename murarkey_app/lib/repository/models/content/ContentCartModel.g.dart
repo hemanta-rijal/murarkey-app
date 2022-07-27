@@ -12,9 +12,9 @@ ContentCartModel _$ContentCartModelFromJson(Map<String, dynamic> json) {
     id: json['id'] as int,
     name: json['name'] as String,
     qty: json['qty'],
-    price: json['price'] as int,
+    price: json['price'],
     tax: (json['tax'] as num).toDouble(),
-    subtotal: json['subtotal'] as int,
+    subtotal: json['subtotal'],
     doDiscount: json['doDiscount'],
     options: json['options'],
   );

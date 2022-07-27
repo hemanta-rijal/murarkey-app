@@ -126,62 +126,6 @@ class _CardDeatilDescriptionWidgetState
     );
   }
 
-  Widget productPrice() {
-    if (widget.model == null) {
-      return Container();
-    } else if (widget.model.price_after_discount == null) {
-      return Container();
-    }
-
-    return Container(
-      margin: EdgeInsets.only(left: 8),
-      child: RichText(
-        text: TextSpan(
-          text: widget.model != null
-              ? "Rs " + widget.model.price_after_discount.toString()
-              : "Rs 0",
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: AppConstants.appColor.blackColor,
-            fontSize: SizeConfig.textMultiplier * 2.6,
-          ),
-          children: <TextSpan>[
-            TextSpan(text: " "),
-            widget.model.price_after_discount != widget.model.price && widget.model.discount_type == "%"
-                ? TextSpan(
-                    text: widget.model != null
-                        ? "Rs " + widget.model.price.toString()
-                        : "Rs 0",
-                    style: TextStyle(
-                      color: AppConstants.appColor.greyColor,
-                      fontSize: SizeConfig.textMultiplier * 2.6,
-                      decoration: TextDecoration.lineThrough,
-                      decorationThickness: 1.2,
-                      decorationColor: AppConstants.appColor.redColor,
-                    ),
-                  )
-                : TextSpan(text: ""),
-            TextSpan(text: " "),
-            widget.model.price_after_discount != widget.model.price && widget.model.discount_type == "%"
-                ? TextSpan(
-                    text: widget.model != null &&
-                            widget.model.discount_rates != null
-                        ? "${widget.model.discount_rates.toString()}%"
-                        : "",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: AppConstants.appColor.redColor,
-                      fontSize: SizeConfig.textMultiplier * 2.6,
-                    ),
-                  )
-                : TextSpan(text: ""),
-          ],
-        ),
-        //textAlign: TextAlign.justify,
-      ),
-    );
-  }
-
   Widget loadDuration() {
     return Container(
       margin: EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),

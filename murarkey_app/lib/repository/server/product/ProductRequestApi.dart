@@ -74,14 +74,14 @@ class ProductRequestApi extends ApiRequest {
     await this
         .postData(url: url, useToken: true)
         .then((Map<String, dynamic> value) => {
-      print("proceedAllToCard"),
-      if (value != null)
-        {
-          result = value,
-        }
-      else
-        {result = null}
-    });
+              print("proceedAllToCard"),
+              if (value != null)
+                {
+                  result = value,
+                }
+              else
+                {result = null}
+            });
     return result;
   }
 
@@ -109,18 +109,22 @@ class ProductRequestApi extends ApiRequest {
   Future<CartModel> getCartList({String url}) async {
     CartModel result = new CartModel();
 
-    await this
-        .getData(url: url, useToken: true)
-        .then((Map<String, dynamic> value) => {
-              print("CartModel list"),
-              print(value),
-              if (value != null)
-                {
-                  result = CartModel.fromJson(value["data"]),
-                }
-              else
-                {result = null}
-            });
+    try {
+      await this
+          .getData(url: url, useToken: true)
+          .then((Map<String, dynamic> value) => {
+                print("CartModel list"),
+                print(value),
+                if (value != null)
+                  {
+                    result = CartModel.fromJson(value["data"]),
+                  }
+                else
+                  {result = null}
+              });
+    } catch (e) {
+      print(e);
+    }
     return result;
   }
 }

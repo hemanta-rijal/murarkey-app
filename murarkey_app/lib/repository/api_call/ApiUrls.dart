@@ -75,10 +75,14 @@ class ApiUrls {
   static final String PAYMENT_ESWEA_CALLACK = BASE_URL + ROOT_API_URL + "/payment_verify";
 
  //For Wallet
+  static final String GET_WALLET_INFO = ROOT_API_URL + "/my-account/wallet/total";
   static final String GET_WALLET_HISTORY = ROOT_API_URL + "/my-account/wallet";
 
   //For My order
   static final String MY_ORDER = ROOT_API_URL + "/user/my-orders";
+
+  //For Pay with cash
+  static final String PAY_WITH_CASH = ROOT_API_URL + "/user/order";
 
   //For Pay pal
   static final String PAYPAL_TRANSACTION = ROOT_API_URL + "/paypal_transaction";

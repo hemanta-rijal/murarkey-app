@@ -47,6 +47,9 @@ class _PlaceOrderWidgetState
   TextEditingController voucherTextController = TextEditingController();
   DateTime deliveryDate;
   TimeOfDay deliveryTime;
+  int walletAmount = 0;
+  int total = 0;
+  int tempWalletAmount = 0;
 
   _PlaceOrderWidgetState() {
     paywith = GlobalData.paywith;
@@ -55,12 +58,37 @@ class _PlaceOrderWidgetState
 
   loadData() async {
     await _repository.productRequestApi
-        .getCartList(url: ApiUrls.CART)
+        .getCartList(url: ApiUrls.CART_LIST)
         .then((value) => {
               cartModel = value,
               loadContent(),
               this.setState(() {}),
             });
+    walletAmount = await _repository.walletApiRequest.getWalletInfo(
+      url: ApiUrls.GET_WALLET_INFO,
+    );
+    this.setState(() {
+      if (cartModel != null) {
+        total = cartModel.total;
+      }
+      tempWalletAmount = walletAmount;
+    });
+  }
+
+  useYourWalletAmount() {
+    if (useWalletAmount) {
+      var tempTotal = total;
+      if (walletAmount > total) {
+        total = 0;
+        tempWalletAmount -= tempTotal;
+      } else {
+        total -= walletAmount;
+        tempWalletAmount = 0;
+      }
+    } else {
+      total = cartModel.total;
+      tempWalletAmount = walletAmount;
+    }
   }
 
   loadContent() {
@@ -104,6 +132,24 @@ class _PlaceOrderWidgetState
         height: _cardSize,
         width: _cardSize,
       );
+    }
+
+    String deliveryDateTimeFormatter() {
+      if (deliveryDate == null) {
+        return null;
+      } else {
+        var date = deliveryDate.year.toString() +
+            "/" +
+            deliveryDate.month.toString() +
+            "/" +
+            deliveryDate.day.toString();
+        var hour = deliveryTime.hour.toString().padLeft(2, "0");
+        var minute = deliveryTime.minute.toString().padLeft(2, "0");
+        var period = deliveryTime.period == DayPeriod.am ? "AM" : "PM";
+        var dateTime = date + "T" + hour + ":" + minute + " " + period;
+        var delivery = dateTime;
+        return delivery;
+      }
     }
 
     Widget buildItems(ContentCartModel content, int index) {
@@ -224,8 +270,35 @@ class _PlaceOrderWidgetState
         okCallback: () async {
           Navigator.pop(context);
           String type = paywith["data"][position]["name"].toLowerCase();
+          print("paymentType-------> ${type}");
 
-          if (type == "esewa") {
+          if (type == "cash on delivery") {
+            var dateTime = deliveryDateTimeFormatter();
+
+            if (deliveryTime == null) {
+              Commons.toastMessage(
+                  context, "Please select date and time for order delivery.");
+              return;
+            }
+
+            List<String> dateTimePartition = dateTime.split("T");
+
+            Map<String, dynamic> params = new Map();
+            params["payment_method "] = paywith["data"][position]["name"];
+            params["date"] = dateTimePartition[0];
+            params["time"] = dateTimePartition[1];
+            params["wallet_use"] = useWalletAmount;
+
+            final result = await _repository.paymentWithApi.postCashOnDelivery(
+              url: ApiUrls.PAY_WITH_CASH,
+              params: params,
+            );
+            Commons.toastMessage(context, "${result["message"]}");
+            if (result["status"]) {
+              NavigateRoute.pop(context);
+              NavigateRoute.pushNamed(context, NavigateRoute.RECENT_ORDER);
+            }
+          } else if (type == "esewa") {
             //EsewaPayment().init(context, 0.0);
 
             int total = cartModel.total;
@@ -272,24 +345,6 @@ class _PlaceOrderWidgetState
           Navigator.pop(context);
         },
       );
-    }
-
-    String deliveryDateTimeFormatter() {
-      if (deliveryDate == null) {
-        return "Pick Date and Time for delivery";
-      } else {
-        var date = deliveryDate.year.toString() +
-            "/" +
-            deliveryDate.month.toString() +
-            "/" +
-            deliveryDate.day.toString();
-        var hour = deliveryTime.hour.toString().padLeft(2, "0");
-        var minute = deliveryTime.minute.toString().padLeft(2, "0");
-        var period = deliveryTime.period == DayPeriod.am ? "AM" : "PM";
-        var dateTime = date + " " + hour + ":" + minute + " " + period;
-        var delivery = "Delivery Time: " + dateTime;
-        return delivery;
-      }
     }
 
     buildView() {
@@ -340,7 +395,7 @@ class _PlaceOrderWidgetState
                     subTotal: "${cartModel.subTotal}",
                     shippingCharge: "${cartModel.shippingAmount}",
                     tax: "${cartModel.tax}",
-                    total: "${cartModel.total}",
+                    total: "${total}",
                     componentView: Column(
                       children: [
                         SizedBox(height: 8),
@@ -356,6 +411,7 @@ class _PlaceOrderWidgetState
                                 onChanged: (bool value) {
                                   setState(() {
                                     this.useWalletAmount = value;
+                                    useYourWalletAmount();
                                   });
                                 },
                               ),
@@ -363,7 +419,8 @@ class _PlaceOrderWidgetState
                             SizedBox(width: 16),
                             Expanded(
                               child: textView1(
-                                title: "Use Wallet Amount (Rs 32.0)",
+                                title:
+                                    "Use Wallet Amount (Rs ${tempWalletAmount})",
                                 textSize: 2.0,
                                 fontWeight: FontWeight.normal,
                                 textAlign: TextAlign.start,
@@ -424,7 +481,11 @@ class _PlaceOrderWidgetState
                           children: [
                             Expanded(
                               child: Text(
-                                deliveryDateTimeFormatter(),
+                                deliveryDateTimeFormatter() == null
+                                    ? "Pick Date and Time for delivery"
+                                    : "Delivery Time: " +
+                                        deliveryDateTimeFormatter()
+                                            .replaceAll("T", " "),
                                 style: TextStyle(
                                   color: AppConstants.appColor.blackColor,
                                   fontSize: SizeConfig.textMultiplier * 2.3,

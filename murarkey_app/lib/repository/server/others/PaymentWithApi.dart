@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:murarkey_app/repository/api_call/ApiRequest.dart';
 
 /**
@@ -19,5 +20,21 @@ class PaymentWithApi extends ApiRequest {
             {result = null}
         });
     return result;
+  }
+
+  postCashOnDelivery({
+    @required String url,
+    @required Map<String, dynamic> params,
+  }) async {
+    var value = await this.postData(url: url, params: params, useToken: true);
+    print("postCashOnDelivery-----------> ${value}");
+
+    // var result = null;
+    // if (value != null) {
+    //   result = value["data"];
+    // } else {
+    //   result = null;
+    // }
+    return value;
   }
 }

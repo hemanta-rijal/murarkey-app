@@ -24,7 +24,8 @@ class _OrderItemWidgetsState extends State<OrderItemWidgets> {
     _cardSize = size.width * 0.25;
     return Image.network(
       imgUrl,
-      fit: BoxFit.cover,
+      fit: BoxFit.contain,
+      width: _cardSize,
       height: _cardSize,
     );
   }

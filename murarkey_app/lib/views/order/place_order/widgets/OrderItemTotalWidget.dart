@@ -102,24 +102,13 @@ class OrderItemTotalWidget extends StatelessWidget {
             body: "Rs ${shippingCharge}",
             margin: EdgeInsets.all(4),
           ),
-          componentView != null
-              ? Container(
-                  child: componentView,
-                  margin: EdgeInsets.all(4),
-                )
-              : Container(),
-          componentView != null
-              ? Container(
-                  margin: EdgeInsets.only(bottom: 8),
-                )
-              : Container(),
           Row(
             children: [
               Expanded(
                   child: Container(
-                height: 1,
-                color: Colors.grey,
-              )),
+                    height: 1,
+                    color: Colors.grey,
+                  )),
             ],
           ),
           Container(
@@ -148,6 +137,18 @@ class OrderItemTotalWidget extends StatelessWidget {
               ],
             ),
           ),
+          componentView != null
+              ? Container(
+                  child: componentView,
+                  margin: EdgeInsets.all(4),
+                )
+              : Container(),
+          componentView != null
+              ? Container(
+                  margin: EdgeInsets.only(bottom: 8),
+                )
+              : Container(),
+
         ],
       ),
     );

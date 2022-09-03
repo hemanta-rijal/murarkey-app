@@ -1,6 +1,7 @@
 import 'package:murarkey_app/repository/server/ParlorApiRequest.dart';
 import 'package:murarkey_app/repository/server/auth_request/AuthApiRequest.dart';
 import 'package:murarkey_app/repository/server/best_product_for_you/BestProductForYouApi.dart';
+import 'package:murarkey_app/repository/server/coupon/CouponApi.dart';
 import 'package:murarkey_app/repository/server/home_page/HomeApiRequest.dart';
 import 'package:murarkey_app/repository/server/order/OrderApiService.dart';
 import 'package:murarkey_app/repository/server/others/AddressApi.dart';
@@ -34,6 +35,7 @@ class Repository {
   OrderApiService orderApiService = new OrderApiService();
   ParlorApiRequest parlorApiRequest = new ParlorApiRequest();
   BestProductForYouApi bestProductForYouApi = new BestProductForYouApi();
+  CouponApi couponApi = new CouponApi();
 
   //payments
   PayPalApi payPalApi = new PayPalApi();

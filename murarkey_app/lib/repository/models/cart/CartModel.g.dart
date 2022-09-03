@@ -16,6 +16,8 @@ CartModel _$CartModelFromJson(Map<String, dynamic> json) {
       (k, e) =>
           MapEntry(k, ContentCartModel.fromJson(e as Map<String, dynamic>)),
     ),
+    couponDetail: CouponDetail.fromJson(json['couponDetail']),
+    couponDiscountPrice: json['couponDiscountPrice'],
   );
 }
 
@@ -25,4 +27,6 @@ Map<String, dynamic> _$CartModelToJson(CartModel instance) => <String, dynamic>{
       'subTotal': instance.subTotal,
       'shippingAmount': instance.shippingAmount,
       'content': instance.content,
+      'couponDetail': instance.couponDetail,
+      'couponDiscountPrice': instance.couponDiscountPrice,
     };

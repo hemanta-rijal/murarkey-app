@@ -16,9 +16,18 @@ class CartModel {
   var subTotal;
   var shippingAmount;
   final Map<String, ContentCartModel> content;
+  CouponDetail couponDetail;
+  var couponDiscountPrice;
 
-  CartModel(
-      {this.total, this.tax, this.subTotal, this.shippingAmount, this.content});
+  CartModel({
+    this.total,
+    this.tax,
+    this.subTotal,
+    this.shippingAmount,
+    this.content,
+    this.couponDetail,
+    this.couponDiscountPrice,
+  });
 
   factory CartModel.fromJson(Map<String, dynamic> json) =>
       _$CartModelFromJson(json);
@@ -36,5 +45,44 @@ class CartModel {
     }
 
     return list;
+  }
+}
+
+//@JsonSerializable(nullable: false)
+class CouponDetail {
+  String coupon;
+  List<String> couponFor;
+  String discountType;
+  String discount;
+
+  CouponDetail({
+    this.coupon,
+    this.couponFor,
+    this.discountType,
+    this.discount,
+  });
+
+  // factory CouponDetail.fromJson(Map<String, dynamic> json) =>
+  //     _$CouponDetailFromJson(json);
+  //
+  // Map<String, dynamic> toJson() => _$CouponDetailToJson(this);
+
+  CouponDetail.fromJson(json) {
+    if (json != null) {
+      print("CouponDetail-----> ${json}");
+      // coupon = json['coupon'];
+      // couponFor = json['coupon_for'].cast<String>();
+      // discountType = json['discount_type'];
+      // discount = json['discount'];
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['coupon'] = this.coupon;
+    data['coupon_for'] = this.couponFor;
+    data['discount_type'] = this.discountType;
+    data['discount'] = this.discount;
+    return data;
   }
 }

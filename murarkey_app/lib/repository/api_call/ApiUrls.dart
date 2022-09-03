@@ -54,7 +54,8 @@ class ApiUrls {
   //For
   static final String JOIN_PARLOR_PROFESSION = ROOT_API_URL + "/join-parlour-profession";
   static final String CART = ROOT_API_URL + "/cart";
-  static final String CART_LIST = ROOT_API_URL + "/cart";
+  static final String CART_LIST = ROOT_API_URL + "/checkout";
+  static final String COUPON_CODE = ROOT_API_URL +"/coupon";
 
   static final String ADD_TO_WISHLIST = ROOT_API_URL + "/wishlist";
   static final String GET_ALL_WISHLIST = ROOT_API_URL + "/wishlist";

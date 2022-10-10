@@ -89,6 +89,7 @@ class ServiceSearchWidgetState
   Widget searchItemWidget() {
     if (viewModel.productDetailList != null) {
       return SearchServiceItemWidget(
+        columnSize: 2,
         modelList: viewModel.productDetailList,
         onCallback:
             (ServicesCategoryListsModel productDetailModel, int position) {
@@ -98,7 +99,10 @@ class ServiceSearchWidgetState
           arguments["appBarTitle"] =
               viewModel.productDetailList[position].title;
           NavigateRoute.pushNamedWithArguments(
-              context, NavigateRoute.OUR_SERVICES_ITEM_DETAIL, arguments);
+            context,
+            NavigateRoute.OUR_SERVICES_ITEM_DETAIL,
+            arguments,
+          );
         },
         onScrollBottomCallback: (int listSize) {},
       );

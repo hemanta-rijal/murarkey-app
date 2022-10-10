@@ -4,7 +4,9 @@ import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/country_list/CountryModel.dart';
 import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerModel.dart';
+import 'package:murarkey_app/repository/models/navigation_drawer/MenuItemModel.dart';
 import 'package:murarkey_app/repository/models/our_services/OurServicesModel.dart';
+import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/repository/models/service_category/ServiceCategoryModel.dart';
 import 'package:murarkey_app/repository/models/user/UserModel.dart';
@@ -25,11 +27,13 @@ class GlobalData {
   static List<HomepageBannerModel> bannerModelList;
   static List<CategoryModel> categoryModelList;
   static List<ServiceCategoryModel> serviceCategoryModelList;
+  static List<ServicesCategoryListsModel> popularServiceCategoryModelList;
   static List<ParlorModel> parlorModelList;
   static List<BrandModel> brandModelList;
   static List<OurServicesModel> ourServicesModelList;
   static List<SkinVarientModel> skinVarientModelList;
   static Map<String, dynamic> skinVarientModelValue = {};
+  static List<MenuItemModel> menuItemModelList;
 
   static UserModel userModel = new UserModel();
   static List<CountryModel> countryListModel = new List();
@@ -69,17 +73,18 @@ class _Constants {
 
   String get PRIVACY_POLICY => " privacy policy.";
 
-  String get OUR_SERVICES => "Our Services";
+  String get OUR_SERVICES => "Our Home Services";
 
-  String get SHOP_BY_CATEGORY => "Shop by Category";
+  String get SHOP_BY_CATEGORY => "Shop Product By Category";
 
-  String get Popular_Parlours => "Popular Parlours";
+  String get Popular_Parlours => "Popular Training Centers";
 
   String get SCHEDULE_PREMIUM_SERVICE => "Schedule Premium Service at Home";
 
-  String get SHOP_BY_BRANDS => "Shop by Brands";
+  String get SHOP_BY_BRANDS => "Shop Products By Brands";
+  String get POPULAR_SERVICE_AT_HOME => "Popular Services at Home";
 
-  String get BEST_PRODUCT_FOR_YOU => "Find the Best Product for you, According to your skin type";
+  String get BEST_PRODUCT_FOR_YOU => "Find the Best Product for you, According to your\nSkin Type";
 
   String get BUTTON_SCHEDULE => "Schedule";
 
@@ -89,10 +94,10 @@ class _Constants {
 
   String get BUTTON_SAVE_ADDRESS => "Save Address";
 
-  String get NO_TIME_GO_SALON => "ARE YOU A PROFESSIONAL?";
+  String get NO_TIME_GO_SALON => "Are you a beauty professional?";
 
   String get MURARKEY_PROVIDES =>
-      "Murarkey provides Beauty Parlour Services at Home.";
+      "Join Murarkey Pro Team";
 
   String get BOOK_AN_APPOINTMENT => " Join us";
 

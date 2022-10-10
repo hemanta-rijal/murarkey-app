@@ -11,7 +11,7 @@ import 'package:murarkey_app/views/search/pages/ServiceSearchWidget.dart';
 
 class ServiceSearchViewModel {
   Repository _repository = new Repository();
-  ServiceSearchWidgetState state;
+  dynamic state; //ServiceSearchWidgetState or PopularServicesAtHomeWidgetState
 
   final TextEditingController formMin = new TextEditingController();
   final TextEditingController formMax = new TextEditingController();

@@ -152,19 +152,26 @@ class CustomStatefulWidgetState<T> extends State {
     );
   }
 
-  Widget render(
-      {@required Widget childWidget,
-      Color bodybackgroundColor,
-      Widget floatingActionButton}) {
+  Widget render({
+    @required Widget childWidget,
+    Color bodybackgroundColor,
+    Widget floatingActionButton,
+    Drawer drawer,
+    GlobalKey scaffoldKey,
+  }) {
     bodybackgroundColor = bodybackgroundColor == null
         ? AppConstants.appColor.backgroundColor
         : bodybackgroundColor;
+
     return Material(
-        color: bodybackgroundColor,
-        child: Scaffold(
-          backgroundColor: bodybackgroundColor,
-          body: childWidget,
-          floatingActionButton: floatingActionButton,
-        ));
+      color: bodybackgroundColor,
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: bodybackgroundColor,
+        body: childWidget,
+        floatingActionButton: floatingActionButton,
+        drawer: drawer,
+      ),
+    );
   }
 }

@@ -13,13 +13,15 @@ class SearchServiceItemWidget extends StatefulWidget {
   final List<ServicesCategoryListsModel> modelList;
   final Function(ServicesCategoryListsModel, int) onCallback;
   final Function(int) onScrollBottomCallback;
+  final int columnSize;
 
-  SearchServiceItemWidget(
-      {Key key,
-      @required this.modelList,
-      this.onCallback,
-      this.onScrollBottomCallback})
-      : super(key: key);
+  SearchServiceItemWidget({
+    Key key,
+    @required this.modelList,
+    @required this.columnSize,
+    this.onCallback,
+    this.onScrollBottomCallback,
+  }) : super(key: key);
 
   @override
   _SearchServiceItemWidgetState createState() =>
@@ -27,13 +29,19 @@ class SearchServiceItemWidget extends StatefulWidget {
 }
 
 class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
-  double _imageHeight = 96.0;
+  double _imageHeight = 120.0; //96.0;
   double _containerHeight = 160.0;
   double _containerWidth = 120.0;
 
   var _crossAxisCount = 2;
   var _aspectRatio = 0.82;
   var _cardSize = 50.0;
+
+  @override
+  void initState() {
+    _crossAxisCount = widget.columnSize;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +51,8 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
     Widget loadImage(String imgUrl) {
       return Image.network(
         imgUrl,
-        fit: BoxFit.cover,
+        fit: BoxFit.fitWidth,
+        width: double.infinity,
         height: _imageHeight,
       );
     }
@@ -61,20 +70,60 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
     }
 
     buildItems(ServicesCategoryListsModel model) {
+      var paddingV = 16.0;
+
+      if (widget.columnSize > 2) {
+        paddingV == 2.0;
+      }
+
+      paddingV == 2.0;
+
       return Container(
         child: Stack(
+          alignment: Alignment.center,
           children: [
+            // Container(
+            //   margin: EdgeInsets.only(top: 16, left: 8, right: 8),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       //loadImage(model.images[0].imageUrl),
+            //       // SizedBox(height: 4),
+            //       // Text(
+            //       //   model.title.toUpperCase(),
+            //       //   textAlign: TextAlign.center,
+            //       //   overflow: TextOverflow.clip,
+            //       //   maxLines: 3,
+            //       //   style: TextStyle(
+            //       //     color: AppConstants.appColor.greyColor,
+            //       //     fontWeight: FontWeight.bold,
+            //       //     fontSize: SizeConfig.textMultiplier * 1.8,
+            //       //   ),
+            //       // ),
+            //       // SizedBox(
+            //       //   height: 8,
+            //       // ),
+            //     ],
+            //   ),
+            // ),
             Container(
-              margin: EdgeInsets.only(top: 16, left: 8, right: 8),
+              width: double.infinity,
+              margin: EdgeInsets.all(4),
+              alignment: Alignment.topCenter,
+              child: loadImage(model.images[0].imageUrl),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  loadImage(model.images[0].imageUrl),
-                  SizedBox(height: 4),
+                  SizedBox(height: 8),
                   Text(
                     model.title.toUpperCase(),
                     textAlign: TextAlign.center,
-                    maxLines: 3,
+                    overflow: TextOverflow.clip,
+                    maxLines: 2,
                     style: TextStyle(
                       color: AppConstants.appColor.greyColor,
                       fontWeight: FontWeight.bold,
@@ -82,68 +131,61 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
                     ),
                   ),
                   SizedBox(
-                    height: 8,
+                    height: 4,
                   ),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: double.infinity,
-                height: 40,
-                alignment: Alignment.center,
-                color: AppConstants.appColor.buttonColor3,
-                //Colors.green[500],
-                padding: EdgeInsets.only(
-                  top: 8,
-                  bottom: 8,
-                  left: 4,
-                  right: 4,
-                ),
-                child: RichText(
-                  text: TextSpan(
-                    text: "Rs. ${model.price_after_discount.toString()} ",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppConstants.appColor.whiteColor,
-                      fontSize: SizeConfig.textMultiplier * 1.8,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(text: " "),
-                      model.price_after_discount != model.price &&
-                              model.discount_type == "%"
-                          ? TextSpan(
-                              text: "Rs. ${model.price.toString()}  ",
-                              style: TextStyle(
-                                color: AppConstants.appColor.accentColor,
-                                fontSize: SizeConfig.textMultiplier * 1.8,
-                                decoration: TextDecoration.lineThrough,
-                                decorationThickness: 3,
-                                decorationColor: Colors.black,
-                              ),
-                            )
-                          : TextSpan(text: " "),
-                      model.price_after_discount != model.price &&
-                              model.discount_type == "%"
-                          ? TextSpan(
-                              text:
-                                  model != null && model.discount_rates != null
+                  Container(
+                    width: double.infinity,
+                    height: 40,
+                    alignment: Alignment.center,
+                    color: AppConstants.appColor.buttonColor3,
+                    //Colors.green[500],
+                    padding:
+                        EdgeInsets.only(top: 8, bottom: 8, left: 4, right: 4),
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Rs. ${model.price_after_discount.toString()} ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppConstants.appColor.whiteColor,
+                          fontSize: SizeConfig.textMultiplier * 1.8,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(text: " "),
+                          model.price_after_discount != model.price &&
+                                  model.discount_type == "%"
+                              ? TextSpan(
+                                  text: "Rs. ${model.price.toString()}  ",
+                                  style: TextStyle(
+                                    color: AppConstants.appColor.accentColor,
+                                    fontSize: SizeConfig.textMultiplier * 1.8,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationThickness: 3,
+                                    decorationColor: Colors.black,
+                                  ),
+                                )
+                              : TextSpan(text: " "),
+                          model.price_after_discount != model.price &&
+                                  model.discount_type == "%"
+                              ? TextSpan(
+                                  text: model != null &&
+                                          model.discount_rates != null
                                       ? "${model.discount_rates.toString()}%"
                                       : "",
-                              style: TextStyle(
-                                color: AppConstants.appColor.accentColor,
-                                fontSize: SizeConfig.textMultiplier * 1.8,
-                                decoration: TextDecoration.lineThrough,
-                                decorationThickness: 3,
-                                decorationColor: Colors.black,
-                              ),
-                            )
-                          : TextSpan(text: ""),
-                    ],
+                                  style: TextStyle(
+                                    color: AppConstants.appColor.accentColor,
+                                    fontSize: SizeConfig.textMultiplier * 1.8,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationThickness: 3,
+                                    decorationColor: Colors.black,
+                                  ),
+                                )
+                              : TextSpan(text: ""),
+                        ],
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
                   ),
-                  textAlign: TextAlign.justify,
-                ),
+                ],
               ),
             ),
           ],
@@ -159,7 +201,10 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
         itemCount: widget.modelList.length,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: _crossAxisCount, childAspectRatio: _aspectRatio),
+          crossAxisCount: _crossAxisCount,
+          //childAspectRatio: _aspectRatio,
+          mainAxisExtent: 228,
+        ),
         itemBuilder: (context, position) {
           var model = widget.modelList[position];
 
@@ -171,7 +216,8 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
                 Card(
                   elevation: 4.0,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   child: Container(
                     child: InkResponse(
                       onTap: () {
@@ -182,8 +228,8 @@ class _SearchServiceItemWidgetState extends State<SearchServiceItemWidget> {
                   ),
                 ),
                 model.price_after_discount != model.price &&
-                    (model.discount_type == "percentage" ||
-                        model.discount_type == "flat_rate")
+                        (model.discount_type == "percentage" ||
+                            model.discount_type == "flat_rate")
                     ? Align(
                         alignment: Alignment.topLeft,
                         child: Container(

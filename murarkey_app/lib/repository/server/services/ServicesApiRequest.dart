@@ -65,6 +65,28 @@ class ServicesApiRequest extends ApiRequest {
     return result;
   }
 
+  Future<List<ServicesCategoryListsModel>> popularServicesFromCategory({
+    String url,
+  }) async {
+    List<ServicesCategoryListsModel> result = new List();
+
+    await this
+        .getData(url: url)
+        .then((Map<String, dynamic> value) => {
+      print("searchServicesFromCategory"),
+      if (value != null)
+        {
+          result = value["data"]
+              .map((i) => ServicesCategoryListsModel.fromJson(i))
+              .toList()
+              .cast<ServicesCategoryListsModel>(),
+        }
+      else
+        {result = null}
+    });
+    return result;
+  }
+
   Future<List<ServicesCategoryListsModel>> searchServicesFromCategory({
     String url,
     Map<String, dynamic> queryParams,

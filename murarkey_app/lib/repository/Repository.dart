@@ -3,6 +3,7 @@ import 'package:murarkey_app/repository/server/auth_request/AuthApiRequest.dart'
 import 'package:murarkey_app/repository/server/best_product_for_you/BestProductForYouApi.dart';
 import 'package:murarkey_app/repository/server/coupon/CouponApi.dart';
 import 'package:murarkey_app/repository/server/home_page/HomeApiRequest.dart';
+import 'package:murarkey_app/repository/server/navigation_drawer/NavigationDrawerApi.dart';
 import 'package:murarkey_app/repository/server/order/OrderApiService.dart';
 import 'package:murarkey_app/repository/server/others/AddressApi.dart';
 import 'package:murarkey_app/repository/server/others/JoinProfessionalApi.dart';
@@ -36,6 +37,7 @@ class Repository {
   ParlorApiRequest parlorApiRequest = new ParlorApiRequest();
   BestProductForYouApi bestProductForYouApi = new BestProductForYouApi();
   CouponApi couponApi = new CouponApi();
+  NavigationDrawerApi navigationDrawerApi = new NavigationDrawerApi();
 
   //payments
   PayPalApi payPalApi = new PayPalApi();

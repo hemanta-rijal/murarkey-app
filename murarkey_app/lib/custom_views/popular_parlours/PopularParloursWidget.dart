@@ -22,7 +22,7 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
   @override
   Widget build(BuildContext context) {
     double _imageHeight = 100.0;
-    double _containerHeight = 180.0;
+    double _containerHeight = 200.0;
     double _containerWidth = 120.0;
 
     final Size screenSize = MediaQuery.of(context).size;
@@ -47,13 +47,14 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
           padding: EdgeInsets.only(left: 8.0, right: 8.0),
           child: InkResponse(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 loadImage(model.featureImageUrl),
                 SizedBox(height: 4),
                 Text(
                   model.name,
                   maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  overflow: TextOverflow.clip,
                   style: TextStyle(
                     color: AppConstants.appColor.textColor,
                     fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
                 Text(
                   model.address,
                   maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  overflow: TextOverflow.clip,
                   style: TextStyle(
                     color: AppConstants.appColor.greyColor,
                     fontWeight: FontWeight.bold,
@@ -113,7 +114,8 @@ class _PopularParloursWidgetState extends State<PopularParloursWidget> {
                   textSize: 1.6,
                   fontWeight: FontWeight.bold,
                   textAlign: TextAlign.center,
-                  color: AppConstants.appColor.textColor3),
+                  color: AppConstants.appColor.textColor3,
+              ),
               SizedBox(width: 6),
               svgImageAssert(
                   imgUrl: "images/arrows/ic_right_arrow.svg",

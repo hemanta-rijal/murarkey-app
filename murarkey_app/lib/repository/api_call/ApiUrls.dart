@@ -13,6 +13,9 @@ class ApiUrls {
   static final String BASE_URL = "https://murarkey.com";
   static final String ROOT_API_URL = "/api";
 
+  //For Header Menu
+  static final String HEADER_MENU_URL = ROOT_API_URL + "/menuitem/top_header_menu";
+
   //For Auth
   static final String LOGIN_URL = ROOT_API_URL + "/auth/login";
   static final String REGISTER_URL = ROOT_API_URL + "/auth/register";
@@ -48,6 +51,7 @@ class ApiUrls {
   static String SERVICES_CATEGORY_LIST(String id){
     return ROOT_API_URL + "/servicecategory/${id}/services";
   }
+  static final String POPULAR_SERVICES = ROOT_API_URL +"/popular-services";
   static final String SERVICES_CATEGORIES_LIST = ROOT_API_URL +"/servicecategory/toplevel";
   static final String SERVICES_SEARCH = ROOT_API_URL +"/services/search";
 

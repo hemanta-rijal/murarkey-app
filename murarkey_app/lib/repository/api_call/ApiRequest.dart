@@ -20,7 +20,7 @@ abstract class ApiRequest extends Api {
     _sharePref = new UserTokenPref();
   }
 
-  Uri _getUrl(String urlPath, {Map<String, dynamic> queryString}) {
+  Uri getUrl(String urlPath, {Map<String, dynamic> queryString}) {
     if (ApiUrls.BASE_URL.contains("https")) {
       //ApiUrls.BASE_URL.replaceAll("http://", "www.")
       return Uri.https(
@@ -31,7 +31,7 @@ abstract class ApiRequest extends Api {
     }
   }
 
-  Future<Map<String, String>> _headers(bool useToken) async {
+  Future<Map<String, String>> headers(bool useToken) async {
     // Headers
     //var response = await http.get(url, headers: {'Authorization': 'Bearer $_token'});
 
@@ -94,21 +94,22 @@ abstract class ApiRequest extends Api {
 
   //TODO GET
   @override
-  Future<Map<String, dynamic>> getData(
-      {String url,
-      Map<String, dynamic> queryParams,
-      List<String> arguments,
-      bool useToken}) async {
+  Future<Map<String, dynamic>> getData({
+    String url,
+    Map<String, dynamic> queryParams,
+    List<String> arguments,
+    bool useToken,
+  }) async {
     super.getData();
     try {
       //for http url
-      var full_url = _getUrl(url, queryString: queryParams);
+      var full_url = getUrl(url, queryString: queryParams);
       print("url= ");
       print(full_url);
 
       //
       print("headers");
-      var header = await _headers(useToken);
+      var header = await headers(useToken);
       print(header);
 
       // Get Http call
@@ -144,16 +145,16 @@ abstract class ApiRequest extends Api {
       print(params);
 
       //Header
-      var header = await _headers(useToken);
+      var header = await headers(useToken);
       print(header);
 
-      print(_getUrl(url));
+      print(getUrl(url));
 
       // Post Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
           .post(
-            _getUrl(url),
+            getUrl(url),
             body: body,
             headers: header,
           )
@@ -185,14 +186,14 @@ abstract class ApiRequest extends Api {
       print(params);
 
       //Header
-      var header = await _headers(useToken);
+      var header = await headers(useToken);
       print(header);
 
       // Post Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
           .put(
-            _getUrl(url),
+            getUrl(url),
             body: body,
             headers: header,
           )
@@ -213,10 +214,10 @@ abstract class ApiRequest extends Api {
     super.multipartData();
 
     //for https url
-    var postUri = _getUrl(url); //Uri.parse("<APIUrl>");
+    var postUri = getUrl(url); //Uri.parse("<APIUrl>");
 
     //Header
-    var header = await _headers(useToken);
+    var header = await headers(useToken);
     print(header);
 
     // Post Http call

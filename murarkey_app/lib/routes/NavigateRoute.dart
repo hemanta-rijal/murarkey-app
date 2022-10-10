@@ -1,4 +1,5 @@
 import 'package:murarkey_app/custom_views/loader/Loader2Widget.dart';
+import 'package:murarkey_app/drawer/child/DrawerChildWidget.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/utils/payments/EsewaEpayPayment.dart';
 import 'package:murarkey_app/views/MainScreenWidget.dart';
@@ -54,6 +55,7 @@ class NavigateRoute {
   static const String SKIN_TONE = "SkinToneWidget";
   static const String SKIN_CONCERN = "SkinConcernsWidget";
   static const String SKIN_PRODUCT_TYPE = "ProductTypeWidget";
+  static const String DRAWER_CHILD_ITEM = "DrawerChildWidget";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -69,6 +71,11 @@ class NavigateRoute {
         return _MaterialPageRoute(ResetAccountWidget());
       case HOME:
         return _MaterialPageRoute(MainScreenWidget());
+      case DRAWER_CHILD_ITEM:
+        Map<String, dynamic> arguments = args as Map;
+        return _MaterialPageRoute(
+          DrawerChildWidget(menuItemModel: arguments["args"]),
+        );
       case PROFILE_Edit:
         return _MaterialPageRoute(EditProfileWidget());
       case ADDRESS_Edit:

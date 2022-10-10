@@ -69,6 +69,16 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
       this.setState(() {});
     });
 
+    // Get our services list
+    apiRequestCount++;
+    _repository.servicesApiRequest
+        .popularServicesFromCategory(url: ApiUrls.POPULAR_SERVICES)
+        .then((value) {
+      GlobalData.popularServiceCategoryModelList = value;
+      --apiRequestCount;
+      this.setState(() {});
+    });
+
     // Get category list
     apiRequestCount++;
     _repository.homeApiRequest
@@ -136,6 +146,17 @@ class _AppLoaderWidgetState extends State<AppLoaderWidget> {
       GlobalData.skinVarientModelList = value;
       print(
           "skinVarientModelList--------> ${GlobalData.skinVarientModelList.length}");
+      --apiRequestCount;
+      this.setState(() {});
+    });
+
+    apiRequestCount++;
+    _repository.navigationDrawerApi
+        .getMenu(url: ApiUrls.HEADER_MENU_URL)
+        .then((value) {
+      GlobalData.menuItemModelList = value;
+      print(
+          "MenuItemModelList--------> ${GlobalData.menuItemModelList.length}");
       --apiRequestCount;
       this.setState(() {});
     });

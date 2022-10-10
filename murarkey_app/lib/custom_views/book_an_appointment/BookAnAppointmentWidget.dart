@@ -71,7 +71,7 @@ class _BookAnAppointmentWidgetState extends State<BookAnAppointmentWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       textView1(
-                          title: AppConstants.constants.NO_TIME_GO_SALON,
+                          title: AppConstants.constants.NO_TIME_GO_SALON.toUpperCase(),
                           textSize: 2.4,
                           color: AppConstants.appColor.whiteColor,
                           fontWeight: FontWeight.bold),

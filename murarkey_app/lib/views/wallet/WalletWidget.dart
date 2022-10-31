@@ -1,5 +1,6 @@
 import 'package:murarkey_app/custom_views/error_pages/DataNotAvailableWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
@@ -24,13 +25,17 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
   //List walletModel = AccountDatas.myMalletList;
   List<WalletModel> walletModel = new List();
   double _imageHeight = 38.0;
+  bool loading = false;
 
   @override
   void initState() {
+    EasyLoadingView.show(message: 'Loading...');
     _repository.walletApiRequest
         .getMyWalletHistory(url: ApiUrls.GET_WALLET_HISTORY)
         .then((value) {
       walletModel = value;
+      loading = true;
+      EasyLoadingView.dismiss();
       this.setState(() {});
     });
     super.initState();
@@ -366,12 +371,14 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
           menu(),
           walletModel != null && walletModel.length > 0
               ? verticalView
-              : Container(
-                  margin: EdgeInsets.only(top: 200),
-                  child: DataNotAvailableWidget(
-                    message: "No Wallet History",
-                  ),
-                ),
+              : loading
+                  ? Container(
+                      margin: EdgeInsets.only(top: 200),
+                      child: DataNotAvailableWidget(
+                        message: "No Wallet History",
+                      ),
+                    )
+                  : Container(),
         ],
       );
     }

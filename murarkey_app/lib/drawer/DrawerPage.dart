@@ -77,14 +77,19 @@ launchURL(String url) async {
       if (await canLaunch('${url}')) {
         await launch('${url}');
       } else {
-        throw 'Could not launch https://www.youtube.com/channel/UCwXdFgeE9KYzlDdR7TG9cMw';
+        throw 'Could not launch ${url}';
       }
     }
   } else {
-    if (await canLaunch('${url}')) {
+    // if (await canLaunch('${url}')) {
+    //   await launch('${url}');
+    // } else {
+    //   throw 'Could not launch $url';
+    // }
+    try {
       await launch('${url}');
-    } else {
-      throw 'Could not launch $url';
+    }catch(e){
+      print('Could not launch $url');
     }
   }
 }

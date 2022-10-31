@@ -6,6 +6,7 @@ import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/UnauthorizedUserWidget.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatButton3.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/custom_views/loader/LoaderDialog.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
@@ -41,8 +42,10 @@ class _WishlistFragmentWidgetState
   var appBarHeight = 50.0;
   UserModel userModel = GlobalData.userModel;
   bool loginRequired;
+  bool loading = false;
 
   _WishlistFragmentWidgetState() {
+    EasyLoadingView.show(message: 'Loading...');
     loadData();
   }
 
@@ -78,8 +81,10 @@ class _WishlistFragmentWidgetState
                 {
                   cartModel = value,
                   loadContent(),
+                  loading = true,
                   this.setState(() {}),
-                }
+                },
+              EasyLoadingView.dismiss(),
             });
   }
 
@@ -105,6 +110,7 @@ class _WishlistFragmentWidgetState
     Map<String, dynamic> params = new Map();
     params["qty"] = noOfItems;
 
+    EasyLoadingView.show(message: 'Loading...');
     await _repository.productRequestApi
         .updateToCard(
           url: ApiUrls.CART + "/" + content.rowId,
@@ -135,6 +141,7 @@ class _WishlistFragmentWidgetState
 
     print(params);
 
+    EasyLoadingView.show(message: 'Loading...');
     await _repository.productRequestApi
         .addToCard(url: ApiUrls.CART, params: params)
         .then((value) async {
@@ -147,6 +154,7 @@ class _WishlistFragmentWidgetState
   }
 
   proceedAllToCard() async {
+    EasyLoadingView.show(message: 'Loading...');
     await _repository.productRequestApi
         .proceedAllToCard(url: ApiUrls.PROCEED_ALL_TO_CART_WISHLIST)
         .then((value) async {
@@ -398,19 +406,21 @@ class _WishlistFragmentWidgetState
                 ),
               ],
             )
-          : Container(
-              margin: EdgeInsets.only(top: 60),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "images/cart/ic_empty_cart.png",
-                    height: 300,
-                    width: 300,
+          : loading
+              ? Container(
+                  margin: EdgeInsets.only(top: 60),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "images/cart/ic_empty_cart.png",
+                        height: 300,
+                        width: 300,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
+                )
+              : Container();
     }
 
     Widget floatingWidget() {

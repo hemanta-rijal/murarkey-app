@@ -118,149 +118,151 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
                     // ),
                   ],
                 ),
-                Container(
-                  //width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: "${model.title}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppConstants.appColor.blackColor,
-                            fontSize: SizeConfig.textMultiplier * 2.2,
+                Expanded(
+                  child: Container(
+                    //width: double.infinity,
+                    margin: EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: "${model.title}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.appColor.blackColor,
+                              fontSize: SizeConfig.textMultiplier * 2.2,
+                            ),
                           ),
+                          textAlign: TextAlign.justify,
                         ),
-                        textAlign: TextAlign.justify,
-                      ),
-                      SizedBox(height: 8),
-                      // RichText(
-                      //   text: TextSpan(
-                      //     text: "Rs. ${model.price_after_discount}",
-                      //     style: TextStyle(
-                      //       fontWeight: FontWeight.bold,
-                      //       color: AppConstants.appColor.blackColor,
-                      //       fontSize: SizeConfig.textMultiplier * 2.1,
-                      //     ),
-                      //   ),
-                      //   textAlign: TextAlign.justify,
-                      // ),
-                      ProductPriceWidget(
-                        model: model,
-                        width: MediaQuery.of(context).size.width * 1/2.7,
-                        actualFontSize: SizeConfig.textMultiplier * 2.0,
-                        discountFontSize: SizeConfig.textMultiplier * 2.0,
-                        percentageFontSize: SizeConfig.textMultiplier * 2.0,
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppConstants.appColor.backgroundColor3,
-                              borderRadius: BorderRadius.circular(28),
-                            ),
-                            child: Icon(
-                              Icons.watch_later_outlined,
-                              color: Colors.blueAccent,
-                              size: 30,
-                            ),
-                          ),
-                          SizedBox(width: 16),
-                          RichText(
-                            text: TextSpan(
-                              text: "${model.duration}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppConstants.appColor.blackColor,
-                                fontSize: SizeConfig.textMultiplier * 2.0,
+                        SizedBox(height: 8),
+                        // RichText(
+                        //   text: TextSpan(
+                        //     text: "Rs. ${model.price_after_discount}",
+                        //     style: TextStyle(
+                        //       fontWeight: FontWeight.bold,
+                        //       color: AppConstants.appColor.blackColor,
+                        //       fontSize: SizeConfig.textMultiplier * 2.1,
+                        //     ),
+                        //   ),
+                        //   textAlign: TextAlign.justify,
+                        // ),
+                        ProductPriceWidget(
+                          model: model,
+                          width: MediaQuery.of(context).size.width * 1/2.7,
+                          actualFontSize: SizeConfig.textMultiplier * 2.0,
+                          discountFontSize: SizeConfig.textMultiplier * 2.0,
+                          percentageFontSize: SizeConfig.textMultiplier * 2.0,
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppConstants.appColor.backgroundColor3,
+                                borderRadius: BorderRadius.circular(28),
+                              ),
+                              child: Icon(
+                                Icons.watch_later_outlined,
+                                color: Colors.blueAccent,
+                                size: 30,
                               ),
                             ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16),
-                      // SizedBox(height: 12),
-                      // Container(
-                      //   width: 145,
-                      //   decoration: BoxDecoration(
-                      //     shape: BoxShape.rectangle,
-                      //     border: Border.all(
-                      //         width: 2, color: AppConstants.appColor.greyColor),
-                      //     borderRadius: BorderRadius.all(Radius.circular(2)),
-                      //   ),
-                      //   child: Row(
-                      //     mainAxisSize: MainAxisSize.max,
-                      //     children: [
-                      //       Container(
-                      //         margin: EdgeInsets.only(left: 4.0, right: 4.0),
-                      //         child: InkResponse(
-                      //           child: svgImageAssert2(
-                      //             imgUrl: "images/maths/ic_sub_2.svg",
-                      //             size: 16,
-                      //             color: AppConstants.appColor.greyColor,
-                      //           ),
-                      //           onTap: () {
-                      //             setState(() {
-                      //               viewModel.formAddToCardItem.text =
-                      //                   viewModel.subtract().toString();
-                      //             });
-                      //           },
-                      //         ),
-                      //       ),
-                      //       Container(
-                      //         margin: EdgeInsets.only(left: 4.0, right: 4.0),
-                      //         width: 80,
-                      //         child: textFieldDisableKeyboard(
-                      //           textAlign: TextAlign.center,
-                      //           borderColor: AppConstants.appColor.whiteColor,
-                      //           height: 30,
-                      //           controller: viewModel.formAddToCardItem,
-                      //         ),
-                      //       ),
-                      //       Container(
-                      //         margin: EdgeInsets.only(left: 4.0, right: 4.0),
-                      //         child: InkResponse(
-                      //           child: svgImageAssert2(
-                      //             imgUrl: "images/maths/ic_add_2.svg",
-                      //             size: 16,
-                      //             color: AppConstants.appColor.greyColor,
-                      //           ),
-                      //           onTap: () {
-                      //             setState(() {
-                      //               viewModel.formAddToCardItem.text =
-                      //                   viewModel.add().toString();
-                      //             });
-                      //           },
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // SizedBox(height: 4),
-                      FlatButton3(
-                        text: "ADD TO CART",
-                        fontSize: SizeConfig.textMultiplier * 1.8,
-                        textColor: AppConstants.appColor.redColor,
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        backgroundColor: AppConstants.appColor.backgroundColor2,
-                        //buttonWidth: 145,
-                        buttonHeight: 35,
-                        buttonCurve: 1.2,
-                        fontWeight: FontWeight.w800,
-                        boderColor: AppConstants.appColor.redColor,
-                        //buttonWidth: 100,
-                        onPressedCallback: () {
-                          addToCartToServer(model);
-                        },
-                      ),
-                    ],
+                            SizedBox(width: 16),
+                            RichText(
+                              text: TextSpan(
+                                text: "${model.duration}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppConstants.appColor.blackColor,
+                                  fontSize: SizeConfig.textMultiplier * 2.0,
+                                ),
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        // SizedBox(height: 12),
+                        // Container(
+                        //   width: 145,
+                        //   decoration: BoxDecoration(
+                        //     shape: BoxShape.rectangle,
+                        //     border: Border.all(
+                        //         width: 2, color: AppConstants.appColor.greyColor),
+                        //     borderRadius: BorderRadius.all(Radius.circular(2)),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisSize: MainAxisSize.max,
+                        //     children: [
+                        //       Container(
+                        //         margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                        //         child: InkResponse(
+                        //           child: svgImageAssert2(
+                        //             imgUrl: "images/maths/ic_sub_2.svg",
+                        //             size: 16,
+                        //             color: AppConstants.appColor.greyColor,
+                        //           ),
+                        //           onTap: () {
+                        //             setState(() {
+                        //               viewModel.formAddToCardItem.text =
+                        //                   viewModel.subtract().toString();
+                        //             });
+                        //           },
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                        //         width: 80,
+                        //         child: textFieldDisableKeyboard(
+                        //           textAlign: TextAlign.center,
+                        //           borderColor: AppConstants.appColor.whiteColor,
+                        //           height: 30,
+                        //           controller: viewModel.formAddToCardItem,
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                        //         child: InkResponse(
+                        //           child: svgImageAssert2(
+                        //             imgUrl: "images/maths/ic_add_2.svg",
+                        //             size: 16,
+                        //             color: AppConstants.appColor.greyColor,
+                        //           ),
+                        //           onTap: () {
+                        //             setState(() {
+                        //               viewModel.formAddToCardItem.text =
+                        //                   viewModel.add().toString();
+                        //             });
+                        //           },
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(height: 4),
+                        FlatButton3(
+                          text: "ADD TO CART",
+                          fontSize: SizeConfig.textMultiplier * 1.8,
+                          textColor: AppConstants.appColor.redColor,
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          backgroundColor: AppConstants.appColor.backgroundColor2,
+                          //buttonWidth: 145,
+                          buttonHeight: 35,
+                          buttonCurve: 1.2,
+                          fontWeight: FontWeight.w800,
+                          boderColor: AppConstants.appColor.redColor,
+                          //buttonWidth: 100,
+                          onPressedCallback: () {
+                            addToCartToServer(model);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],

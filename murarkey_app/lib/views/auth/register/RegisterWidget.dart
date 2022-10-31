@@ -3,9 +3,13 @@ import 'package:murarkey_app/custom_views/CheckBoxWidget.dart';
 import 'package:murarkey_app/custom_views/EditText.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/SocialMediaLoginCardWidget.dart';
+import 'package:murarkey_app/custom_views/dialogs/ErrorDialogWidget.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
+import 'package:murarkey_app/repository/models/auth/LoginModel.dart';
 import 'package:murarkey_app/repository/models/user/UserModel.dart';
+import 'package:murarkey_app/repository/provider/GoogleSignInProvider.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
@@ -66,15 +70,48 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         params["password"] = widget.viewModel.formPassword.text.trim();
         params["role"] = widget.viewModel.formRole;
 
+        EasyLoadingView.show(message: 'Registering...');
         await _repository.authApiRequest
             .register(url: ApiUrls.REGISTER_URL, params: params)
             .then((UserModel value) => {
+                  EasyLoadingView.dismiss(),
                   this.setState(() {
-                    Commons.toastMessage(context, "Registered Successfully! Please Login.");
+                    Commons.toastMessage(
+                        context, "Registered Successfully! Please Login.");
                     NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
                   }),
                 });
       }
+    }
+
+    Future loginWithGoogle({String accessToken, String name}) async {
+      Map<String, dynamic> params = new Map();
+      params["accessToken"] = "${accessToken}";
+      params["name"] = "${name}";
+
+      EasyLoadingView.show(message: 'Logging out...');
+      final LoginModel result = await _repository.authApiRequest
+          .loginWithGoogle(
+              url: ApiUrls.GOOGLE_LOGIN_URL, params: params, context: context);
+      EasyLoadingView.dismiss();
+      this.setState(() {
+        if (result != null && !result.success) {
+          ErrorDialogWidget.showAlertDialog(
+            context: context,
+            message: result.error,
+            cancelText: "Done",
+            cancleCallback: () {
+              NavigateRoute.pop(context);
+            },
+          );
+        } else if (result != null && result.success) {
+          Commons.toastMessage(context, "Successfully login");
+          NavigateRoute.popAndPushNamed(
+            context,
+            NavigateRoute.APP_LOADER,
+          );
+        }
+      });
     }
 
     return Material(
@@ -125,8 +162,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         fontSize: SizeConfig.textMultiplier * 2.0,
                         textColor: AppConstants.appColor.textColor,
                         keyboardType: TextInputType.emailAddress,
-                        margin: EdgeInsets.only(
-                            bottom: screenSize.width * .03),
+                        margin: EdgeInsets.only(bottom: screenSize.width * .03),
                         controller: widget.viewModel.formLastName,
                       ),
 
@@ -272,18 +308,37 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SocialMediaLoginCardWidget(
-                              text: "Google",
-                              imageSrc: 'images/ic_google.png',
-                              textColor: AppConstants.appColor.textColor3,
-                              fontSize: SizeConfig.textMultiplier * 1.5),
+                            text: "Google",
+                            imageSrc: 'images/ic_google.png',
+                            textColor: AppConstants.appColor.textColor3,
+                            fontSize: SizeConfig.textMultiplier * 1.5,
+                            onTap: () async {
+                              // final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                              // provider.googleLogin();
+                              GoogleSignInProvider google =
+                                  new GoogleSignInProvider();
+                              final accessToken =
+                                  await google.googleLoginFromUrl();
+                              var user = google.user;
+                              print("user----------->${user.id}");
+                              print(user.email);
+                              print(user.displayName);
+                              print(user.photoUrl);
+                              loginWithGoogle(
+                                  accessToken: accessToken,
+                                  name: user.displayName);
+                            },
+                          ),
                           SizedBox(
                             width: 30,
                           ),
                           SocialMediaLoginCardWidget(
-                              text: "Facebook",
-                              imageSrc: 'images/ic_facebook.png',
-                              textColor: AppConstants.appColor.textColor3,
-                              fontSize: SizeConfig.textMultiplier * 1.5),
+                            text: "Facebook",
+                            imageSrc: 'images/ic_facebook.png',
+                            textColor: AppConstants.appColor.textColor3,
+                            fontSize: SizeConfig.textMultiplier * 1.5,
+                            onTap: () {},
+                          ),
                         ],
                       ),
 

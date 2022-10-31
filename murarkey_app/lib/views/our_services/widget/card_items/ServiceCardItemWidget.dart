@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatButton3.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatStatefulButton2.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/local/LoadHtml.dart';
@@ -32,9 +33,11 @@ class ServiceCardItemWidget extends StatefulWidget {
 class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
   Repository _repository = new Repository();
   List<ServicesCategoryListsModel> servicesCategoryList = new List();
+  bool loading = false;
 
   @override
   void initState() {
+    EasyLoadingView.show(message: 'Loading...');
     _repository.servicesApiRequest
         .getServicesListFromCategory(
       url: ApiUrls.SERVICES_CATEGORY_LIST(
@@ -43,6 +46,8 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
     )
         .then((value) {
       servicesCategoryList = value;
+      EasyLoadingView.dismiss();
+      loading = true;
       this.setState(() {});
     });
     super.initState();
@@ -62,12 +67,20 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
 
     print(params);
 
+    EasyLoadingView.show(message: 'Adding to cart...');
     await _repository.productRequestApi
         .addToCard(url: ApiUrls.CART, params: params)
         .then((value) {
-      if (value != null) {
-        Commons.toastMessage(context, value["message"]);
+      try {
+        if (value != null) {
+          Commons.toastMessage(context, value["message"]);
+        } else {
+          Commons.toastMessage(context, "Please login to Add service to cart.");
+        }
+      } catch (e) {
+        Commons.toastMessage(context, "Please login to Add service to cart.");
       }
+      EasyLoadingView.dismiss();
       this.setState(() {});
     });
   }
@@ -112,123 +125,89 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
                       height: GlobalData.size.width * 0.35,
                       fit: BoxFit.cover,
                     ),
-                    // FlatButton3(
-                    //   text: "SELL",
-                    //   fontSize: SizeConfig.textMultiplier * 1.8,
-                    //   textColor: AppConstants.appColor.whiteColor,
-                    //   padding: EdgeInsets.only(left: 16, right: 16),
-                    //   backgroundColor: Colors.green,
-                    //   buttonHeight: 30,
-                    //   buttonWidth: GlobalData.size.width * 0.3,
-                    //   buttonCurve: 1.2,
-                    //   fontWeight: FontWeight.w800,
-                    //   boderColor: Colors.green,
-                    //   onPressedCallback: () {},
-                    // ),
                   ],
                 ),
-                Container(
-                  //width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: "${model.title}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: AppConstants.appColor.blackColor,
-                            fontSize: SizeConfig.textMultiplier * 2.2,
+                Expanded(
+                  child: Container(
+                    //width: double.infinity,
+                    margin: EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: "${model.title}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.appColor.blackColor,
+                              fontSize: SizeConfig.textMultiplier * 2.2,
+                            ),
                           ),
+                          textAlign: TextAlign.justify,
                         ),
-                        textAlign: TextAlign.justify,
-                      ),
-                      SizedBox(height: 8),
-                      // RichText(
-                      //   text: TextSpan(
-                      //     text: "Rs. ${model.price_after_discount}",
-                      //     style: TextStyle(
-                      //       fontWeight: FontWeight.bold,
-                      //       color: AppConstants.appColor.blackColor,
-                      //       fontSize: SizeConfig.textMultiplier * 2.1,
-                      //     ),
-                      //   ),
-                      //   textAlign: TextAlign.justify,
-                      // ),
-                      ProductPriceWidget(
-                        model: model,
-                        width: MediaQuery.of(context).size.width * 1/2.7,
-                        actualFontSize: SizeConfig.textMultiplier * 2.0,
-                        discountFontSize: SizeConfig.textMultiplier * 2.0,
-                        percentageFontSize: SizeConfig.textMultiplier * 2.0,
-                      ),
-                      SizedBox(height: 8),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppConstants.appColor.backgroundColor3,
-                              borderRadius: BorderRadius.circular(28),
-                            ),
-                            child: Icon(
-                              Icons.watch_later_outlined,
-                              color: Colors.blueAccent,
-                              size: 30,
-                            ),
-                          ),
-                          SizedBox(width: 16),
-                          RichText(
-                            text: TextSpan(
-                              text: "${model.duration}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppConstants.appColor.blackColor,
-                                fontSize: SizeConfig.textMultiplier * 2.0,
+                        SizedBox(height: 8),
+                        ProductPriceWidget(
+                          model: model,
+                          width: MediaQuery.of(context).size.width * 1 / 2.7,
+                          actualFontSize: SizeConfig.textMultiplier * 2.0,
+                          discountFontSize: SizeConfig.textMultiplier * 2.0,
+                          percentageFontSize: SizeConfig.textMultiplier * 2.0,
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppConstants.appColor.backgroundColor3,
+                                borderRadius: BorderRadius.circular(28),
+                              ),
+                              child: Icon(
+                                Icons.watch_later_outlined,
+                                color: Colors.blueAccent,
+                                size: 30,
                               ),
                             ),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16),
-                      FlatButton3(
-                        text: "ADD TO CART",
-                        fontSize: SizeConfig.textMultiplier * 1.8,
-                        textColor: AppConstants.appColor.redColor,
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        backgroundColor: AppConstants.appColor.backgroundColor2,
-                        buttonHeight: 35,
-                        buttonCurve: 1.2,
-                        fontWeight: FontWeight.w800,
-                        boderColor: AppConstants.appColor.redColor,
-                        //buttonWidth: 100,
-                        onPressedCallback: () {
-                          addToCartToServer(model);
-                        },
-                      ),
-                    ],
+                            SizedBox(width: 16),
+                            RichText(
+                              text: TextSpan(
+                                text: "${model.duration}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppConstants.appColor.blackColor,
+                                  fontSize: SizeConfig.textMultiplier * 2.0,
+                                ),
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        FlatButton3(
+                          text: "ADD TO CART",
+                          fontSize: SizeConfig.textMultiplier * 1.8,
+                          textColor: AppConstants.appColor.redColor,
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          backgroundColor: AppConstants.appColor.backgroundColor2,
+                          buttonHeight: 35,
+                          buttonCurve: 1.2,
+                          fontWeight: FontWeight.w800,
+                          boderColor: AppConstants.appColor.redColor,
+                          //buttonWidth: 100,
+                          onPressedCallback: () {
+                            addToCartToServer(model);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],
             ),
 
             SizedBox(height: 16),
-            // RichText(
-            //   text: TextSpan(
-            //     text: "${model.title}",
-            //     style: TextStyle(
-            //       fontWeight: FontWeight.bold,
-            //       color: AppConstants.appColor.blackColor,
-            //       fontSize: SizeConfig.textMultiplier * 2.2,
-            //     ),
-            //   ),
-            //   textAlign: TextAlign.justify,
-            // ),
-            // SizedBox(height: 8),
             shortDecription(model.short_description),
             //html(),
             SizedBox(height: 20),
@@ -277,7 +256,9 @@ class _ServiceCardItemWidgetState extends State<ServiceCardItemWidget> {
     return Container(
       child: servicesCategoryList != null && servicesCategoryList.length > 0
           ? listView()
-          : ServiceNotAvailableWidget(),
+          : loading
+              ? ServiceNotAvailableWidget()
+              : Container(),
     );
   }
 }

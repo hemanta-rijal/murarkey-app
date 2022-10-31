@@ -1,6 +1,7 @@
 import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/app_bar/AppBarWidget.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
@@ -33,8 +34,12 @@ class _PopularParloursDetailWidgetState
   _PopularParloursDetailWidgetState(this.parlorModel);
 
   getParloursDetail() async {
-    _controller.parlorModel =
-        await _controller.getParloursDetail(parlorModel.id);
+    EasyLoadingView.show(message: 'Loading...');
+    try {
+      _controller.parlorModel =
+          await _controller.getParloursDetail(parlorModel.id);
+    } catch (e) {}
+    EasyLoadingView.dismiss();
     if (_controller.parlorModel != null) {
       setState(() {});
     }

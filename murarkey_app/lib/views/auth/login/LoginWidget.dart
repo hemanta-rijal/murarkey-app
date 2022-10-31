@@ -6,6 +6,7 @@ import 'package:murarkey_app/custom_views/EditText.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/SocialMediaLoginCardWidget.dart';
 import 'package:murarkey_app/custom_views/dialogs/ErrorDialogWidget.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/auth/LoginModel.dart';
@@ -83,9 +84,11 @@ class _LoginWidgetState extends State<LoginWidget> {
         params["email"] = widget.viewModel.formEmail.text.trim();
         params["password"] = widget.viewModel.formPassword.text.trim();
 
+        EasyLoadingView.show(message: 'Logging in...');
         await _repository.authApiRequest
             .login(url: ApiUrls.LOGIN_URL, params: params, context: context)
             .then((LoginModel value) => {
+                  EasyLoadingView.dismiss(),
                   this.setState(() {
                     if (value != null && !value.success) {
                       ErrorDialogWidget.showAlertDialog(
@@ -115,9 +118,11 @@ class _LoginWidgetState extends State<LoginWidget> {
       params["accessToken"] = "${accessToken}";
       params["name"] = "${name}";
 
+      EasyLoadingView.show(message: 'Logging out...');
       final LoginModel result = await _repository.authApiRequest
           .loginWithGoogle(
               url: ApiUrls.GOOGLE_LOGIN_URL, params: params, context: context);
+      EasyLoadingView.dismiss();
       this.setState(() {
         if (result != null && !result.success) {
           ErrorDialogWidget.showAlertDialog(

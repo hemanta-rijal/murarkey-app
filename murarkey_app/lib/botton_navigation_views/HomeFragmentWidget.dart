@@ -41,46 +41,6 @@ class _HomeFragmentWidgetState
   List<OurServicesModel> ourServicesModelList = GlobalData.ourServicesModelList;
 
   @override
-  void initState() {
-    super.initState();
-    // GlobalData.ourServicesModelList.forEach((e) {
-    //   ourServicesModelList.add(e);
-    // });
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //         (_) => _showStartDialog()
-    // );
-    // var p = ProgressDialogLoader(context: context);
-    // p.show();
-    // Future.delayed(Duration(seconds: 20), (){
-    //   if(p.isShowing()){
-    //     p.hide();
-    //   }
-    // });
-  }
-
-  _showStartDialog() {
-    AlertDialogWidget.showAlertDialog(
-      context: context,
-      title: "Pay with ",
-      message: "Are you sure you want to pay with",
-      okText: "Continue",
-      cancelText: "Cancel",
-      okCallback: () async {
-        Navigator.pop(context);
-      },
-      cancleCallback: () {
-        Navigator.pop(context);
-      },
-    );
-  }
-
-  @override
-  void didChangeDependencies() {
-    //ProgressDialogLoader(context: context).show();
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
 

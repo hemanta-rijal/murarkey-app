@@ -1,8 +1,10 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/auth/register/RegisterWidget.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'custom_views/loader/CustomAnimation.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +16,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    EasyLoadingView.instance();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -21,6 +24,7 @@ class MyApp extends StatelessWidget {
       theme: AppConstants.appTheme.buildTheme(),
       onGenerateRoute: NavigateRoute.generateRoute,
       initialRoute: NavigateRoute.initialRoute(),
+      builder: EasyLoadingView.init(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:murarkey_app/custom_views/error_pages/DataNotAvailableWidget.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
@@ -20,6 +21,7 @@ class _RecentOrderWidgetState
   Repository _repository = new Repository();
   List<MyOrderModel> myOrderModel = new List();
   var _cardSize = 20.0;
+  bool loading = false;
 
   @override
   void initState() {
@@ -28,10 +30,13 @@ class _RecentOrderWidgetState
   }
 
   loadData() {
+    EasyLoadingView.show(message: 'Loading...');
     _repository.orderApiService
         .getMyOrderList(url: ApiUrls.MY_ORDER)
         .then((value) {
       myOrderModel = value;
+      loading = true;
+      EasyLoadingView.dismiss();
       this.setState(() {});
     });
   }
@@ -199,12 +204,14 @@ class _RecentOrderWidgetState
         children: [
           myOrderModel != null && myOrderModel.length > 0
               ? verticalView
-              : Container(
-                  margin: EdgeInsets.only(top: 200),
-                  child: DataNotAvailableWidget(
-                    message: "You have not order anything yet!",
-                  ),
-                ),
+              : loading
+                  ? Container(
+                      margin: EdgeInsets.only(top: 200),
+                      child: DataNotAvailableWidget(
+                        message: "You have not order anything yet!",
+                      ),
+                    )
+                  : Container(),
         ],
       );
     }

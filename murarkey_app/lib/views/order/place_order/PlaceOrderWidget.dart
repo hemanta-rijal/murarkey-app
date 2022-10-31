@@ -2,6 +2,7 @@ import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
 import 'package:murarkey_app/custom_views/date_time_picker/DateTimePickerWidget.dart';
 import 'package:murarkey_app/custom_views/dialogs/AlertDialogWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -50,23 +51,30 @@ class _PlaceOrderWidgetState
   int walletAmount = 0;
   var total = 0.0;
   var tempWalletAmount = 0.0;
+  bool loading = false;
 
   _PlaceOrderWidgetState() {
     paywith = GlobalData.paywith;
+    EasyLoadingView.show(message: 'Loading...');
     loadData(firstLoad: true);
   }
 
   loadData({bool firstLoad}) async {
-    await _repository.productRequestApi
-        .getCartList(url: ApiUrls.CART_LIST)
-        .then((value) => {
-              cartModel = value,
-              loadContent(),
-              this.setState(() {}),
-            });
-    walletAmount = await _repository.walletApiRequest.getWalletInfo(
-      url: ApiUrls.GET_WALLET_INFO,
-    );
+    try {
+      await _repository.productRequestApi
+          .getCartList(url: ApiUrls.CART_LIST)
+          .then((value) => {
+                cartModel = value,
+                loadContent(),
+                this.setState(() {}),
+              });
+      walletAmount = await _repository.walletApiRequest.getWalletInfo(
+        url: ApiUrls.GET_WALLET_INFO,
+      );
+    } catch (e) {}
+    loading = true;
+    EasyLoadingView.dismiss();
+
     this.setState(() {
       if (cartModel != null) {
         total = double.parse("${cartModel.total}");
@@ -91,7 +99,6 @@ class _PlaceOrderWidgetState
     print("tax-----> ${cartModel.tax}");
     print("couponDiscountPrice-----> ${cartModel.couponDiscountPrice}");
     print("total-----> ${cartModel.total}");
-
 
     this.cartModel = model;
     // this.cartModel.subTotal = model.subTotal;
@@ -388,6 +395,11 @@ class _PlaceOrderWidgetState
 
     var s = u.shipment_details;
     String sAddress = "${s.city} ${s.state} ${s.zip}";
+
+    if (!loading) {
+      return Container();
+    }
+
     return Column(
       children: [
         Container(
@@ -490,6 +502,8 @@ class _PlaceOrderWidgetState
                               child: TextButton(
                                 onPressed: () async {
                                   if (voucherTextController.text.isNotEmpty) {
+                                    EasyLoadingView.show(
+                                        message: "Applying....");
                                     Map<String, dynamic> result =
                                         await _repository.couponApi.applyCoupon(
                                       url: ApiUrls.COUPON_CODE,
@@ -500,7 +514,7 @@ class _PlaceOrderWidgetState
                                             .trim()
                                       },
                                     );
-
+                                    EasyLoadingView.dismiss();
                                     if (result["status"]) {
                                       //refresh UI
                                       afterCouponApply(

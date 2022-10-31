@@ -28,18 +28,18 @@ class _DrawerChildWidgetState
     print("${menuItemModel.label}");
 
     Widget buildView() {
-      //     if (menuItemModel.type == "video") {
-      //       Widget html = Html(
-      //         data: """
+      // if (menuItemModel.type == "video") {
+      //   Widget html = Html(
+      //     data: """
       // <video controls>
-      //   <source src="https://www.w3schools.com/html/mov_bbb.mp4" />
+      //   <source src="${menuItemModel.data}" />
       // </video>
-      // <iframe src="https://www.w3schools.com/html/mov_bbb.mp4"></iframe>""",
-      //         tagsList: Html.tags..remove(Platform.isAndroid ? "iframe" : "video"),
-      //       );
+      // <iframe src="${menuItemModel.data}"></iframe>""",
+      //     tagsList: Html.tags..remove(Platform.isAndroid ? "iframe" : "video"),
+      //   );
       //
-      //       return Container(child: html);
-      //     }
+      //   return Container(child: html);
+      // }
       if (menuItemModel.type == "video") {
         return Container();
       }

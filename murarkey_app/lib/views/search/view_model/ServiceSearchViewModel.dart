@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
@@ -62,6 +63,7 @@ class ServiceSearchViewModel {
   }
 
   callSearchApi() async {
+    EasyLoadingView.show(message: 'Loading...');
     List list = await _repository.servicesApiRequest.searchServicesFromCategory(
       url: ApiUrls.SERVICES_SEARCH,
       queryParams: queryParams,
@@ -73,6 +75,7 @@ class ServiceSearchViewModel {
         productDetailList.add(element);
       });
     }
+    EasyLoadingView.dismiss();
     state.setState(() {});
   }
 

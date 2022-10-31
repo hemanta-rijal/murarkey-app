@@ -1,3 +1,4 @@
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
@@ -50,9 +51,11 @@ class EditProfileViewModel {
       params["email"] = formEmail.text.trim();
       params["phone_number"] = formPhoneNo.text.trim();
 
+      EasyLoadingView.show(message: 'Saving...');
       await _repository.userApiRequest
           .updateUserProfile(url: ApiUrls.UPDATE_PROFILE, params: params)
           .then((value) {
+        EasyLoadingView.dismiss();
         if (value["status"] == 200) {
           Commons.toastMessage(context, value["message"]);
           _refreshUserDetails().then((value) {
@@ -94,9 +97,11 @@ class EditProfileViewModel {
       params["newpassword"] = formNewPass.text.trim();
       params["newpassword_confirmation"] = formConfirmPass.text.trim();
 
+      EasyLoadingView.show(message: 'Changing password...');
       await _repository.userApiRequest
           .changePassword(url: ApiUrls.CHANGE_PASSWORD, params: params)
           .then((value) {
+        EasyLoadingView.dismiss();
         if (value["status"] == 200) {
           Commons.toastMessage(context, value["message"]);
           status = "${value["status"]}";

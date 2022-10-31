@@ -1,3 +1,4 @@
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/country_list/CountryModel.dart';
@@ -35,11 +36,9 @@ class EditBillingAddressViewModel {
       Commons.toastMessage(context, "Please enter city name");
     } else if (formStateOrZone.text == null || formStateOrZone.text == "") {
       Commons.toastMessage(context, "Please enter state or zone name");
-    }
-    else if (formZipCode.text == null || formZipCode.text == "") {
+    } else if (formZipCode.text == null || formZipCode.text == "") {
       Commons.toastMessage(context, "Please enter zip code");
-    }
-    else if (formSpecificAddress.text == null ||
+    } else if (formSpecificAddress.text == null ||
         formSpecificAddress.text == "") {
       Commons.toastMessage(context, "Please enter specific address");
     } else {
@@ -54,10 +53,12 @@ class EditBillingAddressViewModel {
       return;
     }
 
+    EasyLoadingView.show(message: 'Saving Billing Address...');
     await _repository.paymentCardAddressApi
         .updateBillingAddress(
             url: ApiUrls.PAYMENT_BILLING_ADDRESS, params: _buildParams())
         .then((value) => {
+              EasyLoadingView.dismiss(),
               if (value != null)
                 {
                   Commons.toastMessage(context, value["message"]),
@@ -76,10 +77,12 @@ class EditBillingAddressViewModel {
       return;
     }
 
+    EasyLoadingView.show(message: 'Saving Shipping Address...');
     await _repository.paymentCardAddressApi
         .updateBillingAddress(
             url: ApiUrls.PAYMENT_SHIPPING_ADDRESS, params: _buildParams())
         .then((value) => {
+              EasyLoadingView.dismiss(),
               if (value != null)
                 {
                   Commons.toastMessage(context, value["message"]),

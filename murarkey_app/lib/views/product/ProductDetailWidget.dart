@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/custom_views/review/ReviewWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -59,6 +60,7 @@ class _ProductDetailWidgetState
 
   loadData() async {
     // Get home page banners list
+    EasyLoadingView.show(message: 'Loading...');
     await _repository.productRequestApi
         .getProductDetail(
           url: ApiUrls.PRODUCT_DETAIL + productModel.id.toString(),
@@ -66,6 +68,7 @@ class _ProductDetailWidgetState
         )
         .then((value) => {
               productDetailModel = value,
+              EasyLoadingView.dismiss(),
               this.setState(() {}),
             });
   }
@@ -108,11 +111,13 @@ class _ProductDetailWidgetState
 
     print(params);
 
+    EasyLoadingView.show(message: 'Adding to cart...');
     await _repository.productRequestApi
         .addToCard(url: ApiUrls.CART, params: params)
         .then((value) => {
               if (value != null)
                 {
+                  EasyLoadingView.dismiss(),
                   Commons.toastMessage(context, value["message"]),
                 },
               this.setState(() {}),
@@ -135,11 +140,13 @@ class _ProductDetailWidgetState
       "product_type": "product"
     };
 
+    EasyLoadingView.show(message: 'Adding to Wishlist...');
     await _repository.wishlistRequestApi
         .addToWishlist(url: ApiUrls.ADD_TO_WISHLIST, params: params)
         .then((value) => {
               if (value != null)
                 {
+                  EasyLoadingView.dismiss(),
                   Commons.toastMessage(context, value["message"]),
                 },
               this.setState(() {}),
@@ -349,7 +356,7 @@ class _ProductDetailWidgetState
           children: [
             //Product Category
             InkWell(
-              onTap: (){
+              onTap: () {
                 NavigateRoute.pop(context);
                 NavigateRoute.pop(context);
 
@@ -642,7 +649,7 @@ class _ProductDetailWidgetState
           ),
 
           Container(
-            margin:  EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 16),
+            margin: EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 16),
             width: double.infinity,
             child: Card(
               elevation: 4.0,

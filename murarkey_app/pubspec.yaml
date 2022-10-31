@@ -72,6 +72,7 @@ dependencies:
   #filter_list: 1.0.1
   smart_select: 4.3.2
   chips_choice: 2.0.1
+  flutter_easyloading: 2.2.2
 
   # todo end of dependencies
 

@@ -3,6 +3,7 @@ import 'package:murarkey_app/custom_views/UnauthorizedUserWidget.dart';
 import 'package:murarkey_app/custom_views/account_list/AcountListWidget.dart';
 import 'package:murarkey_app/custom_views/account_profile/AccountProfileWidget.dart';
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
@@ -68,9 +69,11 @@ class _AccountFragmentWidgetState
       } else if (index == 3) {
         Commons.toastMessage(context, "Comming soon");
       } else if (index == 4) {
+        EasyLoadingView.show(message: 'Logging out...');
         _repository.authApiRequest
             .logout(url: ApiUrls.LOGOUT_URL)
             .then((value) {
+          EasyLoadingView.dismiss();
           if (value != null) {
             Commons.toastMessage(context, value["message"]);
             //redirectToLogin();

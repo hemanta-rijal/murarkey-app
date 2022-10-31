@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:murarkey_app/botton_navigation_views/view_model/CardViewModel.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
@@ -6,6 +7,8 @@ import 'package:murarkey_app/custom_views/buttons/FlatStatefulButton2.dart';
 import 'package:murarkey_app/custom_views/dialogs/AlertDialogWidget.dart';
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/loader/Loader2Widget.dart';
 import 'package:murarkey_app/custom_views/loader/LoaderDialog.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
@@ -36,8 +39,10 @@ class _CartFragmentWidgetState
   LoaderDialog loaderDialog = new LoaderDialog();
   UserModel userModel = GlobalData.userModel;
   bool loginRequired;
+  bool loading = false;
 
   _CartFragmentWidgetState() {
+    EasyLoadingView.show(message: 'Loading...');
     loadData();
   }
 
@@ -80,14 +85,15 @@ class _CartFragmentWidgetState
   loadData() async {
     await _repository.productRequestApi
         .getCartList(url: ApiUrls.CART)
-        .then((value) => {
-              if (value != null)
-                {
-                  cartModel = value,
-                  loadContent(),
-                  this.setState(() {}),
-                }
-            });
+        .then((value) {
+      if (value != null) {
+        cartModel = value;
+        loadContent();
+        loading = true;
+        this.setState(() {});
+      }
+      EasyLoadingView.dismiss();
+    });
   }
 
   loadContent() {
@@ -112,6 +118,7 @@ class _CartFragmentWidgetState
     Map<String, dynamic> params = new Map();
     params["qty"] = noOfItems;
 
+    EasyLoadingView.show(message: 'Loading...');
     await _repository.productRequestApi
         .updateToCard(
           url: ApiUrls.CART + "/" + content.rowId,
@@ -437,19 +444,21 @@ class _CartFragmentWidgetState
                 )
               ],
             )
-          : Container(
-              margin: EdgeInsets.only(top: 60),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "images/cart/ic_empty_cart.png",
-                    height: 300,
-                    width: 300,
+          : loading
+              ? Container(
+                  margin: EdgeInsets.only(top: 60),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "images/cart/ic_empty_cart.png",
+                        height: 300,
+                        width: 300,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
+                )
+              : Container();
     }
 
     return renderWithAppBar(

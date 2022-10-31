@@ -5,23 +5,23 @@ import 'package:murarkey_app/repository/models/cart/CartModel.dart';
  * Created by Suman Prasad Neupane on 7/4/2021.
  */
 
-class WishlistRequestApi extends ApiRequest{
-
+class WishlistRequestApi extends ApiRequest {
   //Add to Wishlis
-  Future<dynamic> addToWishlist({String url, Map<String, dynamic> params}) async {
+  Future<dynamic> addToWishlist(
+      {String url, Map<String, dynamic> params}) async {
     var result;
 
     await this
         .postData(url: url, params: params, useToken: true)
         .then((Map<String, dynamic> value) => {
-      print("addToWishlist"),
-      if (value != null)
-        {
-          result = value,
-        }
-      else
-        {result = null}
-    });
+              print("addToWishlist"),
+              if (value != null)
+                {
+                  result = value,
+                }
+              else
+                {result = null}
+            });
     return result;
   }
 
@@ -29,18 +29,20 @@ class WishlistRequestApi extends ApiRequest{
   Future<CartModel> getAllWishList({String url}) async {
     CartModel result = new CartModel();
 
-    await this
-        .getData(url: url, useToken: true)
-        .then((Map<String, dynamic> value) => {
-      print("CartModel list"),
-      print(value),
-      if (value != null)
-        {
-          result = CartModel.fromJson(value["data"]),
-        }
-      else
-        {result = null}
-    });
+    try {
+      await this
+          .getData(url: url, useToken: true)
+          .then((Map<String, dynamic> value) => {
+                print("CartModel list"),
+                print(value),
+                if (value != null)
+                  {
+                    result = CartModel.fromJson(value["data"]),
+                  }
+                else
+                  {result = null}
+              });
+    } catch (e) {}
     return result;
   }
 }

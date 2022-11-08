@@ -192,11 +192,43 @@ abstract class ApiRequest extends Api {
       // Post Http call
       // Await the http get response, then decode the json-formatted response.
       http.Response response = await http
-          .put(
-            getUrl(url),
-            body: body,
-            headers: header,
-          )
+          .put(getUrl(url), body: body, headers: header)
+          .timeout(const Duration(seconds: 60));
+      return _parseData(response, url);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  //TODO PUT
+  @override
+  Future<Map<String, dynamic>> deleteData(
+      {String url,
+        Map<String, dynamic> params,
+        List<String> arguments,
+        bool useToken}) async {
+    super.postData();
+    try {
+      // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
+
+      //for https url
+      var full_url = ApiUrls.BASE_URL + url;
+      print(full_url);
+
+      // Body
+      var body = json.encode(params);
+      print(params);
+
+      //Header
+      print("useToken ${useToken}");
+      var header = await headers(useToken);
+      print(header);
+
+      // Post Http call
+      // Await the http get response, then decode the json-formatted response.
+      http.Response response = await http
+          .delete(getUrl(url), body: body, headers: header)
           .timeout(const Duration(seconds: 60));
       return _parseData(response, url);
     } catch (e) {

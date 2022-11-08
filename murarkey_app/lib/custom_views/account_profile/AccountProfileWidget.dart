@@ -7,10 +7,15 @@ import 'package:murarkey_app/utils/Imports.dart';
  */
 class AccountProfileWidget extends StatefulWidget {
   UserModel model;
+  int walletAmount;
   Function onTapCallback;
 
-  AccountProfileWidget({Key key, @required this.model, this.onTapCallback})
-      : super(key: key);
+  AccountProfileWidget({
+    Key key,
+    @required this.model,
+    @required this.walletAmount,
+    this.onTapCallback,
+  }) : super(key: key);
 
   @override
   _AccountProfileWidgetState createState() => _AccountProfileWidgetState();
@@ -41,7 +46,7 @@ class _AccountProfileWidgetState extends State<AccountProfileWidget> {
     }
 
     loadUserName(String text, double textSize) {
-      return Text(text != null? text: "",
+      return Text(text != null ? text : "",
           textAlign: TextAlign.start,
           style: TextStyle(
               fontSize: SizeConfig.textMultiplier * textSize,
@@ -84,7 +89,7 @@ class _AccountProfileWidgetState extends State<AccountProfileWidget> {
                           ),
                           SizedBox(height: 4),
                           loadBalance(
-                            "Balance: ",
+                            "Balance: Rs. ${widget.walletAmount}",
                             1.6,
                           ),
                         ],

@@ -1,6 +1,7 @@
 import 'package:murarkey_app/custom_views/error_pages/DataNotAvailableWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
@@ -26,9 +27,22 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
   List<WalletModel> walletModel = new List();
   double _imageHeight = 38.0;
   bool loading = false;
+  bool hasNetworkConnectivity = true;
 
   @override
   void initState() {
+    loadData();
+    super.initState();
+  }
+
+  loadData() async {
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      loading = true;
+      EasyLoadingView.dismiss();
+      setState(() {});
+      return;
+    }
     EasyLoadingView.show(message: 'Loading...');
     _repository.walletApiRequest
         .getMyWalletHistory(url: ApiUrls.GET_WALLET_HISTORY)
@@ -38,7 +52,6 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
       EasyLoadingView.dismiss();
       this.setState(() {});
     });
-    super.initState();
   }
 
   @override
@@ -197,22 +210,49 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
       );
     }
 
-    Widget verticalView = ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: walletModel.length,
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            margin: EdgeInsets.only(top: 8, bottom: 8),
-            child: Card(
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              child: buildItems(walletModel[index], index),
-            ),
-          );
-        });
+    Widget verticalView(){
+      if (!loading) {
+        return Container();
+      } else if (!hasNetworkConnectivity) {
+        return Container(
+          child: ConnectivityWidget(
+            retry: () {
+              hasNetworkConnectivity = true;
+              loading = false;
+              setState(() {});
+              EasyLoadingView.show(message: 'Loading...');
+              Future.delayed(Duration(seconds: 2), () {
+                loadData();
+              });
+            },
+          ),
+        );
+      }else if (walletModel == null || walletModel.length < 1) {
+        return Container(
+          margin: EdgeInsets.only(top: 200),
+          child: DataNotAvailableWidget(
+            message: "You have not order anything yet!",
+          ),
+        );
+      }
+
+      return ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: walletModel.length,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: EdgeInsets.only(top: 8, bottom: 8),
+              child: Card(
+                elevation: 4.0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                child: buildItems(walletModel[index], index),
+              ),
+            );
+          });
+    }
 
     Widget showBalance() {
       return Container(
@@ -369,19 +409,22 @@ class _WalletWidgetState extends CustomStatefulWidgetState<WalletWidget> {
       return Column(
         children: [
           menu(),
-          walletModel != null && walletModel.length > 0
-              ? verticalView
-              : loading
-                  ? Container(
-                      margin: EdgeInsets.only(top: 200),
-                      child: DataNotAvailableWidget(
-                        message: "No Wallet History",
-                      ),
-                    )
-                  : Container(),
+          verticalView(),
+          // walletModel != null && walletModel.length > 0
+          //     ? verticalView
+          //     : loading
+          //         ? Container(
+          //             margin: EdgeInsets.only(top: 200),
+          //             child: DataNotAvailableWidget(
+          //               message: "No Wallet History",
+          //             ),
+          //           )
+          //         : Container(),
         ],
       );
     }
+
+
 
     return renderWithAppBar(
       appBarText: "My Wallet",

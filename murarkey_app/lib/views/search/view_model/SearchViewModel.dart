@@ -4,6 +4,7 @@ import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/brands/BrandModel.dart';
 import 'package:murarkey_app/repository/models/category/CategoryModel.dart';
 import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/search/SearchWidget.dart';
 
@@ -34,7 +35,7 @@ class SearchViewModel {
   int perPageItems = 15;
   int pageNo = 1;
   Map<String, dynamic> queryParams = new Map();
-
+  bool hasNetworkConnectivity = true;
 
   SearchViewModel(this.state) {}
 
@@ -91,6 +92,18 @@ class SearchViewModel {
 
   callSearchApi() async {
     EasyLoadingView.show(message: 'Loading...');
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      //productDetailList = [];
+
+      Future.delayed(Duration(seconds: 2), () {
+        EasyLoadingView.dismiss();
+        state.setState(() {});
+      });
+
+      return;
+    }
+
     List list = await _repository.productRequestApi.getProductList(
       url: ApiUrls.PRODUCT_SEARCH,
       queryParams: queryParams,

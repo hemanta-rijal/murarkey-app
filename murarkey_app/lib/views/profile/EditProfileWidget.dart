@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/app_bar/AppBarWidget.dart';
 import 'package:murarkey_app/custom_views/image_picker/ImagePickerWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/models/user/UserModel.dart';
@@ -58,6 +60,56 @@ class _EditProfileWidgetState
   //   refresh();
   //   super.didChangeDependencies();
   // }
+
+  updateProfileApi() async {
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            updateProfileApi();
+          },
+          cancel: () {
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom,
+      );
+      return;
+    } else {
+      viewModel.updateProfile(context, this).then((value) {
+        setState(() {
+          refresh();
+        });
+      });
+    }
+  }
+
+  changePasswordApi() async {
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            changePasswordApi();
+          },
+          cancel: () {
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom,
+      );
+      return;
+    } else {
+      var status = await viewModel.changePassword(context, this);
+      if (status == "200") {
+        viewModel.logout(context, this);
+      }
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,11 +283,7 @@ class _EditProfileWidgetState
                     child: buttonWidget(
                         title: "Save",
                         callback: () {
-                          viewModel.updateProfile(context, this).then((value) {
-                            setState(() {
-                              refresh();
-                            });
-                          });
+                          updateProfileApi();
                         }),
                   )
                 ],
@@ -287,12 +335,7 @@ class _EditProfileWidgetState
                     child: buttonWidget(
                         title: "Done",
                         callback: () async {
-                          var status =
-                              await viewModel.changePassword(context, this);
-                          if (status == "200") {
-                            viewModel.logout(context, this);
-                          }
-                          setState(() {});
+                          changePasswordApi();
                         }),
                   )
                 ],

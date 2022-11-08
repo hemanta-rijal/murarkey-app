@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/SearchBarWidget.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
@@ -157,9 +159,27 @@ class ServiceSearchWidgetState
       );
     }
 
+    if (!viewModel.hasNetworkConnectivity) {
+      //show dialog here
+      print(
+          "viewModel.hasNetworkConnectivity===> ${viewModel.hasNetworkConnectivity}");
+
+      EasyLoading.show(
+        status: "",
+        indicator: ConnectivityWidget(
+          retry: () {
+            viewModel.search();
+            viewModel.callSearchApi();
+            EasyLoading.dismiss();
+          },
+        ),
+      );
+    }
+
     return WillPopScope(
       onWillPop: () async {
         //onBackPress();
+        EasyLoading.dismiss();
         return true;
       },
       child: renderWithAppBar(

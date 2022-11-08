@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatButton3.dart';
 import 'package:murarkey_app/custom_views/buttons/FlatStatefulButton2.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
@@ -38,27 +41,46 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
   Repository _repository = new Repository();
 
   addToCartToServer(ServicesCategoryListsModel model) async {
-    //Add product
-    Map<String, dynamic> params = new Map();
-    params["product_id"] = model.id.toString();
-    params["qty"] = 1.toString();
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            addToCartToServer(model);
+          },
+          cancel: () {
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom,
+      );
+      return;
+    } else {
+      //Add product
+      Map<String, dynamic> params = new Map();
+      params["product_id"] = model.id.toString();
+      params["qty"] = 1.toString();
 
-    params["type"] = "service";
-    params["options"] = {
-      "image": model.featured_image,
-      "product_type": "service"
-    };
+      params["type"] = "service";
+      params["options"] = {
+        "image": model.featured_image,
+        "product_type": "service"
+      };
 
-    print(params);
+      print(params);
 
-    await _repository.productRequestApi
-        .addToCard(url: ApiUrls.CART, params: params)
-        .then((value) {
-      if (value != null) {
-        Commons.toastMessage(context, value["message"]);
-      }
-      this.setState(() {});
-    });
+      EasyLoadingView.show(message: 'Loading...');
+      await _repository.productRequestApi
+          .addToCard(url: ApiUrls.CART, params: params)
+          .then((value) {
+        if (value != null) {
+          Commons.toastMessage(context, value["message"]);
+        }
+        EasyLoadingView.dismiss();
+        this.setState(() {});
+      });
+    }
   }
 
   Widget shortDecription(short_description) {
@@ -152,7 +174,7 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
                         // ),
                         ProductPriceWidget(
                           model: model,
-                          width: MediaQuery.of(context).size.width * 1/2.7,
+                          width: MediaQuery.of(context).size.width * 1 / 2.7,
                           actualFontSize: SizeConfig.textMultiplier * 2.0,
                           discountFontSize: SizeConfig.textMultiplier * 2.0,
                           percentageFontSize: SizeConfig.textMultiplier * 2.0,
@@ -250,7 +272,8 @@ class _ParlorCardItemWidgetState extends State<ParlorCardItemWidget> {
                           fontSize: SizeConfig.textMultiplier * 1.8,
                           textColor: AppConstants.appColor.redColor,
                           padding: EdgeInsets.only(left: 16, right: 16),
-                          backgroundColor: AppConstants.appColor.backgroundColor2,
+                          backgroundColor:
+                              AppConstants.appColor.backgroundColor2,
                           //buttonWidth: 145,
                           buttonHeight: 35,
                           buttonCurve: 1.2,

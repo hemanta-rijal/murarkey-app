@@ -7,6 +7,7 @@ import 'package:murarkey_app/repository/models/homepage_banner/HomepageBannerMod
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
 import 'package:murarkey_app/repository/models/service_category/ServiceCategoryModel.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/views/search/SearchWidget.dart';
 import 'package:murarkey_app/views/search/pages/ServiceSearchWidget.dart';
 
@@ -18,7 +19,8 @@ class ServiceSearchViewModel {
   final TextEditingController formMax = new TextEditingController();
   ScrollController scrollController = ScrollController();
 
-  List<ServicesCategoryListsModel> productDetailList = new List<ServicesCategoryListsModel>();
+  List<ServicesCategoryListsModel> productDetailList =
+      new List<ServicesCategoryListsModel>();
   List<ServiceCategoryModel> categoryModelList = [];
   ServiceCategoryModel categoryValue = null;
 
@@ -26,6 +28,7 @@ class ServiceSearchViewModel {
   int pageNo = 1;
   Map<String, dynamic> queryParams = new Map();
   String formSearch = "";
+  bool hasNetworkConnectivity = true;
 
   ServiceSearchViewModel(this.state) {}
 
@@ -64,6 +67,18 @@ class ServiceSearchViewModel {
 
   callSearchApi() async {
     EasyLoadingView.show(message: 'Loading...');
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      //productDetailList = [];
+
+      Future.delayed(Duration(seconds: 2), () {
+        EasyLoadingView.dismiss();
+        state.setState(() {});
+      });
+
+      return;
+    }
+
     List list = await _repository.servicesApiRequest.searchServicesFromCategory(
       url: ApiUrls.SERVICES_SEARCH,
       queryParams: queryParams,

@@ -10,6 +10,7 @@ import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/custom_views/loader/Loader2Widget.dart';
 import 'package:murarkey_app/custom_views/loader/LoaderDialog.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -40,6 +41,7 @@ class _CartFragmentWidgetState
   UserModel userModel = GlobalData.userModel;
   bool loginRequired;
   bool loading = false;
+  bool hasNetworkConnectivity = true;
 
   _CartFragmentWidgetState() {
     EasyLoadingView.show(message: 'Loading...');
@@ -60,29 +62,18 @@ class _CartFragmentWidgetState
 
   @override
   void didChangeDependencies() {
-    if (mounted) {
-      userModel = GlobalData.userModel;
-      if (userModel.name == null) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          setState(() {
-            Commons.toastMessage(
-                context, "Please Login to seen your order placed.");
-            //NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-            setState(() {
-              loginRequired = true;
-            });
-          });
-        });
-      } else {
-        setState(() {
-          loginRequired = false;
-        });
-      }
-    }
     super.didChangeDependencies();
   }
 
   loadData() async {
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      loading = true;
+      EasyLoadingView.dismiss();
+      setState(() {});
+      return;
+    }
+
     await _repository.productRequestApi
         .getCartList(url: ApiUrls.CART)
         .then((value) {
@@ -90,8 +81,8 @@ class _CartFragmentWidgetState
         cartModel = value;
         loadContent();
         loading = true;
-        this.setState(() {});
       }
+      this.setState(() {});
       EasyLoadingView.dismiss();
     });
   }
@@ -133,6 +124,116 @@ class _CartFragmentWidgetState
                   //  }
                 }
             });
+  }
+
+  deleteItemData(ContentCartModel content) async {
+    print("noOfItem= " + content.rowId);
+
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+          status: "",
+          indicator: Connectivity2Widget(
+            retry: () {
+              deleteItemData(content);
+            },
+            cancel: () {
+              EasyLoading.dismiss();
+            },
+          ),
+          maskType: EasyLoadingMaskType.custom);
+      return;
+    }
+
+    EasyLoadingView.show(message: 'Loading...');
+    await _repository.productRequestApi
+        .deleteFromCard(
+      url: ApiUrls.CART + "/" + content.rowId,
+    )
+        .then((value) {
+      if (value != null) {
+        //if (value["status"] == true)
+        // {
+        loadData();
+        //  }
+      }
+    });
+  }
+
+  subtract(ContentCartModel content, int index) async {
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+          status: "",
+          indicator: Connectivity2Widget(
+            retry: () {
+              subtract(content, index);
+            },
+            cancel: () {
+              EasyLoading.dismiss();
+            },
+          ),
+          maskType: EasyLoadingMaskType.custom);
+      return;
+    }
+
+    setState(() {
+      viewModel.productTextList[index].text =
+          viewModel.subtract(viewModel.productTextList[index].text).toString();
+
+      pushItemData(content, viewModel.productTextList[index].text);
+    });
+  }
+
+  add(ContentCartModel content, int index) async {
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+          status: "",
+          indicator: Connectivity2Widget(
+            retry: () {
+              add(content, index);
+            },
+            cancel: () {
+              EasyLoading.dismiss();
+            },
+          ),
+          maskType: EasyLoadingMaskType.custom);
+      return;
+    }
+    setState(() {
+      viewModel.productTextList[index].text =
+          viewModel.add(viewModel.productTextList[index].text).toString();
+
+      pushItemData(
+        content,
+        viewModel.productTextList[index].text,
+      );
+    });
+  }
+
+  checkout(cartModel) async {
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+          status: "",
+          indicator: Connectivity2Widget(
+            retry: () {
+              checkout(cartModel);
+            },
+            cancel: () {
+              EasyLoading.dismiss();
+            },
+          ),
+          maskType: EasyLoadingMaskType.custom);
+      return;
+    }
+
+    if (isTheirContentData == true && cartModel != null) {
+      NavigateRoute.pushNamed(context, NavigateRoute.ORDER_PLACED_PRODUCTS);
+    } else {
+      Commons.toastMessage(context, "Their is no order to shop");
+    }
   }
 
   @override
@@ -189,22 +290,16 @@ class _CartFragmentWidgetState
                             size: 16,
                             color: AppConstants.appColor.blackColor,
                           ),
-                          onTap: () {
-                            setState(() {
-                              viewModel.productTextList[index].text = viewModel
-                                  .subtract(
-                                      viewModel.productTextList[index].text)
-                                  .toString();
-
-                              pushItemData(content,
-                                  viewModel.productTextList[index].text);
-                            });
+                          onTap: () async {
+                            subtract(content, index);
                           },
                         )),
                     Expanded(
                       flex: 2,
                       child: Container(
                         margin: EdgeInsets.only(left: 4.0, right: 4.0),
+                        padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
+                        alignment: Alignment.center,
                         color: Colors.grey[200],
                         child: textFieldDisableKeyboard(
                           textAlign: TextAlign.center,
@@ -222,15 +317,8 @@ class _CartFragmentWidgetState
                           size: 16,
                           color: AppConstants.appColor.blackColor,
                         ),
-                        onTap: () {
-                          setState(() {
-                            viewModel.productTextList[index].text = viewModel
-                                .add(viewModel.productTextList[index].text)
-                                .toString();
-
-                            pushItemData(
-                                content, viewModel.productTextList[index].text);
-                          });
+                        onTap: () async {
+                          add(content, index);
                         },
                       ),
                     ),
@@ -259,14 +347,39 @@ class _CartFragmentWidgetState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: size.width - _cardSize - 88,
-                          child: textView1(
-                              title: content.name,
-                              textAlign: TextAlign.start,
-                              color: AppConstants.appColor.blackColor,
-                              textSize: 2.0,
-                              fontWeight: FontWeight.bold),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                width: size.width - _cardSize,
+                                child: textView1(
+                                    title: content.name,
+                                    textAlign: TextAlign.start,
+                                    color: AppConstants.appColor.blackColor,
+                                    textSize: 2.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                onTap: () {
+                                  deleteItemData(content);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(top: 4, right: 8),
+                                  child: Icon(
+                                    Icons.delete_forever,
+                                    size: 30,
+                                    color: Colors.red,
+                                  ),
+                                  alignment: Alignment.topRight,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 2),
                         textView1(
@@ -395,13 +508,7 @@ class _CartFragmentWidgetState
                       ),
                       child: TextButton(
                         onPressed: () {
-                          if (isTheirContentData == true && cartModel != null) {
-                            NavigateRoute.pushNamed(
-                                context, NavigateRoute.ORDER_PLACED_PRODUCTS);
-                          } else {
-                            Commons.toastMessage(
-                                context, "Their is no order to shop");
-                          }
+                          checkout(cartModel);
                         },
                         child: Text(
                           "Check out",
@@ -425,13 +532,32 @@ class _CartFragmentWidgetState
     }
 
     builder() {
-      if (isTheirContentData) {
-        dismissLoader(context);
+      userModel = GlobalData.userModel;
+      if (userModel.name == null) {
+        loginRequired = true;
+      } else {
+        loginRequired = false;
       }
 
-      if (loginRequired == null) {
+      if (loginRequired == null || !loading) {
         return Container();
-      } else if (loginRequired) {
+      } else if (!hasNetworkConnectivity) {
+        return Container(
+          margin: EdgeInsets.only(top: 180),
+          child: ConnectivityWidget(
+            retry: () {
+              hasNetworkConnectivity = true;
+              loginRequired = null;
+              loading = false;
+              setState(() {});
+              EasyLoadingView.show(message: 'Loading...');
+              Future.delayed(Duration(seconds: 2), () {
+                loadData();
+              });
+            },
+          ),
+        );
+      } else if (hasNetworkConnectivity && loginRequired && loading) {
         return UnauthorizedUserWidget();
       }
 
@@ -450,10 +576,25 @@ class _CartFragmentWidgetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        "images/cart/ic_empty_cart.png",
-                        height: 300,
-                        width: 300,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "images/cart/ic_empty_cart_4.png",
+                            height: 250,
+                            width: 250,
+                            fit: BoxFit.cover,
+                          ),
+                          Text(
+                            "List is Empty",
+                            style: TextStyle(
+                              color: AppConstants.appColor.greyColor,
+                              fontSize: SizeConfig.textMultiplier * 3.0,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

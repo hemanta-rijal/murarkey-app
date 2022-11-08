@@ -37,7 +37,7 @@ class FlatButton3 extends StatefulWidget {
     this.buttonHeight = buttonHeight == null ? 50 : buttonHeight;
     this.buttonWidth = buttonWidth == null ? null : buttonWidth;
     this.buttonCurve = buttonCurve == null ? 18.0 : buttonCurve;
-    this.boderColor = boderColor == AppConstants.appColor.whiteColor ? 18.0 : boderColor;
+    this.boderColor = boderColor == AppConstants.appColor.whiteColor ? AppConstants.appColor.whiteColor : boderColor;
   }
 
   @override

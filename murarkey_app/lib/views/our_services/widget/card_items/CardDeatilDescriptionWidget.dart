@@ -1,6 +1,8 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/review/ReviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
@@ -34,27 +36,44 @@ class _CardDeatilDescriptionWidgetState
   Repository _repository = new Repository();
 
   addToCartToServer() async {
-    //Add service
-    Map<String, dynamic> params = new Map();
-    params["product_id"] = widget.model.id.toString();
-    params["qty"] = 1.toString();
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            addToCartToServer();
+          },
+          cancel: () {
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom,
+      );
+      return;
+    } else {
+      //Add service
+      Map<String, dynamic> params = new Map();
+      params["product_id"] = widget.model.id.toString();
+      params["qty"] = 1.toString();
 
-    params["type"] = "service";
-    params["options"] = {
-      "image": widget.model.featured_image,
-      "product_type": "service"
-    };
+      params["type"] = "service";
+      params["options"] = {
+        "image": widget.model.featured_image,
+        "product_type": "service"
+      };
 
-    print(params);
+      print(params);
 
-    await _repository.productRequestApi
-        .addToCard(url: ApiUrls.CART, params: params)
-        .then((value) {
-      if (value != null) {
-        Commons.toastMessage(context, value["message"]);
-      }
-      this.setState(() {});
-    });
+      await _repository.productRequestApi
+          .addToCard(url: ApiUrls.CART, params: params)
+          .then((value) {
+        if (value != null) {
+          Commons.toastMessage(context, value["message"]);
+        }
+        this.setState(() {});
+      });
+    }
   }
 
   Widget loadBannerImage() {

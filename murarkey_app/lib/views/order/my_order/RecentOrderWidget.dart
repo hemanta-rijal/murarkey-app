@@ -1,10 +1,12 @@
 import 'package:murarkey_app/custom_views/error_pages/DataNotAvailableWidget.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/models/order/MyOrderModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 
 /**
@@ -22,6 +24,7 @@ class _RecentOrderWidgetState
   List<MyOrderModel> myOrderModel = new List();
   var _cardSize = 20.0;
   bool loading = false;
+  bool hasNetworkConnectivity = true;
 
   @override
   void initState() {
@@ -29,7 +32,15 @@ class _RecentOrderWidgetState
     super.initState();
   }
 
-  loadData() {
+  loadData() async {
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      loading = true;
+      EasyLoadingView.dismiss();
+      setState(() {});
+      return;
+    }
+
     EasyLoadingView.show(message: 'Loading...');
     _repository.orderApiService
         .getMyOrderList(url: ApiUrls.MY_ORDER)
@@ -177,7 +188,34 @@ class _RecentOrderWidgetState
       );
     }
 
-    Widget verticalView = ListView.builder(
+    Widget verticalView() {
+      if (!loading) {
+        return Container();
+      } else if (!hasNetworkConnectivity) {
+        return Container(
+          margin: EdgeInsets.only(top: 180),
+          child: ConnectivityWidget(
+            retry: () {
+              hasNetworkConnectivity = true;
+              loading = false;
+              setState(() {});
+              EasyLoadingView.show(message: 'Loading...');
+              Future.delayed(Duration(seconds: 2), () {
+                loadData();
+              });
+            },
+          ),
+        );
+      }else if (myOrderModel == null || myOrderModel.length < 1) {
+        return Container(
+          margin: EdgeInsets.only(top: 200),
+          child: DataNotAvailableWidget(
+            message: "You have not order anything yet!",
+          ),
+        );
+      }
+
+      return ListView.builder(
         padding: const EdgeInsets.all(8),
         itemCount: myOrderModel.length,
         physics: NeverScrollableScrollPhysics(),
@@ -197,28 +235,30 @@ class _RecentOrderWidgetState
               ),
             ),
           );
-        });
+        },
+      );
+    }
 
     Widget buildView() {
       return Column(
         children: [
-          myOrderModel != null && myOrderModel.length > 0
-              ? verticalView
-              : loading
-                  ? Container(
-                      margin: EdgeInsets.only(top: 200),
-                      child: DataNotAvailableWidget(
-                        message: "You have not order anything yet!",
-                      ),
-                    )
-                  : Container(),
+          verticalView(),
+          // myOrderModel != null && myOrderModel.length > 0
+          //     ? verticalView
+          //     : loading
+          //         ? Container(
+          //             margin: EdgeInsets.only(top: 200),
+          //             child: DataNotAvailableWidget(
+          //               message: "You have not order anything yet!",
+          //             ),
+          //           )
+          //         : Container(),
         ],
       );
     }
 
     return renderWithAppBar(
         appBarText: "My Orders",
-        bodybackgroundColor: AppConstants.appColor.backgroundColor2,
         childWidget: buildView());
   }
 }

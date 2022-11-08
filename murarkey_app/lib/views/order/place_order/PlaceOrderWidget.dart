@@ -1,8 +1,10 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:murarkey_app/custom_views/UnderlinedTextViewWidget.dart';
 import 'package:murarkey_app/custom_views/date_time_picker/DateTimePickerWidget.dart';
 import 'package:murarkey_app/custom_views/dialogs/AlertDialogWidget.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -388,6 +390,45 @@ class _PlaceOrderWidgetState
     );
   }
 
+  apply() async {
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            apply();
+          },
+          cancel: () {
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom,
+      );
+      return;
+    }else{
+      if (voucherTextController.text.isNotEmpty) {
+        EasyLoadingView.show(message: "Applying....");
+        Map<String, dynamic> result = await _repository.couponApi.applyCoupon(
+          url: ApiUrls.COUPON_CODE,
+          queryParams: {
+            "code": voucherTextController.text.toString().toUpperCase().trim()
+          },
+        );
+        EasyLoadingView.dismiss();
+        if (result["status"]) {
+          //refresh UI
+          afterCouponApply(
+            voucherTextController.text.toString().toUpperCase().trim(),
+            true,
+          );
+        }
+
+        Commons.toastMessage(context, result["message"]);
+      }
+    }
+  }
+
   buildView() {
     var u = GlobalData.userModel;
     var b = u.billing_details;
@@ -501,34 +542,7 @@ class _PlaceOrderWidgetState
                               ),
                               child: TextButton(
                                 onPressed: () async {
-                                  if (voucherTextController.text.isNotEmpty) {
-                                    EasyLoadingView.show(
-                                        message: "Applying....");
-                                    Map<String, dynamic> result =
-                                        await _repository.couponApi.applyCoupon(
-                                      url: ApiUrls.COUPON_CODE,
-                                      queryParams: {
-                                        "code": voucherTextController.text
-                                            .toString()
-                                            .toUpperCase()
-                                            .trim()
-                                      },
-                                    );
-                                    EasyLoadingView.dismiss();
-                                    if (result["status"]) {
-                                      //refresh UI
-                                      afterCouponApply(
-                                        voucherTextController.text
-                                            .toString()
-                                            .toUpperCase()
-                                            .trim(),
-                                        true,
-                                      );
-                                    }
-
-                                    Commons.toastMessage(
-                                        context, result["message"]);
-                                  }
+                                  apply();
                                 },
                                 child: Text(
                                   "Apply",

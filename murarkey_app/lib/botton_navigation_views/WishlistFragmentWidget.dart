@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:murarkey_app/botton_navigation_views/view_model/CardViewModel.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
@@ -8,6 +9,7 @@ import 'package:murarkey_app/custom_views/buttons/FlatButton3.dart';
 import 'package:murarkey_app/custom_views/load_image/SvgImage.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/custom_views/loader/LoaderDialog.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -43,6 +45,7 @@ class _WishlistFragmentWidgetState
   UserModel userModel = GlobalData.userModel;
   bool loginRequired;
   bool loading = false;
+  bool hasNetworkConnectivity = true;
 
   _WishlistFragmentWidgetState() {
     EasyLoadingView.show(message: 'Loading...');
@@ -51,29 +54,37 @@ class _WishlistFragmentWidgetState
 
   @override
   void didChangeDependencies() {
-    if (mounted) {
-      userModel = GlobalData.userModel;
-      if (userModel.name == null) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          setState(() {
-            Commons.toastMessage(
-                context, "Please Login to seen your wishlist order placed.");
-            //NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-            setState(() {
-              loginRequired = true;
-            });
-          });
-        });
-      } else {
-        setState(() {
-          loginRequired = false;
-        });
-      }
-    }
+    // if (mounted) {
+    //   userModel = GlobalData.userModel;
+    //   if (userModel.name == null) {
+    //     Future.delayed(const Duration(milliseconds: 500), () {
+    //       setState(() {
+    //         Commons.toastMessage(
+    //             context, "Please Login to seen your wishlist order placed.");
+    //         //NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+    //         setState(() {
+    //           loginRequired = true;
+    //         });
+    //       });
+    //     });
+    //   } else {
+    //     setState(() {
+    //       loginRequired = false;
+    //     });
+    //   }
+    // }
     super.didChangeDependencies();
   }
 
   loadData() async {
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      loading = true;
+      EasyLoadingView.dismiss();
+      setState(() {});
+      return;
+    }
+
     await _repository.wishlistRequestApi
         .getAllWishList(url: ApiUrls.GET_ALL_WISHLIST)
         .then((value) => {
@@ -128,42 +139,76 @@ class _WishlistFragmentWidgetState
   }
 
   addToCartToServer(ContentCartModel model) async {
-    //Add product
-    Map<String, dynamic> params = new Map();
-    params["product_id"] = model.id.toString();
-    params["qty"] = 1.toString();
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            addToCartToServer(model);
+          },
+          cancel: () {
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom,
+      );
+      return;
+    } else {
+      //Add product
+      Map<String, dynamic> params = new Map();
+      params["product_id"] = model.id.toString();
+      params["qty"] = 1.toString();
 
-    params["type"] = "product";
-    params["options"] = {
-      "image": model.options["image"],
-      "product_type": "product"
-    };
+      params["type"] = "product";
+      params["options"] = {
+        "image": model.options["image"],
+        "product_type": "product"
+      };
 
-    print(params);
+      print(params);
 
-    EasyLoadingView.show(message: 'Loading...');
-    await _repository.productRequestApi
-        .addToCard(url: ApiUrls.CART, params: params)
-        .then((value) async {
-      if (value != null) {
-        Commons.toastMessage(context, value["message"]);
-        await loadData();
-      }
-      this.setState(() {});
-    });
+      EasyLoadingView.show(message: 'Loading...');
+      await _repository.productRequestApi
+          .addToCard(url: ApiUrls.CART, params: params)
+          .then((value) async {
+        if (value != null) {
+          Commons.toastMessage(context, value["message"]);
+          await loadData();
+        }
+        this.setState(() {});
+      });
+    }
   }
 
   proceedAllToCard() async {
-    EasyLoadingView.show(message: 'Loading...');
-    await _repository.productRequestApi
-        .proceedAllToCard(url: ApiUrls.PROCEED_ALL_TO_CART_WISHLIST)
-        .then((value) async {
-      if (value != null) {
-        Commons.toastMessage(context, value["message"]);
-        await loadData();
-      }
-      this.setState(() {});
-    });
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            proceedAllToCard();
+          },
+          cancel: () {
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom,
+      );
+      return;
+    } else {
+      EasyLoadingView.show(message: 'Loading...');
+      await _repository.productRequestApi
+          .proceedAllToCard(url: ApiUrls.PROCEED_ALL_TO_CART_WISHLIST)
+          .then((value) async {
+        if (value != null) {
+          Commons.toastMessage(context, value["message"]);
+          await loadData();
+        }
+        this.setState(() {});
+      });
+    }
   }
 
   @override
@@ -391,9 +436,38 @@ class _WishlistFragmentWidgetState
     }
 
     builder() {
-      if (loginRequired == null) {
+      // if (loginRequired == null) {
+      //   return Container();
+      // } else if (loginRequired) {
+      //   return UnauthorizedUserWidget();
+      // }
+
+      userModel = GlobalData.userModel;
+      if (userModel.name == null) {
+        loginRequired = true;
+      } else {
+        loginRequired = false;
+      }
+
+      if (loginRequired == null || !loading) {
         return Container();
-      } else if (loginRequired) {
+      } else if (!hasNetworkConnectivity) {
+        return Container(
+          margin: EdgeInsets.only(top: 180),
+          child: ConnectivityWidget(
+            retry: () {
+              hasNetworkConnectivity = true;
+              loginRequired = null;
+              loading = false;
+              setState(() {});
+              EasyLoadingView.show(message: 'Loading...');
+              Future.delayed(Duration(seconds: 2), () {
+                loadData();
+              });
+            },
+          ),
+        );
+      } else if (hasNetworkConnectivity && loginRequired && loading) {
         return UnauthorizedUserWidget();
       }
 
@@ -412,10 +486,25 @@ class _WishlistFragmentWidgetState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        "images/cart/ic_empty_cart.png",
-                        height: 300,
-                        width: 300,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "images/cart/ic_empty_cart_4.png",
+                            height: 250,
+                            width: 250,
+                            fit: BoxFit.cover,
+                          ),
+                          Text(
+                            "List is Empty",
+                            style: TextStyle(
+                              color: AppConstants.appColor.greyColor,
+                              fontSize: SizeConfig.textMultiplier * 3.0,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

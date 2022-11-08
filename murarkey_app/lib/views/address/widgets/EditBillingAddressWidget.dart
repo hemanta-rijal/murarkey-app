@@ -1,6 +1,8 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/drop_down/DropDownWidget.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
@@ -50,6 +52,27 @@ class _EditBillingAddressWidgetState
               GlobalData.countryListModel.indexOf(country[0])];
         }
       }
+    }
+  }
+
+  updateBillingAddress() async {
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            updateBillingAddress();
+          },
+          cancel: () {
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom,
+      );
+      return;
+    } else {
+      viewModel.updateBillingAddress(context);
     }
   }
 
@@ -152,7 +175,7 @@ class _EditBillingAddressWidgetState
                     ),
                     child: TextButton(
                       onPressed: () {
-                        viewModel.updateBillingAddress(context);
+                        updateBillingAddress();
                       },
                       child: Text(
                         "Save Billing Address",

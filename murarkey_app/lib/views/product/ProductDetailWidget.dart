@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/ImageSliderWidget.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/review/ReviewWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -47,6 +49,8 @@ class _ProductDetailWidgetState
   final ProductDetailViewModel viewModel = new ProductDetailViewModel();
   List<HomepageBannerModel> bannerModelList;
   ProductDetailModel productDetailModel;
+  bool loading = false;
+  bool hasNetworkConnectivity = true;
 
   _ProductDetailWidgetState({
     @required this.productModel,
@@ -59,6 +63,14 @@ class _ProductDetailWidgetState
   }
 
   loadData() async {
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      loading = true;
+      EasyLoadingView.dismiss();
+      setState(() {});
+      return;
+    }
+
     // Get home page banners list
     EasyLoadingView.show(message: 'Loading...');
     await _repository.productRequestApi
@@ -93,6 +105,22 @@ class _ProductDetailWidgetState
   }
 
   addToCartToServer() async {
+    var check = await Commons.checkNetworkConnectivity();
+    if (!check) {
+      EasyLoading.show(
+        status: "",
+        indicator: Connectivity2Widget(
+          retry: () {
+            addToCartToServer() ;
+          },
+          cancel: (){
+            EasyLoading.dismiss();
+          },
+        ),
+        maskType: EasyLoadingMaskType.custom
+      );
+      return;
+    }
     //Add product
     Map<String, dynamic> params = new Map();
     params["product_id"] = productDetailModel.id.toString();
@@ -612,55 +640,76 @@ class _ProductDetailWidgetState
     }
 
     buildView() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        //mainAxisSize: MainAxisSize.min,
-        children: [
-          //Product Banner
-          productDetailModel != null
-              ? Container(
-                  margin: EdgeInsets.only(left: 12, right: 12, top: 8),
-                  child: ImageSliderWidget(
-                    bannerModelList: productDetailModel.images,
-                    bannerHeight: 200,
-                    imageFit: BoxFit.contain,
-                    backgroundColor: AppConstants.appColor.whiteColor,
-                    //bannerWidth: 200,
-                  ),
-                )
-              : Container(),
+      if (!hasNetworkConnectivity) {
+        //show dialog here
+        print("viewModel.hasNetworkConnectivity===> ${hasNetworkConnectivity}");
 
-          //Product Name and Address
-          Container(
-            margin: EdgeInsets.only(top: 16, left: 8, right: 8),
-            child: Column(
+        EasyLoading.show(
+          status: "",
+          indicator: Connectivity2Widget(
+            retry: () {
+              loadData();
+              EasyLoading.dismiss();
+            },
+            cancel: (){
+              EasyLoading.dismiss();
+            },
+          ),
+        );
+      }
+
+      return productDetailModel != null
+          ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              //mainAxisSize: MainAxisSize.min,
               children: [
-                categoryAndTags(),
-                SizedBox(height: 8),
-                ProductDescriptionWidget(
-                    title: "Introduction",
-                    body: productDetailModel != null
-                        ? productDetailModel.details
-                        : ""),
-                //SizedBox(height: 16),
-              ],
-            ),
-          ),
+                //Product Banner
+                productDetailModel != null
+                    ? Container(
+                        margin: EdgeInsets.only(left: 12, right: 12, top: 8),
+                        child: ImageSliderWidget(
+                          bannerModelList: productDetailModel.images,
+                          bannerHeight: 200,
+                          imageFit: BoxFit.contain,
+                          backgroundColor: AppConstants.appColor.whiteColor,
+                          //bannerWidth: 200,
+                        ),
+                      )
+                    : Container(),
 
-          Container(
-            margin: EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 16),
-            width: double.infinity,
-            child: Card(
-              elevation: 4.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: reviews(),
-            ),
-          ),
-        ],
-      );
+                //Product Name and Address
+                Container(
+                  margin: EdgeInsets.only(top: 16, left: 8, right: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      categoryAndTags(),
+                      SizedBox(height: 8),
+                      ProductDescriptionWidget(
+                          title: "Introduction",
+                          body: productDetailModel != null
+                              ? productDetailModel.details
+                              : ""),
+                      //SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+
+                Container(
+                  margin:
+                      EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 16),
+                  width: double.infinity,
+                  child: Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: reviews(),
+                  ),
+                ),
+              ],
+            )
+          : Container();
     }
 
     return renderWithAppBar(

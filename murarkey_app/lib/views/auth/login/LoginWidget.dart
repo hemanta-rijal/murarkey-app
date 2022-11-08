@@ -5,6 +5,7 @@ import 'package:murarkey_app/custom_views/CheckBoxWidget.dart';
 import 'package:murarkey_app/custom_views/EditText.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/SocialMediaLoginCardWidget.dart';
+import 'package:murarkey_app/custom_views/buttons/FlatButton3.dart';
 import 'package:murarkey_app/custom_views/dialogs/ErrorDialogWidget.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -235,7 +236,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         ],
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 16,
                       ),
 
                       //Log in
@@ -244,10 +245,57 @@ class _LoginWidgetState extends State<LoginWidget> {
                         fontSize: SizeConfig.textMultiplier * 2.0,
                         textColor: AppConstants.appColor.accentColor,
                         padding: EdgeInsets.all(screenSize.width * .02),
-                        backgroundColor: AppConstants.appColor.buttonColor,
+                        backgroundColor:
+                            AppConstants.appColor.primaryLightColor,
                         onPressedCallback: () {
                           login();
                         },
+                      ),
+                      // FlatButton3(
+                      //   text: AppConstants.constants.LOG_IN,
+                      //   fontSize: SizeConfig.textMultiplier * 2.0,
+                      //   textColor: AppConstants.appColor.accentColor,
+                      //   padding: EdgeInsets.all(screenSize.width * .02),
+                      //   backgroundColor:
+                      //       AppConstants.appColor.primaryLightColor,
+                      //   buttonCurve: 16,
+                      //   fontWeight: FontWeight.normal,
+                      //   boderColor: AppConstants.appColor.whiteColor,
+                      //   buttonWidth: double.infinity,
+                      //   onPressedCallback: () {},
+                      // ),
+                      SizedBox(
+                        height: 16,
+                      ),
+
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: (){
+                            NavigateRoute.popAndPushNamed(
+                                context, NavigateRoute.APP_LOADER);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "GO HOME",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color:  Colors.red,
+                                  fontSize: SizeConfig.textMultiplier * 1.8,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Icon(
+                                Icons.arrow_right_alt,
+                                size: 45,
+                                color: Colors.red,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
 
                       SizedBox(
@@ -340,20 +388,6 @@ class _LoginWidgetState extends State<LoginWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // ChangeNotifierProvider(
-                          //   create: (contect) => GoogleSignInProvider(),
-                          //   child: SocialMediaLoginCardWidget(
-                          //     text: "Google",
-                          //     imageSrc: 'images/ic_google.png',
-                          //     textColor: AppConstants.appColor.textColor3,
-                          //     fontSize: SizeConfig.textMultiplier * 1.5,
-                          //     onTap: () {
-                          //       final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                          //       provider.googleLogin();
-                          //       provider.googleLogin();
-                          //     },
-                          //   ),
-                          // ),
                           SocialMediaLoginCardWidget(
                             text: "Google",
                             imageSrc: 'images/ic_google.png',

@@ -2,11 +2,13 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/app_bar/AppBarWidget.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/models/our_services/service_category_lists/ServicesCategoryListsModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorModel.dart';
 import 'package:murarkey_app/repository/models/popular_parlor/ParlorServicesModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
+import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/our_services/error/ServiceNotAvailableWidget.dart';
 import 'package:murarkey_app/views/poplar_parlors/widget/ParlorCardItemWidget.dart';
@@ -30,15 +32,26 @@ class _PopularParloursDetailWidgetState
   Widget appBar;
   PopularParloursDetailController _controller =
       new PopularParloursDetailController();
+  bool hasNetworkConnectivity = true;
+  bool loading = true;
 
   _PopularParloursDetailWidgetState(this.parlorModel);
 
   getParloursDetail() async {
     EasyLoadingView.show(message: 'Loading...');
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      loading = false;
+      EasyLoadingView.dismiss();
+      setState(() {});
+      return;
+    }
+
     try {
       _controller.parlorModel =
           await _controller.getParloursDetail(parlorModel.id);
     } catch (e) {}
+    loading = false;
     EasyLoadingView.dismiss();
     if (_controller.parlorModel != null) {
       setState(() {});
@@ -50,9 +63,9 @@ class _PopularParloursDetailWidgetState
     appBar = AppBarWidget(
       title: parlorModel.name,
       mainAxisAlignment: MainAxisAlignment.center,
-      backgroundColor: AppConstants.appColor.backgroundColor2,
-      backArrowColor: AppConstants.appColor.primaryColor,
-      textColor: AppConstants.appColor.blackColor,
+      backgroundColor: AppConstants.appColor.primaryColor,
+      backArrowColor: AppConstants.appColor.accentColor,
+      textColor: AppConstants.appColor.accentColor,
       backArrowSize: 25.0,
       titleSize: 2.3,
       setElevation: false,
@@ -233,8 +246,26 @@ class _PopularParloursDetailWidgetState
   @override
   Widget build(BuildContext context) {
     Widget builder() {
+      if (!hasNetworkConnectivity) {
+        return Container(
+          child: ConnectivityWidget(
+            retry: () {
+              hasNetworkConnectivity = true;
+              loading = true;
+              setState(() {});
+              EasyLoadingView.show(message: 'Loading...');
+              Future.delayed(Duration(seconds: 2), () {
+                getParloursDetail();
+              });
+            },
+          ),
+        );
+      } else if (loading) {
+        return Container();
+      }
+
       return Container(
-        color: AppConstants.appColor.backgroundColor2,
+        color: AppConstants.appColor.whiteColor,
         child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,7 +293,7 @@ class _PopularParloursDetailWidgetState
               loadBannerImage(),
               _controller.parlorModel != null
                   ? Container(
-                      margin: EdgeInsets.only(bottom: 16),
+                      // margin: EdgeInsets.only(bottom: 16),
                       child: Card(
                         elevation: 4.0,
                         margin: EdgeInsets.all(0),
@@ -284,6 +315,11 @@ class _PopularParloursDetailWidgetState
                       ),
                     )
                   : Container(),
+              Divider(
+                color: Colors.black38,
+                thickness: 8,
+                height: 1,
+              ),
               renderSubPageItems(),
             ],
           ),
@@ -294,19 +330,22 @@ class _PopularParloursDetailWidgetState
     return render(
       childWidget: Scaffold(
         body: SafeArea(
-          child: new LayoutBuilder(builder:
-              (BuildContext context, BoxConstraints viewportConstraints) {
-            return SingleChildScrollView(
-              //physics: NeverScrollableScrollPhysics(),
-              child: ConstrainedBox(
+          child: new LayoutBuilder(
+            builder:
+                (BuildContext context, BoxConstraints viewportConstraints) {
+              return SingleChildScrollView(
+                //physics: NeverScrollableScrollPhysics(),
+                child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: viewportConstraints.maxHeight,
                   ),
                   child: Container(
                     child: builder(),
-                  )),
-            );
-          }),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

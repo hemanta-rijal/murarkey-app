@@ -4,6 +4,7 @@ import 'package:murarkey_app/custom_views/account_list/AcountListWidget.dart';
 import 'package:murarkey_app/custom_views/account_profile/AccountProfileWidget.dart';
 import 'package:murarkey_app/custom_views/fb_float_button/FBFloatingButton.dart';
 import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
 import 'package:murarkey_app/repository/api_call/ApiUrls.dart';
 import 'package:murarkey_app/repository/local/AccountDatas.dart';
@@ -21,38 +22,44 @@ class _AccountFragmentWidgetState
     extends CustomStatefulWidgetState<AccountFragmentWidget> {
   Repository _repository = new Repository();
   UserModel userModel = GlobalData.userModel;
+  int walletAmount = 0;
   bool loginRequired;
-
-  @override
-  void didChangeDependencies() {
-    if (mounted) {
-      userModel = GlobalData.userModel;
-      if (userModel.name == null) {
-        // Future.delayed(const Duration(milliseconds: 500), () {
-        //   setState(() {
-        //     Commons.toastMessage(context, "Please Login to seen your account.");
-        //     NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-        //   });
-        // });
-        redirectToLogin();
-      } else {
-        setState(() {
-          loginRequired = false;
-        });
-      }
-    }
-    super.didChangeDependencies();
-  }
+  bool loading = false;
+  bool hasNetworkConnectivity = true;
 
   redirectToLogin() {
     setState(() {
       loginRequired = true;
     });
-    // Future.delayed(const Duration(milliseconds: 100), () {
-    //   setState(() {
-    //     NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-    //   });
-    // });
+  }
+
+  @override
+  void initState() {
+    EasyLoadingView.show(message: 'Loading...');
+    loadData();
+    super.initState();
+  }
+
+  loadData() async {
+    hasNetworkConnectivity = await Commons.checkNetworkConnectivity();
+    if (!hasNetworkConnectivity) {
+      loading = true;
+      EasyLoadingView.dismiss();
+      setState(() {});
+      return;
+    } else {
+      try {
+        walletAmount = await _repository.walletApiRequest.getWalletInfo(
+          url: ApiUrls.GET_WALLET_INFO,
+        );
+      } catch (e) {
+        walletAmount = 0;
+      }
+      loading = true;
+      EasyLoadingView.dismiss();
+      setState(() {});
+      return;
+    }
   }
 
   @override
@@ -94,9 +101,32 @@ class _AccountFragmentWidgetState
     }
 
     builder() {
-      if (loginRequired == null) {
+      userModel = GlobalData.userModel;
+      if (userModel.name == null) {
+        loginRequired = true;
+      } else {
+        loginRequired = false;
+      }
+
+      if (loginRequired == null || !loading) {
         return Container();
-      } else if (loginRequired) {
+      } else if (!hasNetworkConnectivity) {
+        return Container(
+          margin: EdgeInsets.only(top: 120),
+          child: ConnectivityWidget(
+            retry: () {
+              hasNetworkConnectivity = true;
+              loginRequired = null;
+              loading = false;
+              setState(() {});
+              EasyLoadingView.show(message: 'Loading...');
+              Future.delayed(Duration(seconds: 2), () {
+                loadData();
+              });
+            },
+          ),
+        );
+      } else if (hasNetworkConnectivity && loginRequired && loading) {
         return UnauthorizedUserWidget();
       }
 
@@ -119,6 +149,7 @@ class _AccountFragmentWidgetState
                       children: [
                         AccountProfileWidget(
                           model: userModel,
+                          walletAmount: walletAmount,
                           onTapCallback: () {
                             onTapEditProfile();
                           },

@@ -30,16 +30,13 @@ class EasyLoadingView {
   static instance() {
     return EasyLoading.instance
       ..displayDuration = const Duration(milliseconds: 2000)
-      // ..indicatorType = EasyLoadingIndicatorType.threeBounce
       ..loadingStyle = EasyLoadingStyle.light
       ..indicatorSize = 60.0
-      // ..progressColor = Colors.yellow
-      // ..backgroundColor = Colors.green
-      // ..indicatorColor = Colors.yellow
-      ..textColor = Colors.yellow
-      ..maskColor = Colors.blue.withOpacity(0.5)
+      ..maskType = EasyLoadingMaskType.custom
+      ..maskColor = Colors.transparent
       ..userInteractions = false
       ..dismissOnTap = false
+      ..contentPadding = EdgeInsets.zero
       ..customAnimation = CustomAnimation();
   }
 
@@ -52,7 +49,6 @@ class EasyLoadingView {
         radius: 30,
         dotRadius: 5.0,
       ),
-      //maskType: EasyLoadingMaskType.custom
     );
   }
 

@@ -110,6 +110,26 @@ class ProductRequestApi extends ApiRequest {
     return result;
   }
 
+  //Update to Card
+  Future<dynamic> deleteFromCard(
+      {String url, Map<String, dynamic> params}) async {
+    // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
+    var result;
+
+    await this
+        .deleteData(url: url, params: params, useToken: true)
+        .then((Map<String, dynamic> value) => {
+      print("deleteToCard"),
+      if (value != null)
+        {
+          result = value,
+        }
+      else
+        {result = null}
+    });
+    return result;
+  }
+
   //Product List
   Future<CartModel> getCartList({String url}) async {
     CartModel result = new CartModel();

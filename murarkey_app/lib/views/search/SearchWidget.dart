@@ -1,5 +1,7 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:murarkey_app/custom_views/SearchBarWidget.dart';
 import 'package:murarkey_app/custom_views/drop_down/DropDownWidget.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -105,6 +107,12 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
       setState(() {});
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
   }
 
   @override
@@ -253,14 +261,32 @@ class SearchWidgetState extends CustomStatefulWidgetState<SearchWidget> {
     onBackPress() {
       if (viewModel.skinVarientModelMap != null) {
         NavigateRoute.popAndPushNamed(context, NavigateRoute.HOME);
-        // NavigateRoute.pop(context);
-        // NavigateRoute.pop(context);
       }
+    }
+
+    if (!viewModel.hasNetworkConnectivity) {
+      //show dialog here
+      print(
+          "viewModel.hasNetworkConnectivity===> ${viewModel.hasNetworkConnectivity}");
+
+      EasyLoading.show(
+        status: "",
+        indicator: ConnectivityWidget(
+          retry: () {
+            viewModel.search();
+            viewModel.callSearchApi();
+            EasyLoading.dismiss();
+          },
+        ),
+      );
     }
 
     return WillPopScope(
       onWillPop: () async {
         onBackPress();
+        if (EasyLoading.isShow) {
+          EasyLoading.dismiss();
+        }
         return true;
       },
       child: renderWithAppBar(

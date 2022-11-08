@@ -1,7 +1,10 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:murarkey_app/custom_views/CustomStatefulWidget.dart';
 import 'package:murarkey_app/custom_views/FlatStatefulButton.dart';
 import 'package:murarkey_app/custom_views/checkboxes/MultipleCheckboxWidget.dart';
 import 'package:murarkey_app/custom_views/drop_down/DropDownWidget.dart';
+import 'package:murarkey_app/custom_views/loader/CustomAnimation.dart';
+import 'package:murarkey_app/custom_views/network/ConnectivityWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextFieldWidget.dart';
 import 'package:murarkey_app/custom_views/text_view/TextviewWidget.dart';
 import 'package:murarkey_app/repository/Repository.dart';
@@ -34,28 +37,47 @@ class _BookAppontmentWidgetState
     viewModel.getCheckboxItems();
 
     validation() async {
-      if (viewModel.validate(context)) {
-        Map<String, dynamic> params = new Map();
-        params["full_name"] = viewModel.formFirstName.text.trim() +
-            " " +
-            viewModel.formLastName.text.trim();
-        params["email"] = viewModel.formEmail.text.trim();
-        params["phone_number"] = viewModel.formPhone.text.trim();
-        params["viber_number"] = viewModel.formViberPhone.text.trim();
-        params["preferred_work"] =
-            viewModel.values.toString(); //json.encode(viewModel.values);
-        params["preferred_location"] = viewModel.formCountry.trim();
-        params["about"] = viewModel.formNote.text.trim();
+      var check = await Commons.checkNetworkConnectivity();
+      if (!check) {
+        EasyLoading.show(
+          status: "",
+          indicator: Connectivity2Widget(
+            retry: () {
+              validation();
+            },
+            cancel: () {
+              EasyLoading.dismiss();
+            },
+          ),
+          maskType: EasyLoadingMaskType.custom,
+        );
+        return;
+      } else {
+        if (viewModel.validate(context)) {
+          Map<String, dynamic> params = new Map();
+          params["full_name"] = viewModel.formFirstName.text.trim() +
+              " " +
+              viewModel.formLastName.text.trim();
+          params["email"] = viewModel.formEmail.text.trim();
+          params["phone_number"] = viewModel.formPhone.text.trim();
+          params["viber_number"] = viewModel.formViberPhone.text.trim();
+          params["preferred_work"] =
+              viewModel.values.toString(); //json.encode(viewModel.values);
+          params["preferred_location"] = viewModel.formCountry.trim();
+          params["about"] = viewModel.formNote.text.trim();
 
-        await _repository.joinProfessionalApi
-            .postJoinProfessional(
-                url: ApiUrls.JOIN_PARLOR_PROFESSION, params: params)
-            .then((JoinProfessionalModel value) => {
-                  this.setState(() {
-                    Commons.toastMessage(context, "Successfully booked.");
-                    //NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
-                  }),
-                });
+          EasyLoadingView.show(message: 'Loading...');
+          await _repository.joinProfessionalApi
+              .postJoinProfessional(
+                  url: ApiUrls.JOIN_PARLOR_PROFESSION, params: params)
+              .then((JoinProfessionalModel value) => {
+                    EasyLoadingView.dismiss(),
+                    this.setState(() {
+                      Commons.toastMessage(context, "Successfully booked.");
+                      //NavigateRoute.popAndPushNamed(context, NavigateRoute.LOGIN);
+                    }),
+                  });
+        }
       }
     }
 

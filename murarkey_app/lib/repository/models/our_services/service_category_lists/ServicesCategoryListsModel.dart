@@ -28,6 +28,7 @@ class ServicesCategoryListsModel {
   bool reviewable;
   List<ReviewModel> reviews;
   List<HomepageBannerModel> images;
+  String web_url;
 
   ServicesCategoryListsModel({
     this.id,
@@ -46,6 +47,7 @@ class ServicesCategoryListsModel {
     this.reviewable,
     this.reviews,
     this.images,
+    this.web_url,
   });
 
   factory ServicesCategoryListsModel.fromJson(Map<String, dynamic> json) =>

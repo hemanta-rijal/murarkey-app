@@ -432,10 +432,19 @@ class _PlaceOrderWidgetState
   buildView() {
     var u = GlobalData.userModel;
     var b = u.billing_details;
-    String bAddress = "${b.city} ${b.state} ${b.zip}";
+    String bAddress = ""; //"${b.city} ${b.state} ${b.zip}";
+    if(b.city != null){
+      bAddress += "${b.city}";
+    }
+    if(b.state != null){
+      bAddress += " ${b.state}";
+    }
+    if(b.zip != null){
+      bAddress += " ${b.zip}";
+    }
 
     var s = u.shipment_details;
-    String sAddress = "${s.city} ${s.state} ${s.zip}";
+    //String sAddress = "${s.city} ${s.state} ${s.zip}";
 
     if (!loading) {
       return Container();

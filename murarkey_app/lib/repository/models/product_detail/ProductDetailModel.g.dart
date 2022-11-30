@@ -42,6 +42,7 @@ ProductDetailModel _$ProductDetailModelFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : ReviewModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    web_url: json['web_url'] as String,
   );
 }
 
@@ -68,4 +69,5 @@ Map<String, dynamic> _$ProductDetailModelToJson(ProductDetailModel instance) =>
       'reviewable': instance.reviewable,
       'average_review': instance.average_review,
       'reviews': instance.reviews,
+      'web_url': instance.web_url,
     };

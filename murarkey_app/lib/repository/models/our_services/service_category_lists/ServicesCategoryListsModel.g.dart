@@ -29,6 +29,7 @@ ServicesCategoryListsModel _$ServicesCategoryListsModelFromJson(
     images: (json['images'] as List)
         .map((e) => HomepageBannerModel.fromJson(e as Map<String, dynamic>))
         .toList(),
+    web_url: json['web_url'] as String,
   );
 }
 
@@ -51,4 +52,5 @@ Map<String, dynamic> _$ServicesCategoryListsModelToJson(
       'reviewable': instance.reviewable,
       'reviews': instance.reviews,
       'images': instance.images,
+      'web_url': instance.web_url,
     };

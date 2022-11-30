@@ -25,6 +25,7 @@ import 'package:murarkey_app/views/product/widgets/ProductDescriptionWidget.dart
 import 'package:murarkey_app/views/product/widgets/ProductToCardWidget.dart';
 import 'package:murarkey_app/views/product/widgets/ProductTypeWidget.dart';
 import 'package:murarkey_app/views/search/SearchWidget.dart';
+import 'package:share_plus/share_plus.dart';
 
 /**
  * Created by Suman Prasad Neupane on 6/15/2021.
@@ -108,17 +109,16 @@ class _ProductDetailWidgetState
     var check = await Commons.checkNetworkConnectivity();
     if (!check) {
       EasyLoading.show(
-        status: "",
-        indicator: Connectivity2Widget(
-          retry: () {
-            addToCartToServer() ;
-          },
-          cancel: (){
-            EasyLoading.dismiss();
-          },
-        ),
-        maskType: EasyLoadingMaskType.custom
-      );
+          status: "",
+          indicator: Connectivity2Widget(
+            retry: () {
+              addToCartToServer();
+            },
+            cancel: () {
+              EasyLoading.dismiss();
+            },
+          ),
+          maskType: EasyLoadingMaskType.custom);
       return;
     }
     //Add product
@@ -563,6 +563,31 @@ class _ProductDetailWidgetState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 productName(),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Share.share(
+                              '${productDetailModel.web_url}',
+                              subject: 'Murarkey',
+                            );
+                          },
+                          child: Icon(
+                            Icons.share,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
                 SizedBox(height: 12),
                 divider(),
@@ -651,7 +676,7 @@ class _ProductDetailWidgetState
               loadData();
               EasyLoading.dismiss();
             },
-            cancel: (){
+            cancel: () {
               EasyLoading.dismiss();
             },
           ),

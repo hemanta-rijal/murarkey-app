@@ -74,6 +74,7 @@ dependencies:
   chips_choice: 2.0.1
   flutter_easyloading: 2.2.2
   connectivity_plus:
+  share_plus:
 
   # todo end of dependencies
 

@@ -10,6 +10,7 @@ import 'package:murarkey_app/repository/models/our_services/service_category_lis
 import 'package:murarkey_app/utils/Commons.dart';
 import 'package:murarkey_app/utils/Imports.dart';
 import 'package:murarkey_app/views/our_services/widget/price/ProductPriceWidget.dart';
+import 'package:share_plus/share_plus.dart';
 
 /**
  * Created by Suman Prasad Neupane on 7/17/2021.
@@ -324,6 +325,35 @@ class _CardDeatilDescriptionWidgetState
     );
   }
 
+  Widget shareToSocialMedia(){
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: Container(),
+        ),
+        Expanded(
+          child: Container(
+            alignment: Alignment.centerRight,
+            margin: EdgeInsets.only(right: 16, bottom: 8),
+            child: GestureDetector(
+              onTap: () {
+                Share.share(
+                  '${widget.model.web_url}',
+                  subject: 'Murarkey',
+                );
+              },
+              child: Icon(
+                Icons.share,
+                size: 24,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -333,6 +363,7 @@ class _CardDeatilDescriptionWidgetState
           children: [
             loadBannerImage(),
             loadTitle(),
+            shareToSocialMedia(),
             divider(),
             columnDurationAndCart(),
             divider(),

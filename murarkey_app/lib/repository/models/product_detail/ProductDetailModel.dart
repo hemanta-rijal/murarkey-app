@@ -33,6 +33,7 @@ class ProductDetailModel {
   bool reviewable;
   int average_review;
   List<ReviewModel> reviews;
+  String web_url;
 
   //final List<dynamic> tags;
   //final List<dynamic> sub_category;
@@ -59,6 +60,7 @@ class ProductDetailModel {
     this.reviewable,
     this.average_review,
     this.reviews,
+    this.web_url,
   });
 
   dynamic getKeyTag(String key) {

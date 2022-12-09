@@ -45,6 +45,9 @@ class ApiUrls {
   static final String PRODUCT_SEARCH = ROOT_API_URL + "/product/search";
   static final String PRODUCT_VARIENT = ROOT_API_URL + "/product_variant";
 
+  //Review
+  static final String ADD_REVIEW = ROOT_API_URL + "/reviews";
+
   //For our services
   static final String OUR_SERVICES = ROOT_API_URL + "/services";
   static final String OUR_SERVICES_CATEGORIES = ROOT_API_URL +"/servicecategory/get-tree";

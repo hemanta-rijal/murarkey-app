@@ -23,6 +23,7 @@ ServicesCategoryListsModel _$ServicesCategoryListsModelFromJson(
     price_after_discount: json['price_after_discount'],
     labels: json['labels'] as Map<String, dynamic>,
     reviewable: json['reviewable'] as bool,
+    average_review: json['average_review'] as int,
     reviews: (json['reviews'] as List)
         .map((e) => ReviewModel.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -50,6 +51,7 @@ Map<String, dynamic> _$ServicesCategoryListsModelToJson(
       'price_after_discount': instance.price_after_discount,
       'labels': instance.labels,
       'reviewable': instance.reviewable,
+      'average_review': instance.average_review,
       'reviews': instance.reviews,
       'images': instance.images,
       'web_url': instance.web_url,

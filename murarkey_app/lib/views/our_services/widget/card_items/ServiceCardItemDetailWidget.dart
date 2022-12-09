@@ -35,6 +35,7 @@ class _ServiceCardItemDetailWidgetState
   PageController _pageController;
   double viewPortFraction = 0.9;
   double backArrowSize = 26;
+  Repository _repository = Repository();
 
   @override
   void initState() {
@@ -72,7 +73,8 @@ class _ServiceCardItemDetailWidgetState
           color: Colors.white,
         ),
         onTap: () {
-          NavigateRoute.pop(context);
+          //NavigateRoute.pop(context);
+          pop();
         },
       ),
     );
@@ -124,6 +126,7 @@ class _ServiceCardItemDetailWidgetState
     var s = MediaQuery.of(context).size;
     var widthPadding = s.width * (viewPortFraction) * 3 / 100;
     for (int i = 0; i < size; i++) {
+      //widget.modelList[i].reviewable = true;
       widgetList.add(
         Container(
           margin: EdgeInsets.only(
@@ -136,11 +139,26 @@ class _ServiceCardItemDetailWidgetState
             parentTitle: widget.appBarTitle,
             model: widget.modelList[i],
             position: i,
+            callback: () async {
+              ServicesCategoryListsModel result = await _repository
+                  .servicesApiRequest
+                  .getServicesListFromCategoryID(
+                url: ApiUrls.OUR_SERVICES + "/${widget.modelList[i].id}",
+              );
+              if (result != null) {
+                widget.modelList[i] = result;
+                setState(() {});
+              }
+            },
           ),
         ),
       );
     }
     return widgetList.toList();
+  }
+
+  void pop() {
+    Navigator.pop(context, "reload");
   }
 
   @override
@@ -152,24 +170,30 @@ class _ServiceCardItemDetailWidgetState
 
     return Material(
       child: Scaffold(
-        body: SafeArea(
-          child: Container(
-            color: AppConstants.appColor.blackColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                appBar(),
-                Expanded(
-                  child: PageView(
-                    onPageChanged: (int page) {
-                      _onChange(page);
-                    },
-                    controller: _pageController,
-                    children: renderSubPageItems(),
-                  ),
-                )
-              ],
+        body: WillPopScope(
+          onWillPop: () async {
+            pop();
+            return false;
+          },
+          child: SafeArea(
+            child: Container(
+              color: AppConstants.appColor.blackColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  appBar(),
+                  Expanded(
+                    child: PageView(
+                      onPageChanged: (int page) {
+                        _onChange(page);
+                      },
+                      controller: _pageController,
+                      children: renderSubPageItems(),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

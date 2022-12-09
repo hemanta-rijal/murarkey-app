@@ -547,7 +547,23 @@ class _ProductDetailWidgetState
         reviewable: productDetailModel.reviewable,
         model: productDetailModel.reviews,
         averageRate: productDetailModel.average_review,
-        callback: () {},
+        callback: (String rating, String comment) async {
+          Map<String, dynamic> queryParams = new Map();
+          queryParams["rating"] = rating;
+          queryParams["comment"] = comment;
+          queryParams["type"] = "product";
+          queryParams["product_id"] = productDetailModel.id;
+          String value = await _repository.reviewApi.postReview(
+            url: ApiUrls.ADD_REVIEW,
+            queryParams: queryParams,
+          );
+
+          if(value != null){
+            Commons.toastMessage(context, value);
+            loadData();
+          }
+
+        },
       );
     }
 

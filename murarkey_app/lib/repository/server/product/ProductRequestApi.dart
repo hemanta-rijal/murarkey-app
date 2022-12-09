@@ -36,7 +36,7 @@ class ProductRequestApi extends ApiRequest {
     // var body = json.encode({"IsActive": true, "IsDelete": false, "CompanyId": 18});
     ProductDetailModel result = new ProductDetailModel();
 
-    await this.getData(url: url).then((Map<String, dynamic> value) => {
+    await this.getData(url: url, useToken: true).then((Map<String, dynamic> value) => {
           print("ProductDetailModel"),
           if (value != null)
             {

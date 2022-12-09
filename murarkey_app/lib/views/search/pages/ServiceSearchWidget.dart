@@ -7,6 +7,7 @@ import 'package:murarkey_app/repository/models/our_services/service_category_lis
 import 'package:murarkey_app/repository/models/product_detail/ProductDetailModel.dart';
 import 'package:murarkey_app/routes/NavigateRoute.dart';
 import 'package:murarkey_app/utils/AppConstants.dart';
+import 'package:murarkey_app/views/our_services/widget/card_items/ServiceCardItemDetailWidget.dart';
 import 'package:murarkey_app/views/search/view_model/SearchViewModel.dart';
 import 'package:murarkey_app/views/search/view_model/ServiceSearchViewModel.dart';
 import 'package:murarkey_app/views/search/widgets/SearchItemWidget.dart';
@@ -26,6 +27,10 @@ class ServiceSearchWidgetState
   double searchBarHeight = 48;
 
   ServiceSearchWidgetState() {
+    load();
+  }
+
+  load() {
     viewModel = ServiceSearchViewModel(this);
     viewModel.categoryModelList = GlobalData.serviceCategoryModelList;
     viewModel.search();
@@ -93,18 +98,31 @@ class ServiceSearchWidgetState
       return SearchServiceItemWidget(
         columnSize: 2,
         modelList: viewModel.productDetailList,
-        onCallback:
-            (ServicesCategoryListsModel productDetailModel, int position) {
+        onCallback: (ServicesCategoryListsModel productDetailModel,
+            int position) async {
           Map<String, dynamic> arguments = new Map();
           arguments["initialPosition"] = position;
           arguments["modelList"] = viewModel.productDetailList;
           arguments["appBarTitle"] =
               viewModel.productDetailList[position].title;
-          NavigateRoute.pushNamedWithArguments(
+          // NavigateRoute.pushNamedWithArguments(
+          //   context,
+          //   NavigateRoute.OUR_SERVICES_ITEM_DETAIL,
+          //   arguments,
+          // );
+          final result = await Navigator.push(
             context,
-            NavigateRoute.OUR_SERVICES_ITEM_DETAIL,
-            arguments,
+            // Create the SelectionScreen in the next step.
+            MaterialPageRoute(
+              builder: (context) => ServiceCardItemDetailWidget(
+                  initialPosition: arguments["initialPosition"],
+                  modelList: arguments["modelList"],
+                  appBarTitle: arguments["appBarTitle"]),
+            ),
           );
+          if (result != null) {
+            load();
+          }
         },
         onScrollBottomCallback: (int listSize) {},
       );

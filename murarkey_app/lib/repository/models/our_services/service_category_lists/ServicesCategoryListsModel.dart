@@ -26,6 +26,7 @@ class ServicesCategoryListsModel {
   var price_after_discount;
   Map<String, dynamic> labels;
   bool reviewable;
+  int average_review;
   List<ReviewModel> reviews;
   List<HomepageBannerModel> images;
   String web_url;
@@ -45,6 +46,7 @@ class ServicesCategoryListsModel {
     this.price_after_discount,
     this.labels,
     this.reviewable,
+    this.average_review,
     this.reviews,
     this.images,
     this.web_url,

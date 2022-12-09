@@ -14,6 +14,7 @@ import 'package:murarkey_app/repository/server/payment_card_address/PaymentCardA
 import 'package:murarkey_app/repository/server/payment/PayPalApi.dart';
 import 'package:murarkey_app/repository/server/product/ProductRequestApi.dart';
 import 'package:murarkey_app/repository/server/product/WishlistRequestApi.dart';
+import 'package:murarkey_app/repository/server/review/ReviewApi.dart';
 import 'package:murarkey_app/repository/server/services/ServicesApiRequest.dart';
 import 'package:murarkey_app/repository/server/wallet/WalletApiRequest.dart';
 import 'package:murarkey_app/repository/share_preferences/LocalSharePref.dart';
@@ -38,6 +39,7 @@ class Repository {
   BestProductForYouApi bestProductForYouApi = new BestProductForYouApi();
   CouponApi couponApi = new CouponApi();
   NavigationDrawerApi navigationDrawerApi = new NavigationDrawerApi();
+  ReviewApi reviewApi = new ReviewApi();
 
   //payments
   PayPalApi payPalApi = new PayPalApi();

@@ -13,7 +13,7 @@ class ReviewWidget extends StatefulWidget {
   final bool reviewable;
   final int averageRate;
   final List<ReviewModel> model;
-  final Function() callback;
+  final Function(String rating, String comment) callback;
 
   ReviewWidget({
     Key key,
@@ -169,19 +169,6 @@ class _ReviewWidgetState extends State<ReviewWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Review the product
-            textView1(
-              title: "Review the product:",
-            ),
-            textField2(
-              //hint: "Review the product",
-              minLines: 4,
-              keyboardType: TextInputType.text,
-              controller: ratingController,
-              margin: EdgeInsets.only(top: 8.0),
-            ),
-            SizedBox(height: 12),
-
-            //Review the product
             Row(
               children: [
                 textView1(
@@ -192,6 +179,21 @@ class _ReviewWidgetState extends State<ReviewWidget> {
                 ),
               ],
             ),
+            SizedBox(height: 8),
+
+            //Review the product
+            textView1(
+              title: "Review the product:",
+            ),
+
+            textField2(
+              //hint: "Review the product",
+              minLines: 4,
+              keyboardType: TextInputType.text,
+              controller: ratingController,
+              margin: EdgeInsets.only(top: 8.0),
+            ),
+            SizedBox(height: 12),
 
             SizedBox(height: 18),
             FlatStatefulButton(
@@ -203,7 +205,12 @@ class _ReviewWidgetState extends State<ReviewWidget> {
               buttonHeight: 45,
               buttonCurve: 2.0,
               onPressedCallback: () {
-                //widget.addToCard();
+                widget.callback(
+                  rateCountSelected.toString(),
+                  ratingController.text.toString(),
+                );
+                rateCountSelected = 0;
+                ratingController.text = "";
               },
             ),
             SizedBox(height: 48),

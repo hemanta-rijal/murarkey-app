@@ -46,6 +46,24 @@ class ServicesApiRequest extends ApiRequest {
     return result;
   }
 
+  Future<ServicesCategoryListsModel> getServicesListFromCategoryID(
+      {String url}) async {
+    ServicesCategoryListsModel result = new ServicesCategoryListsModel();
+
+    await this
+        .getData(url: url, useToken: true)
+        .then((Map<String, dynamic> value) => {
+              print("getServicesListFromCategory"),
+              if (value != null)
+                {
+                  result = ServicesCategoryListsModel.fromJson(value["data"]),
+                }
+              else
+                {result = null}
+            });
+    return result;
+  }
+
   Future<List<ServiceCategoryModel>> getServicesCategoryList(
       {String url}) async {
     List<ServiceCategoryModel> result = new List();
@@ -71,19 +89,19 @@ class ServicesApiRequest extends ApiRequest {
     List<ServicesCategoryListsModel> result = new List();
 
     await this
-        .getData(url: url)
+        .getData(url: url, useToken: true)
         .then((Map<String, dynamic> value) => {
-      print("searchServicesFromCategory"),
-      if (value != null)
-        {
-          result = value["data"]
-              .map((i) => ServicesCategoryListsModel.fromJson(i))
-              .toList()
-              .cast<ServicesCategoryListsModel>(),
-        }
-      else
-        {result = null}
-    });
+              print("searchServicesFromCategory"),
+              if (value != null)
+                {
+                  result = value["data"]
+                      .map((i) => ServicesCategoryListsModel.fromJson(i))
+                      .toList()
+                      .cast<ServicesCategoryListsModel>(),
+                }
+              else
+                {result = null}
+            });
     return result;
   }
 

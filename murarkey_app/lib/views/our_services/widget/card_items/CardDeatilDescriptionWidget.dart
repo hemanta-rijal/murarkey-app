@@ -20,10 +20,15 @@ class CardDeatilDescriptionWidget extends StatefulWidget {
   final ServicesCategoryListsModel model;
   final String parentTitle;
   final int position;
+  final Function callback;
 
-  const CardDeatilDescriptionWidget(
-      {Key key, this.model, this.position, this.parentTitle})
-      : super(key: key);
+  const CardDeatilDescriptionWidget({
+    Key key,
+    this.model,
+    this.position,
+    this.parentTitle,
+    this.callback,
+  }) : super(key: key);
 
   @override
   _CardDeatilDescriptionWidgetState createState() =>
@@ -291,7 +296,23 @@ class _CardDeatilDescriptionWidgetState
     return ReviewWidget(
       reviewable: widget.model.reviewable,
       model: widget.model.reviews,
-      callback: () {},
+      averageRate: widget.model.average_review,
+      callback: (String rating, String comment) async {
+        Map<String, dynamic> queryParams = new Map();
+        queryParams["rating"] = rating;
+        queryParams["comment"] = comment;
+        queryParams["type"] = "service";
+        queryParams["service_id"] = widget.model.id;
+        String value = await _repository.reviewApi.postReview(
+          url: ApiUrls.ADD_REVIEW,
+          queryParams: queryParams,
+        );
+
+        if (value != null) {
+          Commons.toastMessage(context, value);
+          widget.callback();
+        }
+      },
     );
   }
 
@@ -325,7 +346,7 @@ class _CardDeatilDescriptionWidgetState
     );
   }
 
-  Widget shareToSocialMedia(){
+  Widget shareToSocialMedia() {
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
